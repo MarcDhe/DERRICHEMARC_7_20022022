@@ -23,6 +23,9 @@ app.use(bodyParser.json()); // va de paire avec le bodyParser d'en haut
 //ROUTE USER
 const userRoutes = require('./src/routes/User');
 app.use('/api/auth', userRoutes);
+//ROUTE POST
+const postRoutes = require('./src/routes/Post');
+app.use('/api/post', postRoutes);
 // ROUTES COMMENT
 const commentRoutes = require('./src/routes/Comment');
 app.use('/api/comment', commentRoutes);
