@@ -1,7 +1,7 @@
 const Post = require('../models/Post');
 
 exports.addPost = (req, res, next) => {
-  let newPost = {content: req.body.content};
+  let newPost = {...req.body};
   Post.create(newPost)
     .then(() => res.status(200).json({ message: ' Poste crée ! '}))
     .catch(error => res.status(400).json({ error }))

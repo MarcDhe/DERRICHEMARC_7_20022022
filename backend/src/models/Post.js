@@ -7,6 +7,7 @@ module.exports = sequelize.define("Post", {  // ici rien de plus car defini en g
     autoIncrement: true,
     primaryKey : true
   },
+  title: Sequelize.STRING(125),
   content: Sequelize.STRING(300),
   user_user_id: Sequelize.INTEGER,
   createdAt: Sequelize.DATE,
