@@ -48,7 +48,7 @@ exports.login = (req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 }
 
-// exports.foundUser = ( req, res, next)=>{
-//   User.findOne({where: {username: req.body.username}})
-//     .then((user)=>res.status(200).json(user))
-// }
+exports.foundUser = ( req, res, next)=>{
+  User.findAll()
+    .then((users)=>res.status(200).json(users))
+}

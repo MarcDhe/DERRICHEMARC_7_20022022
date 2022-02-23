@@ -14,6 +14,7 @@ sequelize.authenticate()
     console.log('Error'+ err)
 })
 
+
 // sequelize.sync({ force: false })  // FORCE A CREER LES TABLES SI ELLES NE LE SONT PAS 
 // .then(() => {                       // probleme crée automatiquement createdAT et updateAt meme sur le user
 //     console.log('yes re-sync done!')

@@ -1,11 +1,13 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 
 const bodyParser = require('body-parser');
 
 
 // CONNECT TO DATABASE
-require('./src/database/connection')
+require('./src/database/connection');
+require('./src/database/Relationship');
 
 // INTERCEPTE TOUT LES TYPES DE REQUETES
 app.use(express.json());
@@ -20,6 +22,7 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json()); // va de paire avec le bodyParser d'en haut
 
+
 //ROUTE USER
 const userRoutes = require('./src/routes/User');
 app.use('/api/auth', userRoutes);
@@ -28,8 +31,10 @@ const postRoutes = require('./src/routes/Post');
 app.use('/api/post', postRoutes);
 // ROUTES COMMENT
 const commentRoutes = require('./src/routes/Comment');
-app.use('/api/comment', commentRoutes);
+app.use('/api/post', commentRoutes);
 
+
+app.use('/pictures', express.static(path.join(__dirname, 'pictures'))); //reponds au requete envoyer a /images et sert un serveur static express.static() et path.join() pour connaitre le chemin avec en (__direname, 'images)
 
 
 module.exports = app;

@@ -2,7 +2,7 @@
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.createTable("Comments",{
+    return queryInterface.createTable("Comment",{
       _id:{
         type: Sequelize.INTEGER(11),
         allowNull : false,
@@ -10,7 +10,10 @@ module.exports = {
         primaryKey : true
       },
       content: Sequelize.STRING(300),
-      post_id: Sequelize.INTEGER,
+      imageUrl: Sequelize.STRING(255),
+      user_id: Sequelize.INTEGER(11),
+      post_id: Sequelize.INTEGER(11),
+      post_user_id : Sequelize.INTEGER(11),
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE
     });
@@ -18,6 +21,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-   return queryInterface.dropTable("Comments");
+   return queryInterface.dropTable("Comment");
   }
 };

@@ -7,8 +7,10 @@ module.exports = sequelize.define("Comment", {  // ici rien de plus car defini e
     autoIncrement: true,
     primaryKey : true
   },
-  content: Sequelize.STRING(300),
-  post_id: Sequelize.INTEGER,
-  createdAt: Sequelize.DATE,
-  updatedAt: Sequelize.DATE
-})
+  content: {type : Sequelize.STRING(300), required : true},
+  imageUrl: Sequelize.STRING(255),
+  user_id: Sequelize.INTEGER(11),
+  post_id: Sequelize.INTEGER(11),
+  post_user_id : Sequelize.INTEGER(11)
+
+},{tableName: "comment"})

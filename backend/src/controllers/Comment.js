@@ -1,7 +1,12 @@
 const Comment = require('../models/Comment');
 
+
 exports.addComment = (req, res, next) => {
-  let newComment = {content: req.body.content};
+  let newComment = {
+    user_id: req.auth.userId,
+    post_id: req.params.id,
+    ...req.body
+  };
   Comment.create(newComment)
     .then(() => res.status(200).json({ message: ' Commentaire crée ! '}))
     .catch( error => res.status(400).json({ error }))

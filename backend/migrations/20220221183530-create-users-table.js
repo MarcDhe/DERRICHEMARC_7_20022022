@@ -2,7 +2,7 @@
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.createTable("Users", {
+    return queryInterface.createTable("User", {
       _id:{
         type: Sequelize.INTEGER(11),
         allowNull : false,
@@ -18,12 +18,13 @@ module.exports = {
         type: Sequelize.STRING(65),
         allowNull: false,
       },
-      createdAt: Sequelize.DATE,
-      updatedAt: Sequelize.DATE
-    });
+      avatar:  Sequelize.STRING(),
+      createdAt: Sequelize.DATE(),
+      
+    }); //https://stackoverflow.com/questions/21114499/how-to-make-sequelize-use-singular-table-names
   },
 
   async down (queryInterface, Sequelize) {
-    return queryInterface.dropTable("Users");
+    return queryInterface.dropTable("User");
   }
 };

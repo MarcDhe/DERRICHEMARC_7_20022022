@@ -2,7 +2,7 @@
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-      return queryInterface.createTable("Posts",{
+      return queryInterface.createTable("Post",{
         _id:{
           type: Sequelize.INTEGER(11),
           allowNull : false,
@@ -11,13 +11,16 @@ module.exports = {
         },
         title: Sequelize.STRING(125),
         content: Sequelize.STRING(300),
-        user_user_id: Sequelize.INTEGER,
+        imageUrlComment: Sequelize.STRING(255),
+        likes: Sequelize.INTEGER(10),
+        userLiked: Sequelize.JSON(), 
+        user_id: Sequelize.INTEGER(11),
         createdAt: Sequelize.DATE,
         updatedAt: Sequelize.DATE
       });
   },
 
   async down (queryInterface, Sequelize) {
-    return queryInterface.dropTable("Posts");
+    return queryInterface.dropTable("Post");
   }
 };
