@@ -11,7 +11,7 @@ module.exports = {
         },
         title: Sequelize.STRING(125),
         content: Sequelize.STRING(300),
-        imageUrlComment: Sequelize.STRING(255),
+        imageUrl: Sequelize.STRING(255),
         likes: Sequelize.INTEGER(10),
         userLiked: Sequelize.JSON(), 
         user_id: Sequelize.INTEGER(11),

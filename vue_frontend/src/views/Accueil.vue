@@ -1,4 +1,5 @@
 <template>
+<div id="main">
   <div>
     <h1>This is the Accueil</h1>
   <div class="post" v-for="post in posts" :key="post.content">
@@ -10,6 +11,7 @@
     <button @click='printf'> cliquer pour afficher </button>
   </div>
 <router-link to="/createPost">You want to post something ?</router-link>
+</div>
 </template>
 
 <script>
@@ -39,6 +41,10 @@ export default {
 </script>
 
 <style lang="scss">
+#main{
+  height: 100%;
+  overflow: scroll;
+}
 .post{
   border: 1px solid black;
   border-radius: 5px;

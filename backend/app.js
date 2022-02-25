@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 
 // CONNECT TO DATABASE
 require('./src/database/connection');
+// AJOUT DES RELATIONS A LA BASE DE DONNEE
 require('./src/database/Relationship');
 
 // INTERCEPTE TOUT LES TYPES DE REQUETES

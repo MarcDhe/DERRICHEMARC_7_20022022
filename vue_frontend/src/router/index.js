@@ -29,6 +29,11 @@ const routes = [
     path: '/createPost',
     name: 'CreatePost',
     component: () => import('../views/CreatePost.vue')
+  },
+  {
+    path: '/profil',
+    name: 'Profil',
+    component: () => import('../views/Profil.vue')
   }
 ]
 

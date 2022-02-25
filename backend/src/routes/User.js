@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 
 const userCtrl = require('../controllers/User');
+const auth = require('../middleware/auth');
 
 router.post("/signup", userCtrl.signUp);
 router.post('/login', userCtrl.login);
-router.get('/user', userCtrl.foundUser);
+router.get('/user', userCtrl.foundUser); // attention remettre la route des auth 
 
 module.exports = router;

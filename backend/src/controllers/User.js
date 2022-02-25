@@ -37,7 +37,7 @@ exports.login = (req, res, next) => {
           res.status(200).json({
             userId: user._id,
             token: jwt.sign( // CREATION DU TOKEN
-              {userId: user._id}, // user du token
+              {user_id: user._id}, // user du token
               `TEST_TOKEN`, // A MODIF AVANT PRODUCTION
               {expiresIn: '24h'} // A MODIF AVANT PRODUCTION
             )
@@ -48,7 +48,17 @@ exports.login = (req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 }
 
-exports.foundUser = ( req, res, next)=>{
-  User.findAll()
-    .then((users)=>res.status(200).json(users))
+exports.foundUser = ( req, res, next)=>{  
+  User.findOne({_id : 1}) // attention ici modif pour test
+    .then((user)=> {
+      const userInfo = {  // pour ne pas transmetter le mot de passe
+        _id : user._id,
+        username : user.username,
+        avatar : user.avatar,
+        createdAt : user.createdAt
+      }
+    
+      res.status(200).json(userInfo)})
+    
 }
+
