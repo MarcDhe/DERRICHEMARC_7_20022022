@@ -5,7 +5,7 @@
   <div id="sidebar"><SideBar/></div>
   <div id="content1">Content1</div>
   <div id="content2">Content2</div>
-  <footer>Footer</footer>
+  <footer>Footer {{ $store.state.userProfil }}</footer>
 </div>
 </template>
 
@@ -18,6 +18,16 @@ import NavBar from '@/components/NavBar.vue';
 export default {
   components:{
     SideBar, NavBar
+  },
+    mounted(){ // car nous avons besoin des info de l'utilisateur au chargement de la pge 
+    fetch('http://localhost:3000/api/auth/user')
+    .then(res => res.json())
+    .then(result => {
+      this.$store.state.userProfil = result;
+      console.log("le resultat est : ", result.username)
+      console.log("le resultat est : ", this.$store.state.userProfil)
+    })
+
   }
 }
 </script>

@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: { 
-    userProfil: {},
+    userProfil: 31,
 
   },
   getters: { // se def comme une fonction avec state en parametre
@@ -13,12 +13,5 @@ export default createStore({
   },
   modules: {
   },
-  mounted(){
-    fetch('http://localhost:3000/api/auth/user')
-    .then(res => res.json())
-    .then(result => {
-      this.userProfil = result
-    })
-    console.log("le resultat est : ", this.userProfil)
-  }
+  
 })

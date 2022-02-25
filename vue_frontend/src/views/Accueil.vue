@@ -44,6 +44,9 @@ export default {
 #main{
   height: 100%;
   overflow: scroll;
+  background-image: url("../assets/icon.png");
+  background-position: center;
+  background-repeat: no-repeat;
 }
 .post{
   border: 1px solid black;
