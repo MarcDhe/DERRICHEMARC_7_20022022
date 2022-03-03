@@ -1,5 +1,11 @@
 const Post = require('../models/Post');
+const Comment = require('../models/Comment')
 const fs = require('fs'); // package fs ( FileSysteme)  systeme de fichier
+
+// // Post.hasMany(Comment , {as :"Comment", foreignKey: 'post_id'});
+// // Comment.belongsTo(Post, {as: "Post", foreignKey: "post_id"});
+// Post.hasMany(Comment, {as : "Comment", foreignKey : 'post_id'});
+// Comment.belongsTo(Post, { as: 'Post', foreignKey: 'post_id'});
 
 exports.addPost = (req, res, next) => {
   console.log('limage est ', req.file)
@@ -17,19 +23,20 @@ exports.addPost = (req, res, next) => {
     .catch(error => res.status(400).json({ error }))
 }
 
-// exports.addPost = (req, res, next) => {
-//   const postObject = req.body;
-//   const post = new Post ({
-//     ...postObject,
-//     // imageUrl: `${req.protocol}://${req.get('host')}/pictures/${req.file.filename}` 
-//   })
-//   post.save()
-//   .then(() => res.status(201).json({ message: 'Post enregistrée !'}))
-//     .catch(error => res.status(400).json({ error }));
-// }
+exports.getOnePost = (req, res, next) => {
+  Post.findAll({where : {_id: req.params.id}, include:[ {model : Comment, as: 'Comment' }] })
+  .then((post) => {
+    // if(post.length === 0 ){ // fait crash le serveur
+    //   console.log('post est :',post);
+    //   res.status(404).json({ error : 'Post Inexistant !'})
+    // }
+    res.status(200).json(post)
+  })
+  .catch(error => res.status(400).json({ error }))
+}
 
 exports.getAllPost = (req, res, next) => {
   Post.findAll()
-  .then((comments) => res.status(200).json(comments))
+  .then((posts) => res.status(200).json(posts))
   .catch(error => res.status(400).json({ error }))
 }

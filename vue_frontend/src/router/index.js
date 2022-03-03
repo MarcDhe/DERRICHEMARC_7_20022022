@@ -35,7 +35,13 @@ const routes = [
     path: '/profil',
     name: 'Profil',
     component: () => import('../views/Profil.vue')
-  }
+  },
+  {
+  path: '/post',
+  name: 'Post',
+  component: () => import('../views/Post.vue')
+  },
+
 ]
 
 const router = createRouter({ // mode history pour le lien URL sans #
