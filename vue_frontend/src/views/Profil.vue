@@ -7,7 +7,7 @@
         <p class="create-at">Membre depuis le: {{userProfil.createdAt}}</p>
       </div>
     </div>
-  
+  <p class="essai">{{ a}} </p>
   <div class="like-post">
     <h2>Activité</h2>
     <h2>Post Liké</h2>
@@ -20,13 +20,21 @@
 </template>
 
 <script>
+
 import { mapState } from 'vuex'
 
 export default {
   name:'Profil',
+  data(){
+    return{
+    }
+  },
   computed: {
         ...mapState(["userProfil"])
-    }
+    },
+  mounted(){
+
+  }
 }
 
 </script>
@@ -40,7 +48,7 @@ export default {
 .profil{
   display: flex;
   align-items: center;
- background-color: aliceblue;
+  background-color: aliceblue;
   &__avatar{
     background-color: aqua;
     height: 100px;

@@ -42,15 +42,20 @@ export default {
           },
           body: JSON.stringify({username, passwd})
         })
-          .then(function(res){
+          .then(function(res){ 
             if(res.ok){
+              console.log('test')
               return res.json();
             }
           })
-          .then(function(res){
-            this.tableau = res;
-            console.log("le resultat est :", this.tableau)
+          .then((res)  => {  // attention au context function ou => si pâs => plus de contexwt this
+            this.$store.state.userProfil = res;
+            // + ajout token en headers
+            console.log("le resultat est :", this.$store.state.userProfil)
+            console.log("userprofil est :", this.$store.state.userProfil.token)
           })
+          .catch(() => console.log("oops ca ne marche pas!"))
+
       }
 
     }

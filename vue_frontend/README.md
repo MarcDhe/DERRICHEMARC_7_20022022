@@ -1,3 +1,15 @@
+# backend
+
+npm install
+
+# create database
+
+sequelize db:migrate
+
+# start server
+
+nodemon server
+
 # vue_frontend
 
 ## Project setup

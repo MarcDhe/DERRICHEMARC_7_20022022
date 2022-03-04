@@ -14,7 +14,8 @@
   </div>  
   <div class="red-block"></div>
   <div class="post" v-for="post in posts" :key="post.content">
-    <router-link class="unlink" v-bind:to="{path:'Post?id=', params: { id: post._id } }">
+    <!-- <router-link class="unlink" v-bind:to="{path:'post', params: { id: post._id }}"> attention a revoir ecriture non bonne   -->
+    <router-link class="unlink" v-bind:to="`/post/${post._id}`">   <!-- EN ATTENDANT DAVOIR LA BONNE SOLUTION--> 
       <div class="info">
         <div class="owner">
           <div class="redim">
@@ -68,16 +69,17 @@ export default {
     fetch('http://localhost:3000/api/post')
       .then(res => res.json())
       .then(result => this.posts = result)
-      // .catch(err => console.log("oops ca ne marche pas!"))
+      .catch(() => console.log("oops ca ne marche pas!"))
+    }
   }
-
-  }
+  
 </script>
 
 <style lang="scss">
 #main{
   height: 100%;
   overflow: scroll;
+  overflow-wrap: break-word;
   background-image: url("../assets/icon.png");
   background-position: center;
   background-repeat: no-repeat;
@@ -86,13 +88,18 @@ export default {
   margin: 5px 5px 10px 5px;
   padding:10px 5px 0px 0px;
   border:1px solid rgb(210, 210, 210);
+  border-radius: 5px;
   background-color: rgba(250, 250, 250, 0.8);
   display: flex;
   flex-direction: column;
   .user{
     display: flex;
+    justify-content: flex-start;
     margin-left: 15px;
     margin-bottom: 10px;
+    figure{
+      margin: 0;
+    }
      &__avatar{
       height:50px;
       width: 50px;

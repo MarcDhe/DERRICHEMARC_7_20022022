@@ -19,3 +19,4 @@ Comment.belongsTo(Post, { as: 'Post', foreignKey: 'post_id'});
 // RELATION  ON TO MANY post --> comment  une post plusieur id d'utilisateur via les commentaires
 // Post.hasMany(Comment, {as : "Comment", foreignKey : 'user_id'});
 // Comment.belongsTo(Post, { as: 'Post', foreignKey: 'post_user_id'});
+

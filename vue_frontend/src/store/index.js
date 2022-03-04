@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: { 
-    userProfil: 31,
+    userProfil: [],
 
   },
   getters: { // se def comme une fonction avec state en parametre
@@ -13,5 +13,5 @@ export default createStore({
   },
   modules: {
   },
-  
+
 })
