@@ -32,7 +32,7 @@ const postRoutes = require('./src/routes/Post');
 app.use('/api/post', postRoutes);
 // ROUTES COMMENT
 const commentRoutes = require('./src/routes/Comment');
-app.use('/api/post', commentRoutes);
+app.use('/api/comment', commentRoutes);
 
 
 app.use('/pictures', express.static(path.join(__dirname, 'pictures'))); //reponds au requete envoyer a /images et sert un serveur static express.static() et path.join() pour connaitre le chemin avec en (__direname, 'images)

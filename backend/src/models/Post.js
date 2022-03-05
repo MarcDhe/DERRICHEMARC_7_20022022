@@ -1,7 +1,7 @@
 const Sequelize = require ('sequelize');
 
 module.exports = sequelize.define("Post", {  // ici rien de plus car defini en global precedement dans connection
-  _id:{
+  id:{
     type: Sequelize.INTEGER(11),
     allowNull : false,
     autoIncrement: true,

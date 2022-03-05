@@ -11,15 +11,14 @@ const fs = require('fs'); // package fs ( FileSysteme)  systeme de fichier
 
 exports.addPost = (req, res, next) => {
   console.log('limage est ', req.file)
-  console.log('l id_user est:', req.auth.user_id)
   const postObject = req.file ?
   {
     ...req.body,
-    user_id: req.auth.user_id,
+    user_id: req.auth.userId,
     imageUrl: `${req.protocol}://${req.get('host')}/pictures/${req.file.filename}`
   } : { 
     ...req.body,
-    user_id: req.auth.user_id
+    user_id: req.auth.userId
   }
   Post.create(postObject)
     .then(() => res.status(200).json({ message: ' Poste crée ! '}))
@@ -27,7 +26,7 @@ exports.addPost = (req, res, next) => {
 }
 
 exports.getOnePost = (req, res, next) => { // ATTENTION ENVOI LES MDP
-  Post.findOne({where : {_id: req.params.id}, include:[ {model: User, as:"User"},{model : Comment, as: 'Comment', include:[{model: User, as: 'User' } ] }] }) // FAIRE TRES ATTENTION A LA NOTATION PREMIER USER POUR USER_ID DU POST DEUXIEME POOUR LES COMMENTAIRES
+  Post.findOne({where : {id: req.params.id}, include:[ {model: User, as:"User"},{model : Comment, as: 'Comment', include:[{model: User, as: 'User' } ] }] }) // FAIRE TRES ATTENTION A LA NOTATION PREMIER USER POUR USER_ID DU POST DEUXIEME POOUR LES COMMENTAIRES
   // User.findAll({ where: {_id: req.params.id}, include: [{model : Post, as: 'Post'}] })
   .then((post) => {
     // if(post.length === 0 ){ // fait crash le serveur

@@ -7,13 +7,33 @@
       <i class="search-icone fa-solid fa-magnifying-glass"></i>
     </div>
    </div>
-  <button id="logout"><i class="fa-solid fa-power-off"></i></button>
+  <button id="logout" @click="log" ><i class="fa-solid fa-power-off"></i></button>
  </header> 
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name:'NavBar',
+    computed:{
+    ...mapState(["userProfil","userToken"]) // attention met en read only ne peut etre modifié sans le 'lien' complet
+  },
+  methods:{
+    log(){
+      console.log('userProfil:', this.userProfil,'usertoken', this.userToken)
+      if(this.userToken === ""){ 
+        window.location = '/Login' // ici on peu l'utilisé vu que l'on sen fiche si celui ci est ou non sauvegarder 
+      }else{
+        this.$store.state.userProfil = {}; // double mais pour etre sur que tout soit bien supprimé
+        this.$store.state.userToken = "";
+        console.log('you are logout');
+        window.location = '/Login' // ici on peu l'utilisé vu que l'on sen fiche si celui ci est ou non sauvegarder 
+      }
+    }
+  },
+
+
 }
 </script>
 

@@ -1,4 +1,5 @@
 <template>
+
 <div class="bloc">
   <nav><NavBar/></nav>
   <main><router-view /></main>
@@ -14,20 +15,11 @@ import SideBar from '@/components/SideBar.vue';
 import NavBar from '@/components/NavBar.vue';
 
 
-
 export default {
   components:{
     SideBar, NavBar
   },
-    mounted(){ // car nous avons besoin des info de l'utilisateur au chargement de la pge 
-    fetch('http://localhost:3000/api/auth/user')
-    .then(res => res.json())
-    .then(result => {
-      this.$store.state.userProfil = result;
-      console.log("le resultat est : ", result.username)
-      console.log("le resultat est : ", this.$store.state.userProfil)
-    })
-
+    mounted(){ 
   }
 }
 </script>
@@ -47,6 +39,7 @@ export default {
   align-self: center;
   text-align: center;
 }
+
 
 nav{
   background-color:aqua;

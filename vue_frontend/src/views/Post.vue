@@ -16,15 +16,21 @@
           <img src="http://localhost:3000/pictures/black_logo.png"/>
         </figure>
         <p>{{onePost.content}}</p>
-
-      <p>{{onePost.User}}</p>
+        <p>{{onePost.User}}</p>
       </div>
       <div class="post__add">
         <p id="like"><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> Liker</p>
+        <p id="create-comment"><i class="red-color fa-solid fa-message"></i> Commenter </p>
         <p><i class="red-color fa-solid fa-trash-can"></i> Delete </p>
         <p><i class="red-color fa-regular fa-pen-to-square"></i> Update</p>
       </div>
-    
+      <div class="new-comment">
+        <textarea id='new-comment__content' placeholder='Ecrivez votre commentaire' maxlength="300" required></textarea>
+        <div class="new-comment__option">
+          <button @click='sendComment()'>Envoyez</button>
+          
+        </div>
+      </div>
       <div class="commentary" v-for="comment in onePost.Comment" :key="comment.content">
         <figure class="commentary__avatar"> 
           <img :src="comment.User.avatar" alt="avatar">
@@ -48,11 +54,40 @@ export default {
   data(){
     return {
         onePost : {},
-        postId : "",
+        post_id : "",
     }
   },
-  mounted(){ // pour executé la methods au chargement de la page
-  fetch(`http://localhost:3000/api/post/2`) // plus tard mettre autre chose
+  methods:{
+    //ENVOI DU COMMENTAIRE A L'API
+    sendComment(){
+      let content = document.getElementById('new-comment__content').value;
+      if(content == ""){
+        console.log('contenu vide');
+        return 0;
+      }
+      fetch(`http://localhost:3000/api/comment/${this.post_id}`,{
+        method: "POST",
+        headers: {
+          'Authorization' : `Bearer ${this.$store.state.userToken}`,  // attention au majuscule
+          'Accept': 'application/json', 
+          'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify({content})
+        })
+        .then(function(res){
+          if(res.ok){
+            return res.json();
+          }
+        })
+        .catch(() => console.log('oops ca ne marche pas!'));
+    }
+  },
+  mounted(){ 
+  //RECUPERATION DE L'ID DANS L'URL https://stackoverflow.com/questions/61946295/get-the-id-from-the-url-in-vuejs
+  console.log("l'id d'url est: ", this.$route.params.id );
+  this.post_id = this.$route.params.id;
+
+  fetch(`http://localhost:3000/api/post/${this.post_id}`) // plus tard mettre autre chose
     .then(res => res.json())
     .then(data => this.onePost = data)
     .catch(() => console.log("oops ca ne marche pas!"))
@@ -130,7 +165,19 @@ main{
       }
     }
 }
-
+.new-comment{
+  border:1px solid #d2d2d2;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  #new-comment__content{
+    width: auto;
+    min-height: 70px;
+    margin:5px;
+    padding: 5px;
+    resize: vertical;
+  }
+}
 .commentary{
   background-color: rgba(250, 250, 250, 0.8);
   border:1px solid rgb(210, 210, 210);

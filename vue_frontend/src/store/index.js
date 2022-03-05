@@ -2,7 +2,8 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: { 
-    userProfil: [],
+    userProfil: {},
+    userToken: "",
 
   },
   getters: { // se def comme une fonction avec state en parametre

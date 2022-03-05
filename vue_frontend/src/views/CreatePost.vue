@@ -23,16 +23,15 @@ export default {
     sendPost(){
       let title = document.getElementById('post__title').value;
       let content = document.getElementById('post__content').value;
-      let user_id = this.$store.state.userProfil.user_id;
       console.log('titre :',title , '/contenu:', content)
        fetch('http://localhost:3000/api/post',{
           method: "POST",
           headers: {
-            'Authorization' : `Bearer ${this.$store.state.userProfil.token}`,  // attention au majuscule
+            'Authorization' : `Bearer ${this.$store.state.userToken}`,  // attention au majuscule
             'Accept': 'application/json', 
             'Content-Type': 'application/json' 
           },
-          body: JSON.stringify({title, content, user_id})
+          body: JSON.stringify({title, content})
         })
           .then(function(res){
             if(res.ok){
@@ -70,7 +69,7 @@ main{
     }
     #post__content{
       border:1px solid rgb(210, 210, 210);
-      resize: none; // bloque le resize du textarea
+      resize: vertical; // bloque le resize du textarea en horizontal
       height: 150px;
       width: 80%;
       padding: 5px;

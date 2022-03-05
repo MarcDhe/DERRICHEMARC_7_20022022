@@ -3,7 +3,7 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
       return queryInterface.createTable("Post",{
-        _id:{
+        id:{
           type: Sequelize.INTEGER(11),
           allowNull : false,
           autoIncrement: true,

@@ -14,8 +14,8 @@
   </div>  
   <div class="red-block"></div>
   <div class="post" v-for="post in posts" :key="post.content">
-    <!-- <router-link class="unlink" v-bind:to="{path:'post', params: { id: post._id }}"> attention a revoir ecriture non bonne   -->
-    <router-link class="unlink" v-bind:to="`/post/${post._id}`">   <!-- EN ATTENDANT DAVOIR LA BONNE SOLUTION--> 
+    <!-- <router-link class="unlink" v-bind:to="{path:'post', params: { id: post.id }}"> attention a revoir ecriture non bonne   -->
+    <router-link class="unlink" v-bind:to="`/post/${post.id}`">   <!-- EN ATTENDANT DAVOIR LA BONNE SOLUTION--> 
       <div class="info">
         <div class="owner">
           <div class="redim">
@@ -24,7 +24,7 @@
             </figure>
           </div>
           <div class="owner__details">
-            <div class="owner__username"> username {{ post._id }}</div>
+            <div class="owner__username"> username {{ post.id }}</div>
             <div class="owner__relase">update date</div>
           </div>
         </div>
@@ -66,10 +66,22 @@ export default {
   },
 
   mounted(){ // pour executé la methods au chargement de la page
+      fetch('http://localhost:3000/api/auth/user',{
+        method: "GET",
+        headers: { 'Authorization' : `Bearer ${this.$store.state.userToken}`}
+      })
+      .then((res) => res.json())
+      .then(result => {
+        this.$store.state.userProfil = result 
+      })
+      .catch(() => console.log("oops ca ne marche pas!"))
+
     fetch('http://localhost:3000/api/post')
       .then(res => res.json())
       .then(result => this.posts = result)
       .catch(() => console.log("oops ca ne marche pas!"))
+
+        console.log("sur app l'utilisateur est: ", this.$store.state.userProfil.token)
     }
   }
   

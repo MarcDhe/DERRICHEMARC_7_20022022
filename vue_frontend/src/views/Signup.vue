@@ -1,20 +1,14 @@
 <template>
-  <section>
-    <div class='container'>
+  <main>
+    <div class='login'>
       <h1>Signup</h1>
-      <!-- <form> -->
-        <div class=form-group>
-          <label for='username'>Username : </label>
-          <input id='username' required>
-        </div>
-        <div class=form-group>
-          <label for='password'>Password : </label>
-          <input id='password' required>
-        </div>
-        <button @click='sendForm()'>Send</button>
-      <!-- </form> -->
+      <form>
+        <input id='username' placeholder= "Username" required>
+        <input id='password' type="password" placeholder= "Password" required>
+        <button @click='sendForm()'>Sign Up now</button>
+      </form>
     </div>
-  </section>
+  </main>
 </template>
 
 
@@ -54,18 +48,46 @@ export default {
 
 </script>
 
-<style lang="scss">
- section{
+<style lang="scss" scoped>
+main{
+  width: 100%;
+  height: 100%;
+  // background-image: url("../assets/icon-above-font.png");
+  // background-position: center;
   display: flex;
-  justify-content: center; 
+  justify-content: center;
  }
- .container{
-   width: 70%;
-   height: 300px;
-   background-color: rgb(220,220,220);
-   display: flex;
-   flex-direction: column;
-   justify-content: center;
-   align-items: center;
+ .login{
+    background-color: #3F4257;
+    border-radius: 10px; 
+    width: 70%;
+    height: 300px;
+    margin-top:5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    h1{
+      color: white;
+    }
+ }
+ form{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    input{
+      margin-bottom: 10px;
+      padding:5px;
+      border-radius:5px;
+      border: 0px
+   }
+   button{
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #FD2D00;
+    color: white;
+    font-weight: 600;
+   }
  }
 </style>

@@ -35,9 +35,9 @@ exports.login = (req, res, next) => {
             return res.status(401).json({ error : 'Mot de passe incorect !'});
           }
           res.status(200).json({
-            userId: user._id,
+            userId: user.id,
             token: jwt.sign( // CREATION DU TOKEN
-              {user_id: user._id}, // user du token
+              {userId: user.id}, // user du token
               `TEST_TOKEN`, // A MODIF AVANT PRODUCTION
               {expiresIn: '24h'} // A MODIF AVANT PRODUCTION
             )
@@ -49,10 +49,10 @@ exports.login = (req, res, next) => {
 }
 
 exports.foundUser = ( req, res, next)=>{  
-  User.findOne({_id : 1}) // attention ici modif pour test
+  User.findOne({id : req.auth.userId}) // attention ici modif pour test
     .then((user)=> {
       const userInfo = {  // pour ne pas transmetter le mot de passe
-        _id : user._id,
+        id : user.id,
         username : user.username,
         avatar : user.avatar,
         createdAt : user.createdAt

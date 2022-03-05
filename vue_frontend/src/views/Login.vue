@@ -1,20 +1,17 @@
 <template>
-  <section>
-    <div class='container'>
-      <h1>Login</h1>
-      <!-- <form> -->
-        <div class=form-group>
-          <label for='username'>Username : </label>
-          <input id='username' required>
-        </div>
-        <div class=form-group>
-          <label for='password'>Password : </label>
-          <input id='password' required>
-        </div>
-        <button @click='sendForm()'>Send</button>
-      <!-- </form> -->
+  <main>
+    <div class='login'>
+      <h1>Account Login</h1>
+      <form>
+        <input id='username' placeholder= "Username" required>
+        <input id='password' type='password'  placeholder= "Password" required>
+      </form>
+      <button @click='sendForm()'>Login to your Account</button>
+      <router-link class="signup-link" to="/signUp" > 
+        <p>Still not member ? <strong>Signup</strong></p>
+      </router-link>
     </div>
-  </section>
+  </main>
 </template>
 
 
@@ -33,7 +30,6 @@ export default {
         let username = document.getElementById('username').value;
         let passwd = document.getElementById('password').value;
         console.log(JSON.stringify({username, passwd}));
-
         fetch('http://localhost:3000/api/auth/login',{
           method: "POST",
           headers: {
@@ -49,34 +45,69 @@ export default {
             }
           })
           .then((res)  => {  // attention au context function ou => si pâs => plus de contexwt this
-            this.$store.state.userProfil = res;
-            // + ajout token en headers
-            console.log("le resultat est :", this.$store.state.userProfil)
-            console.log("userprofil est :", this.$store.state.userProfil.token)
+            console.log('le token es', res.token)
+            this.$store.state.userToken = res.token;
+            console.log("le resultat est assigné :", this.$store.state.userToken)
+            this.$router.push('/accueil')//NOUS FAIT ALLER SUR L"ACCUEIL https://router.vuejs.org/guide/essentials/navigation.html#navigate-to-a-different-location
           })
           .catch(() => console.log("oops ca ne marche pas!"))
-
-      }
-
     }
-  
+  }
 }
 
 
 </script>
 
-<style lang="scss">
- section{
+<style lang="scss" scoped>
+ main{
+  width: 100%;
+  height: 100%;
+  background-image: url("../assets/societe.png");
+  background-position: center;
+  background-size: 100%;
+  background-repeat: no-repeat;
   display: flex;
-  justify-content: center; 
+  justify-content: center;
  }
- .container{
-   width: 70%;
-   height: 300px;
-   background-color: rgb(220,220,220);
+ .login{
+  background-color: #3F4257;
+  border-radius: 10px; 
+  width: 70%;
+  height: 300px;
+  margin-top:5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+    h1{
+      color: white;
+    }
+    .signup-link{
+     text-decoration: none;
+     color: white;
+     strong{
+       color:#FD2D00;
+     }
+    }
+    button{
+      border-radius: 5px;
+      padding: 5px;
+      background-color: #FD2D00;
+      color: white;
+      font-weight: 600;
+    }
+ }
+ form{
    display: flex;
    flex-direction: column;
-   justify-content: center;
-   align-items: center;
+   width: 60%;
+   input{
+    margin-bottom: 10px;
+    padding:5px;
+    border-radius:5px;
+    border: 0px
+   }
  }
+
 </style>
