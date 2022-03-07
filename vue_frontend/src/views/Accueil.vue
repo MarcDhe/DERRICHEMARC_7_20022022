@@ -32,8 +32,10 @@
       </div>
       <div class="post__details">
         <h2>{{post.title}} :</h2>
+         <figure>
+          <img :src='post.imageUrl' />
+        </figure>
         <p>{{ post.content}}</p>
-        <p>Image</p>
       </div>
       <div class="post__action">
       <p id="like"><i class="fa-solid fa-hand-holding-heart" alt="liké"></i> Liker</p>
@@ -159,6 +161,9 @@ export default {
     h2{
       margin:0;
       margin-bottom: 5px;
+    }
+    img{
+      max-width: 100%;
     }
     p{
       margin: 0;

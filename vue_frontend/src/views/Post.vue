@@ -1,34 +1,36 @@
 <template>
   <main>
     <div class="post">
-      <!-- <div class="owner">   FAIT PLANTER LA PAGE
-        <figure>
-          <img class="owner__avatar" v-bind:src="onePost.User.avatar" alt="avatar"/>
-        </figure>
-        <div class="owner__details">
-          <p class="owner__details__username"> {{ onePost.User.username }}</p>
-          <p class="owner__details__updatedAt"> posté le {{ onePost.updatedAt}}</p>
+      <div id="try">
+        <CreatePost/>
+        <!-- <div class="owner">   FAIT PLANTER LA PAGE
+          <figure>
+            <img class="owner__avatar" v-bind:src="onePost.User.avatar" alt="avatar"/>
+          </figure>
+          <div class="owner__details">
+            <p class="owner__details__username"> {{ onePost.User.username }}</p>
+            <p class="owner__details__updatedAt"> posté le {{ onePost.updatedAt}}</p>
+          </div>
+        </div>  -->
+        <h1>{{ onePost.tilte}} :</h1>
+        <div class="post__content">
+          <figure class="post__file">
+            <img :src="onePost.imageUrl"/>
+          </figure>
+          <p>{{onePost.content}}</p>
+          <p>{{onePost.User}}</p>
         </div>
-      </div>  -->
-      <h1>{{ onePost.title}} :</h1>
-      <div class="post__content">
-        <figure class="post__file">
-          <img src="http://localhost:3000/pictures/black_logo.png"/>
-        </figure>
-        <p>{{onePost.content}}</p>
-        <p>{{onePost.User}}</p>
-      </div>
-      <div class="post__add">
-        <p id="like"><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> Liker</p>
-        <p id="create-comment"><i class="red-color fa-solid fa-message"></i> Commenter </p>
-        <p><i class="red-color fa-solid fa-trash-can"></i> Delete </p>
-        <p><i class="red-color fa-regular fa-pen-to-square"></i> Update</p>
-      </div>
-      <div class="new-comment">
-        <textarea id='new-comment__content' placeholder='Ecrivez votre commentaire' maxlength="300" required></textarea>
-        <div class="new-comment__option">
-          <button @click='sendComment()'>Envoyez</button>
-          
+        <div class="post__add">
+          <p id="like-post"><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> Like</p>
+          <p id="delete-post" @click='deletePost()' ><i class="red-color fa-solid fa-trash-can"></i> Delete </p>
+          <p id="update-post" @click='updatePost()'><i class="red-color fa-regular fa-pen-to-square"></i> Update</p>
+        </div>
+        <div class="new-comment">
+          <textarea id='new-comment__content' placeholder='Ecrivez votre commentaire' maxlength="300" required></textarea>
+          <div class="new-comment__option">
+            <button @click='sendComment()'>Envoyez</button>
+            
+          </div>
         </div>
       </div>
       <div class="commentary" v-for="comment in onePost.Comment" :key="comment.content">
@@ -39,7 +41,7 @@
           <p class="commentary__details__username"> {{ comment.User.username }}<strong class="date"> {{comment.updatedAt}}</strong></p>
           <p class="commentary__details__content">{{ comment.content }}</p>
           <div class="commentary__update">
-            <p><i class="red-color fa-solid fa-trash-can"></i>  Delete </p>
+            <p ><i class="red-color fa-solid fa-trash-can"></i>  Delete </p>
             <p><i class="red-color fa-regular fa-pen-to-square"></i>  Update</p>
           </div>
         </div>
@@ -49,8 +51,13 @@
 </template>
 
 <script>
+  import CreatePost from './CreatePost.vue';
+
 export default {
   name:'Post',
+  components:{
+    CreatePost
+  },
   data(){
     return {
         onePost : {},
@@ -80,7 +87,29 @@ export default {
           }
         })
         .catch(() => console.log('oops ca ne marche pas!'));
+    },
+
+    //SUPPRESION DU POST:
+    deletePost(){
+      fetch(`http://localhost:3000/api/post/${this.post_id}`,{
+        method: "DELETE",
+        headers:{
+          'Authorization' : `Bearer ${this.$store.state.userToken}`,  // attention au majuscule
+        }
+      })
+      .then((res) => {
+          if(res.ok){
+            return res.json();
+          }
+      })
+      .catch(() => console.log('oops ca ne marche pas!'));
+    },
+
+    //UPDATE POST:
+    updatePost(){
+      console.log(document.getElementById('post__title').value);
     }
+  
   },
   mounted(){ 
   //RECUPERATION DE L'ID DANS L'URL https://stackoverflow.com/questions/61946295/get-the-id-from-the-url-in-vuejs
@@ -142,28 +171,28 @@ main{
   background-color: rgba(250, 250, 250, 0.8);
   margin: 5px 5px 10px 5px;
   padding: 5px;
-    h1{
-      margin: 0px;
-      text-align: start;
-      padding-left: 15px;
-      font-size: 20px;
+  h1{
+    margin: 0px;
+    text-align: start;
+    padding-left: 15px;
+    font-size: 20px;
+  }
+  &__content{
+    background-color: white;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  &__add{
+    margin-top:0px;
+    display: flex;
+    justify-content: space-around;
+  }
+  &__file{
+    img{
+      max-width: 90%;
     }
-    &__content{
-      background-color: white;
-      margin: 5px;
-      padding: 5px;
-      border-radius: 5px;
-    }
-    &__add{
-      margin-top:0px;
-      display: flex;
-      justify-content: space-around;
-    }
-    &__file{
-      img{
-        max-width: 90%;
-      }
-    }
+  }
 }
 .new-comment{
   border:1px solid #d2d2d2;
@@ -222,6 +251,14 @@ main{
 }
 .red-color{
   color: #8e1352;
+}
+#delete-post, #update-post, #like-post{
+    border-radius: 10px;
+    padding: 2px 10px 2px 10px;
+  &:hover{
+    background-color: #FFD6D6; 
+    cursor: pointer;
+  }
 }
 
 

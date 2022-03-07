@@ -6,7 +6,6 @@
   <div id="sidebar"><SideBar/></div>
   <div id="content1">Content1</div>
   <div id="content2">Content2</div>
-  <footer>Footer {{ $store.state.userProfil }}</footer>
 </div>
 </template>
 
@@ -33,8 +32,8 @@ export default {
   grid-template-areas: 
     "nav nav nav nav"
     "sidebar main main content1"
-    "sidebar main main content2"
-    "sidebar footer footer footer";
+    "sidebar main main content1"
+    "sidebar main main content2";
   grid-gap: 0.3rem;
   align-self: center;
   text-align: center;
@@ -56,6 +55,7 @@ main{
 #content1{
   background-color: #a7ffeb;
   grid-area: content1;
+  overflow-wrap: break-word;
 }
 #content2{
   background-color: #84ffff;

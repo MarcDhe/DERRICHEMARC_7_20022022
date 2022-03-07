@@ -35,7 +35,7 @@ const commentRoutes = require('./src/routes/Comment');
 app.use('/api/comment', commentRoutes);
 
 
-app.use('/pictures', express.static(path.join(__dirname, 'pictures'))); //reponds au requete envoyer a /images et sert un serveur static express.static() et path.join() pour connaitre le chemin avec en (__direname, 'images)
+app.use('/pictures/', express.static(path.join(__dirname, 'pictures'))); //reponds au requete envoyer a /images et sert un serveur static express.static() et path.join() pour connaitre le chemin avec en (__direname, 'images)
 
 
 module.exports = app;
