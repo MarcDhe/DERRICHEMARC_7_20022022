@@ -4,8 +4,11 @@
     <div class=create-post>
         <input id='create-post__title' placeholder='Titre' maxlength="125" required>  <!-- maxlenght cf model backend-->
         <textarea id='create-post__content' placeholder='Text' maxlength="300" required></textarea>
-        <label for='create-post__file'>Ajouter une image ou une vidéo : </label>
-        <input id='create-post__file' type="file"> 
+        <label for='create-post__file'>Ajouter une image ou une vidéo :{{this.picture}} </label>
+        <input id='create-post__file' type="file" @change="previewFile"> 
+        <figure>
+          <img v-if="url" :src="url" />
+        </figure>
     </div>
     <button @click='sendPost()'>Post it</button>
   </main>
@@ -17,9 +20,15 @@ export default {
   data(){
     return{
       tableau : [],
+      url : null,
     }
   },
   methods:{
+    // //AFFICHAGE PICTURE: https://blog.enguehard.info/previsualiser-image-input-type-file/
+     previewFile(e) { // interessant de voir e.target qui est lendroit ou ce declenche levent
+      const file = e.target.files[0];
+      this.url = URL.createObjectURL(file);
+    },
     sendPost(){
       const title = document.getElementById('create-post__title').value;
       const content = document.getElementById('create-post__content').value; 

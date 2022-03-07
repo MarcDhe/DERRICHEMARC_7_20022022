@@ -1,8 +1,9 @@
 <template>
   <main>
     <div class="post">
-      <div id="try">
-        <CreatePost/>
+      <div v-if="this.method === 'update'"><CreatePost/></div>
+      <div v-if="this.method === 'read'">
+        
         <!-- <div class="owner">   FAIT PLANTER LA PAGE
           <figure>
             <img class="owner__avatar" v-bind:src="onePost.User.avatar" alt="avatar"/>
@@ -20,6 +21,7 @@
           <p>{{onePost.content}}</p>
           <p>{{onePost.User}}</p>
         </div>
+      </div>
         <div class="post__add">
           <p id="like-post"><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> Like</p>
           <p id="delete-post" @click='deletePost()' ><i class="red-color fa-solid fa-trash-can"></i> Delete </p>
@@ -28,11 +30,9 @@
         <div class="new-comment">
           <textarea id='new-comment__content' placeholder='Ecrivez votre commentaire' maxlength="300" required></textarea>
           <div class="new-comment__option">
-            <button @click='sendComment()'>Envoyez</button>
-            
+            <button @click='sendComment()'>Envoyez</button>           
           </div>
         </div>
-      </div>
       <div class="commentary" v-for="comment in onePost.Comment" :key="comment.content">
         <figure class="commentary__avatar"> 
           <img :src="comment.User.avatar" alt="avatar">
@@ -62,6 +62,7 @@ export default {
     return {
         onePost : {},
         post_id : "",
+        method: "read",
     }
   },
   methods:{
@@ -107,7 +108,10 @@ export default {
 
     //UPDATE POST:
     updatePost(){
-      console.log(document.getElementById('post__title').value);
+      this.method = "update";
+      document.getElementById('create-post__title').value = this.onePost.title;
+      document.getElementById('create-post__content').value = this.onePost.content; 
+      document.getElementById('create-post__file').file = this.onePost.imageUrl;
     }
   
   },
