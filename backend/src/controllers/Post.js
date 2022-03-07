@@ -3,6 +3,7 @@ const User = require('../models/User');
 const Comment = require('../models/Comment')
 
 const fs = require('fs'); // package fs ( FileSysteme)  systeme de fichier
+const Liked = require('../models/Liked');
 
 
 exports.addPost = (req, res, next) => {
@@ -22,7 +23,7 @@ exports.addPost = (req, res, next) => {
 }
 
 exports.getOnePost = (req, res, next) => { // ATTENTION ENVOI LES MDP
-  Post.findOne({where: {id: req.params.id}, include:[ {model: User, as:"User"},{model : Comment, as: 'Comment', include:[{model: User, as: 'User' } ] }] }) // FAIRE TRES ATTENTION A LA NOTATION PREMIER USER POUR USER_ID DU POST DEUXIEME POOUR LES COMMENTAIRES
+  Post.findOne({where: {id: req.params.id}, include:[{model: Liked, as:"Liked"},{model: User, as:"User"},{model : Comment, as: 'Comment', include:[{model: User, as: 'User' } ] }] }) // FAIRE TRES ATTENTION A LA NOTATION PREMIER USER POUR USER_ID DU POST DEUXIEME POOUR LES COMMENTAIRES
   // User.findAll({ where: {_id: req.params.id}, include: [{model : Post, as: 'Post'}] })
   .then((post) => {
     // if(post.length === 0 ){ // fait crash le serveur

@@ -1,4 +1,4 @@
-const Like = require('../models/Liked');
+const Liked = require('../models/Liked');
 const Post = require('../models/Post')
 
 exports.manageLike = (req, res, next) => {
@@ -11,7 +11,7 @@ exports.manageLike = (req, res, next) => {
         return res.status(404).json({ error: 'Post non trouvé !'})
       }
       if(req.body.like == 1){// AVEC VERIFICATION SI USER A DEJA MIS UN LIKE
-        Like.findOne({where: {post_id: req.params.id, user_id: req.auth.userId}})
+        Liked.findOne({where: {post_id: req.params.id, user_id: req.auth.userId}})
           .then((like) => { 
             if(like){
               return res.status(400).json({ error: 'Avis déja Présent !'})
@@ -20,7 +20,7 @@ exports.manageLike = (req, res, next) => {
               post_id : req.params.id,
               user_id : req.auth.userId
             };
-            Like.create(newLike)
+            Liked.create(newLike)
               .then(() => res.status(200).json({ message: 'Like ajoutée !'}))
               .catch(error => res.status(400).json({ error }));
           })

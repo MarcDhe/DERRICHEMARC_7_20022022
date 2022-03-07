@@ -2,6 +2,8 @@
 const Comment = require('../models/Comment');
 const User = require('../models/User');
 const Post = require('../models/Post');
+const Liked = require('../models/Liked');
+
 
 // // RELATION  ON TO MANY user --> comment
 User.hasMany(Comment, {as : "Comment", foreignKey : 'user_id'});
@@ -15,8 +17,12 @@ Post.belongsTo(User, { as: 'User', foreignKey: 'user_id'});
 Post.hasMany(Comment, {as : "Comment", foreignKey : 'post_id'});
 Comment.belongsTo(Post, { as: 'Post', foreignKey: 'post_id'});
 
-// A REVOIR est ellt utile egalement ?
-// RELATION  ON TO MANY post --> comment  une post plusieur id d'utilisateur via les commentaires
-// Post.hasMany(Comment, {as : "Comment", foreignKey : 'user_id'});
-// Comment.belongsTo(Post, { as: 'Post', foreignKey: 'post_user_id'});
+// // RELATION MANY TO MANY user <--> liked
+// User.belongsToMany(Liked , {as: "Liked", foreignKey: "liked_user_id"})
+// Liked.belongsToMany(User, {as: "Liked", foreignKey: "liked_user_id"})
+
+// RELATION One TO MANY post --> liked
+Post.hasMany(Liked , {as: "Liked", foreignKey:'post_id'})
+Liked.belongsTo(Post, {as: "PostLiked", foreignKey: 'post_id'})
+
 
