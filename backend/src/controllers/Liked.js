@@ -2,7 +2,8 @@ const Liked = require('../models/Liked');
 const Post = require('../models/Post')
 
 exports.manageLike = (req, res, next) => {
-  if(req.body.like !== 0 && req.body.like !==1 ){
+  if(req.body.like !== 0 && req.body.like !== 1 ){
+    console.log('tata')
    return res.status(400).json({ error });
   }
   Post.findOne({where: {id: req.params.id}})
@@ -27,7 +28,7 @@ exports.manageLike = (req, res, next) => {
           .catch(error => res.status(500).json({ error }));
         }
       if(req.body.like == 0){
-        Like.destroy({where: {post_id: req.params.id, user_id: req.auth.userId}})
+        Liked.destroy({where: {post_id: req.params.id, user_id: req.auth.userId}})
         .then(() => res.status(200).json({ message: 'Like retiré !'}))
         .catch( error => res.status(401).json({ error }));
       }

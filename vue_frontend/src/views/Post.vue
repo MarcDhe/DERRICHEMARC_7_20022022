@@ -23,7 +23,7 @@
         </div>
       </div>
         <div class="post__add">
-          <p id="like-post"><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> Like</p>
+          <p id="like-post" @click="addLike()"><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> ({{ numberOfLike }})</p>
           <p id="delete-post" @click='deletePost()' ><i class="red-color fa-solid fa-trash-can"></i> Delete </p>
           <p id="update-post" @click='updatePost()'><i class="red-color fa-regular fa-pen-to-square"></i> Update</p>
         </div>
@@ -63,6 +63,7 @@ export default {
         onePost : {},
         post_id : "",
         method: "read",
+        numberOfLike: 0
     }
   },
   methods:{
@@ -105,15 +106,26 @@ export default {
       })
       .catch(() => console.log('oops ca ne marche pas!'));
     },
-
+    //AJOUT D'UN LIKE
+    addLike(){
+      const like = 1;
+      console.log('crack crack', like)
+      fetch(`http://localhost:3000/api/like/${this.post_id}`,{
+        method: "POST",
+        headers:{
+          'Authorization' : `Bearer ${this.$store.state.userToken}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({like})
+      })
+    },
     //UPDATE POST:
     updatePost(){
       this.method = "update";
       document.getElementById('create-post__title').value = this.onePost.title;
       document.getElementById('create-post__content').value = this.onePost.content; 
-      document.getElementById('create-post__file').file = this.onePost.imageUrl;
-    }
-  
+    },
   },
   mounted(){ 
   //RECUPERATION DE L'ID DANS L'URL https://stackoverflow.com/questions/61946295/get-the-id-from-the-url-in-vuejs

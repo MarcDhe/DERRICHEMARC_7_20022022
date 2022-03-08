@@ -3,12 +3,12 @@
     <h1> Créer votre poste  </h1>
     <div class=create-post>
         <input id='create-post__title' placeholder='Titre' maxlength="125" required>  <!-- maxlenght cf model backend-->
-        <textarea id='create-post__content' placeholder='Text' maxlength="300" required></textarea>
-        <label for='create-post__file'>Ajouter une image ou une vidéo :{{this.picture}} </label>
-        <input id='create-post__file' type="file" @change="previewFile"> 
         <figure>
           <img v-if="url" :src="url" />
         </figure>
+        <textarea  id='create-post__content'  placeholder='Text' maxlength="300" required></textarea>
+        <label for='create-post__file'>Ajouter une image ou une vidéo :{{this.picture}} </label>
+        <input id='create-post__file' type="file" @change="previewFile"> 
     </div>
     <button @click='sendPost()'>Post it</button>
   </main>
@@ -37,9 +37,9 @@ export default {
       //https://stackoverflow.com/questions/48284011/how-to-post-image-with-fetch
       const fileInput = document.getElementById('create-post__file');  //https://www.tech-wiki.online/fr/how-to-upload-files-fetch.html
       const formData = new FormData(); // utilisation de .append() https://serversideup.net/file-uploads-using-fetch-api-and-vuejs/
-      formData.append('post',post) // A FAIRE ATTENTION ICI
-      formData.append('image',fileInput.files[0])// nommé image a cause de multer
-      console.log('le file est ',formData)
+      formData.append('post',post); // A FAIRE ATTENTION ICI
+      formData.append('image',fileInput.files[0]);// nommé image a cause de multer
+      console.log('le file est ',formData);
 
        fetch('http://localhost:3000/api/post',{
           method: "POST",
@@ -77,6 +77,9 @@ main{
     background-color: rgba(250, 250, 250, 0.8);
     margin: 5px 5px 10px 5px;
     padding:10px 5px 0px 0px;
+    img{
+      max-width: 100px;
+    }
 
     #create-post__title{
     border:1px solid rgb(210, 210, 210);
