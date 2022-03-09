@@ -20,12 +20,12 @@
         <div class="owner">
           <div class="redim">
             <figure>
-              <img class="owner__avatar" src="../assets/logo.png" alt="avatar"/>
+              <img class="owner__avatar" :src="post.User.avatar" alt="avatar"/>
             </figure>
           </div>
           <div class="owner__details">
-            <div class="owner__username"> username {{ post.id }}</div>
-            <div class="owner__relase">update date</div>
+            <div class="owner__username"> {{post.User.username}} {{ post.id }}</div>
+            <div class="owner__relase">posté le {{post.createdAt}}</div>
           </div>
         </div>
           <p><i class="fa-solid fa-user-plus"></i></p>
@@ -37,11 +37,13 @@
         </figure>
         <p>{{ post.content}}</p>
       </div>
+      </router-link>
       <div class="post__action">
-      <p id="like"><i class="fa-solid fa-hand-holding-heart" alt="liké"></i> Liker</p>
-      <p id="comment" alt="rara" tilte="rere"><i class="fa-solid fa-comment-dots"></i> Commenter </p>
+        <p class="unlike"><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> Like:({{post.Liked.length}})</p>
+        <p class="like" ><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> Like:({{post.Liked.length}})</p>
+        <p class="comment" alt="rara" tilte="rere"><i class="red-color fa-solid fa-comment-dots"></i> Commenter </p>
       </div>
-    </router-link>
+    
     
   </div>
 
@@ -89,7 +91,7 @@ export default {
   
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 #main{
   height: 100%;
   overflow: scroll;
@@ -172,7 +174,26 @@ export default {
   &__action{
     display: flex;
     justify-content: space-around;
+    .like, .unlike, .comment{
+      border-radius: 10px;
+      padding: 2px 10px 2px 10px;
+      &:hover{
+        background-color: #FFD6D6; 
+        cursor: pointer;
+      }
+    }
+    .like, .comment{
+      .red-color{
+      color: #8e1352;
+      }
+    }
+    .unlike{
+      .red-color{
+        color: #FD2D00;
+      }
+    }
   }
+  
 }
 
 .info{
@@ -184,22 +205,29 @@ export default {
     display: flex;
     align-items: center;
     &__avatar{
-      height: 40px;
-      width: 40px;
+      height: 45px;
+      width: 45px;
     }
     .redim{
-      height:50px;
-      width: 50px;
+      height:45px;
+      width: 45px;
       border:1px solid rgb(210, 210, 210);
       display: flex;
       justify-content: center;
       align-items: center;
-      border-radius: 30px;
+      border-radius: 25px;
       overflow: hidden;
     }
     &__details{
       padding-left: 10px;
       text-align: start;
+    }
+    &__relase{
+      color:#7A8891;
+    }
+    &__username{
+      font-weight: 600;
+      color: #3F4156;
     }
   }
 

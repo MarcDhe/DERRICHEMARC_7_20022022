@@ -25,9 +25,9 @@ exports.addPost = (req, res, next) => {
         where : {user_id: req.auth.userId}
       })
       .then((post) => res.status(200).json(post))
-      .catch(error => res.status(400).json({ error }))
+      .catch(error => res.status(404).json({ error : 'Post non trouvée !'}))
     })
-    .catch(error => res.status(500).json({ error }))
+  .catch(error => res.status(400).json({ error }))
 }
 
 exports.getOnePost = (req, res, next) => { // ATTENTION ENVOI LES MDP
@@ -40,7 +40,7 @@ exports.getOnePost = (req, res, next) => { // ATTENTION ENVOI LES MDP
 }
 
 exports.getAllPost = (req, res, next) => {
-  Post.findAll({include:[{model: Liked, as:"Liked"}]})
+  Post.findAll({include:[{model: User, as:"User"},{model: Liked, as:"Liked"}]})
   .then((posts) => res.status(200).json(posts))
   .catch(error => res.status(400).json({ error }))
 }

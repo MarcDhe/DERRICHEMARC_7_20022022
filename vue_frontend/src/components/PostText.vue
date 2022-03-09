@@ -35,10 +35,12 @@ export default {
   background-color: rgba(250, 250, 250, 0.8);
   margin: 5px 5px 10px 5px;
   padding:10px 5px 0px 0px;
-  img{
-    max-width: 100px;
+  figure{
+    margin: 0;
+    img{
+      max-width: 80%;
+    }
   }
-
   #create-post__title{
   border:1px solid rgb(210, 210, 210);
   width: 80%;

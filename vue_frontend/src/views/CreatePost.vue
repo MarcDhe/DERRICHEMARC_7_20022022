@@ -19,7 +19,6 @@ export default {
   name: 'CreatePost',
   data(){
     return{
-      tableau : [],
       url : null,
     }
   },
@@ -55,10 +54,8 @@ export default {
               return res.json();
             }
           })
-          .then((result) => {
-            this.tableau = result;
-            console.log("le resultat est :", this.tableau)
-            this.$router.push('/accueil')//NOUS FAIT ALLER SUR L"ACCUEIL https://router.vuejs.org/guide/essentials/navigation.html#navigate-to-a-different-location
+          .then((result) => { // NOUS RETOURNE L'ID DU NOUVEAU POST
+            this.$router.push(`/post/${result.new_post_id}`)
           })
     }
   }

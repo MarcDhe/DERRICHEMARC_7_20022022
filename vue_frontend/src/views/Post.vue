@@ -1,13 +1,14 @@
 <template>
   <main>
     <div class="post">
-      <div v-if="this.method === 'update'">
+      <div v-show="this.method === 'update'">
         <PostText/>
-        <button @click="sendUpdatePost()">Envoyez</button>
+        <button @click="sendUpdatePost()">Envoyer</button>
+        <button @click="cancelUpdate()">Annuler</button>
       </div>
       <div v-if="this.method === 'read'">
         
-        <!-- <div class="owner">   FAIT PLANTER LA PAGE
+        <!-- <div class="owner"> 
           <figure>
             <img class="owner__avatar" v-bind:src="onePost.User.avatar" alt="avatar"/>
           </figure>
@@ -17,7 +18,7 @@
           </div>
         </div>  -->
 
-        <h1>{{ onePost.tilte }} :</h1>
+        <h1>{{ $store.state.userProfil.id}} :</h1>
         <div class="post__content">
           <figure class="post__file">
             <img :src="onePost.imageUrl"/>
@@ -29,8 +30,8 @@
         <div class="post__add">
           <p v-if="this.likeStatus == false" id="like-post" @click="addLike()"><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> ({{ numberOfLike }})</p>
           <p v-if="this.likeStatus == true" id="unlike-post" @click="unLike()"><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> ({{ numberOfLike }})</p>
-          <p id="delete-post" @click='deletePost()' ><i class="red-color fa-solid fa-trash-can"></i> Delete </p>
-          <p id="update-post" @click='updatePost()'><i class="red-color fa-regular fa-pen-to-square"></i> Update</p>
+          <p v-if="this.postOwner == true" id="delete-post" @click='deletePost()' ><i class="red-color fa-solid fa-trash-can"></i> Delete </p>
+          <p v-if="this.postOwner == true" id="update-post" @click='updatePost(this.updateOne)'><i class="red-color fa-regular fa-pen-to-square"></i> Update</p>
         </div>
         <div class="new-comment">
           <textarea id='new-comment__content' placeholder='Ecrivez votre commentaire' maxlength="300" required></textarea>
@@ -66,14 +67,28 @@ export default {
   },
   data(){
     return {
+        postOwner: null,
+        commentOwner: null,
         onePost : {},
         post_id : "",
         method: "read",
         likeStatus: false,
-        numberOfLike: 0
+        numberOfLike: 0,
     }
   },
   methods:{
+    //CHECK IF USER IS POST OWNER / COMMENT Owner
+    checkPostOwner(){
+      if(this.$store.state.userProfil.id == this.onePost.user_id){
+        this.postOwner = true;
+        console.log('et les resultat est :', this.postOwner)
+      }
+    },
+      checkCommentOwner(data){
+      if(this.$store.state.userProfil.id == data.Comment.user_id){
+        this.commentOwner = true;
+      }
+    },
     //ENVOI DU COMMENTAIRE A L'API
     sendComment(){
       let content = document.getElementById('new-comment__content').value;
@@ -99,6 +114,11 @@ export default {
     },
     //SUPPRESION DU POST:
     deletePost(){
+      //http://www.fobec.com/tuto/910/afficher-popup-message-confirmation-invite-saisie.html
+      const answer = confirm("Voulez-vous vraiment supprimer votre poste ?")
+      if(answer == false){
+        return 0;
+      }
       fetch(`http://localhost:3000/api/post/${this.post_id}`,{
         method: "DELETE",
         headers:{
@@ -156,11 +176,15 @@ export default {
         }
       }
     },
+    // CANCEL UPDATE:
+    cancelUpdate(){
+      this.method="read";
+    },
     //UPDATE POST:
     updatePost(){
       this.method = "update";
       document.getElementById('create-post__title').value = this.onePost.title;
-      document.getElementById('create-post__content').value = this.onePost.content; 
+      document.getElementById('create-post__content').value = this.onePost.content;
     },
     //SEND UPDATE POST CONTENT
     sendUpdatePost(){
@@ -192,6 +216,8 @@ export default {
           .then((result) => {
             this.tableau = result;
             console.log("le resultat est :", this.tableau)
+            // ATTENTION NON VIABLE DECONNECTE
+            // this.$router.go() // RECHARGE LA PAGE MAIS DECONNECTE :x
           })
       }
  
@@ -208,6 +234,7 @@ export default {
       this.onePost = data;
       this.countLike(data);
       this.checkUserLike(data);
+      this.checkPostOwner();
       })
     .catch(() => console.log("oops ca ne marche pas!"))
   },
@@ -215,7 +242,7 @@ export default {
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 main{
   height: 100%;
   overflow: scroll;

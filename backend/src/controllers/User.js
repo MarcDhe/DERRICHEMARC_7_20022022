@@ -49,7 +49,7 @@ exports.login = (req, res, next) => {
 }
 
 exports.foundUser = ( req, res, next)=>{  
-  User.findOne({id : req.auth.userId}) // attention ici modif pour test
+  User.findOne({where:{id : req.auth.userId}}) // attention ici modif pour test
     .then((user)=> {
       const userInfo = {  // pour ne pas transmetter le mot de passe
         id : user.id,
