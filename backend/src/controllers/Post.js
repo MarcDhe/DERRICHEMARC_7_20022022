@@ -1,24 +1,10 @@
 const Post = require('../models/Post');
 const User = require('../models/User');
 const Comment = require('../models/Comment')
-
-
-
-const fs = require('fs'); // package fs ( FileSysteme)  systeme de fichier
 const Liked = require('../models/Liked');
 
-// ESSAI PRENDRE LE DERNIERE POST CREE
-exports.lastId = (req, res, next) =>{ 
-  console.log("huit")
-  console.log(req.auth.userId)
-  // NATIVE
-  // sequelize.query(`SELECT * FROM POST WHERE ID=(SELECT MAX(ID) FROM Post WHERE user_id = ${req.auth.userId})`)
-  Post.findOne({    
-    attributes: [[sequelize.fn('max', sequelize.col('id')), 'MaxId']],
-    where : {user_id: req.auth.userId}})
+const fs = require('fs'); // package fs ( FileSysteme)  systeme de fichier
 
-  .then((post) => res.status(200).json(post))
-}
 
 exports.addPost = (req, res, next) => {
   console.log('limage est ', req.file)
@@ -32,8 +18,16 @@ exports.addPost = (req, res, next) => {
     user_id: req.auth.userId
   }
   Post.create(postObject)
-    .then(() => res.status(200).json({ message: ' Poste crée ! '}))
-    .catch(error => res.status(400).json({ error }))
+    .then(() => {
+      //NOUS RENVOIS LE DERNIER ID DE POST CREE DE L'UTILISATEUR ( CELUI TOUT JUSTE CREE)
+      Post.findOne({    
+        attributes: [[sequelize.fn('max', sequelize.col('id')), 'new_post_id']],
+        where : {user_id: req.auth.userId}
+      })
+      .then((post) => res.status(200).json(post))
+      .catch(error => res.status(400).json({ error }))
+    })
+    .catch(error => res.status(500).json({ error }))
 }
 
 exports.getOnePost = (req, res, next) => { // ATTENTION ENVOI LES MDP
@@ -103,5 +97,19 @@ exports.deleteOnePost = (req, res, next) => {
     })
     .catch(error => res.status(500).json({ error })); 
 }
+
+
+// // ESSAI PRENDRE LE DERNIERE POST CREE
+// exports.lastId = (req, res, next) =>{ 
+//   console.log("huit")
+//   console.log(req.auth.userId)
+//   // NATIVE
+//   // sequelize.query(`SELECT * FROM POST WHERE ID=(SELECT MAX(ID) FROM Post WHERE user_id = ${req.auth.userId})`)
+//   Post.findOne({    
+//     attributes: [[sequelize.fn('max', sequelize.col('id')), 'MaxId']],
+//     where : {user_id: req.auth.userId}})
+//   .then((post) => res.status(200).json(post))
+//   .catch(error => res.status(400).json({ error }))
+// }
 
 

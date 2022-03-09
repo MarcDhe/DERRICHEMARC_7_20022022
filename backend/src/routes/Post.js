@@ -10,10 +10,10 @@ router.get('/', postCtrl.getAllPost);
 router.get('/:id', multer, postCtrl.getOnePost);
 router.post('/:id', auth, multer, postCtrl.updateOne);
 router.delete('/:id', auth, postCtrl.deleteOnePost);
-router.get('/lastId/try', auth, postCtrl.lastId);
 
+// router.get('/lastId/try', auth, postCtrl.lastId);
 // router.post('/',  auth, multer, postCtrl.tryUpFile)
-
 // router.post('/:id/like', auth, postCtrl.addLike)
+
 
 module.exports = router;
