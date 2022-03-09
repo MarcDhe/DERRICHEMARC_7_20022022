@@ -13,7 +13,8 @@
             <p class="owner__details__updatedAt"> posté le {{ onePost.updatedAt}}</p>
           </div>
         </div>  -->
-        <h1>{{ onePost.tilte}} :</h1>
+
+        <h1>{{ onePost.tilte }} :</h1>
         <div class="post__content">
           <figure class="post__file">
             <img :src="onePost.imageUrl"/>
@@ -23,7 +24,8 @@
         </div>
       </div>
         <div class="post__add">
-          <p id="like-post" @click="addLike()"><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> ({{ numberOfLike }})</p>
+          <p v-if="this.likeStatus == false" id="like-post" @click="addLike()"><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> ({{ numberOfLike }})</p>
+          <p v-if="this.likeStatus == true" id="unlike-post" @click="unLike()"><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> ({{ numberOfLike }})</p>
           <p id="delete-post" @click='deletePost()' ><i class="red-color fa-solid fa-trash-can"></i> Delete </p>
           <p id="update-post" @click='updatePost()'><i class="red-color fa-regular fa-pen-to-square"></i> Update</p>
         </div>
@@ -63,6 +65,7 @@ export default {
         onePost : {},
         post_id : "",
         method: "read",
+        likeStatus: false,
         numberOfLike: 0
     }
   },
@@ -90,7 +93,6 @@ export default {
         })
         .catch(() => console.log('oops ca ne marche pas!'));
     },
-
     //SUPPRESION DU POST:
     deletePost(){
       fetch(`http://localhost:3000/api/post/${this.post_id}`,{
@@ -101,7 +103,7 @@ export default {
       })
       .then((res) => {
           if(res.ok){
-            return res.json();
+            this.$router.push('/accueil')//NOUS FAIT ALLER SUR L"ACCUEIL https://router.vuejs.org/guide/essentials/navigation.html#navigate-to-a-different-location
           }
       })
       .catch(() => console.log('oops ca ne marche pas!'));
@@ -109,7 +111,9 @@ export default {
     //AJOUT D'UN LIKE
     addLike(){
       const like = 1;
-      console.log('crack crack', like)
+      this.numberOfLike++;
+      this.likeStatus = true;
+      console.log('valeur like', like)
       fetch(`http://localhost:3000/api/like/${this.post_id}`,{
         method: "POST",
         headers:{
@@ -119,6 +123,34 @@ export default {
         },
         body: JSON.stringify({like})
       })
+    },
+    //RETIRER UN LIKE
+      unLike(){
+      const like = 0;
+      this.numberOfLike--;
+      this.likeStatus = false;
+      console.log('valeur like', like)
+      fetch(`http://localhost:3000/api/like/${this.post_id}`,{
+        method: "POST",
+        headers:{
+          'Authorization' : `Bearer ${this.$store.state.userToken}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({like})
+      })
+    },
+    // COUNT NUMBER OF LIKE  
+    countLike(data){
+      this.numberOfLike = data.Liked.length 
+    },
+    // CHECK IF USER LIKE ALREADY OR NOT
+    checkUserLike(data){
+      for(let i in data.Liked){
+        if(data.Liked[i].user_id == this.$store.state.userProfil.id){
+          this.likeStatus = true;
+        }
+      }
     },
     //UPDATE POST:
     updatePost(){
@@ -132,15 +164,16 @@ export default {
   console.log("l'id d'url est: ", this.$route.params.id );
   this.post_id = this.$route.params.id;
 
-  fetch(`http://localhost:3000/api/post/${this.post_id}`) // plus tard mettre autre chose
+
+    fetch(`http://localhost:3000/api/post/${this.post_id}`) // plus tard mettre autre chose
     .then(res => res.json())
-    .then(data => this.onePost = data)
+    .then((data) => { 
+      this.onePost = data;
+      this.countLike(data);
+      this.checkUserLike(data);
+      })
     .catch(() => console.log("oops ca ne marche pas!"))
-  }
-  
-  //VOIR POUR FAIRE UN FETCH QUI RECUPERE AUSSI LE NOM DU PROPRIETAIRE
-
-
+  },
 }
 
 </script>
@@ -265,15 +298,26 @@ main{
     }
   }
 }
-.red-color{
-  color: #8e1352;
+#unlike-post{
+  border-radius: 10px;
+  padding: 2px 10px 2px 10px;
+    &:hover{
+    background-color: #FFD6D6; 
+    cursor: pointer;
+  }
+   .red-color{
+    color: #FD2D00;
+  }
 }
 #delete-post, #update-post, #like-post{
-    border-radius: 10px;
-    padding: 2px 10px 2px 10px;
+  border-radius: 10px;
+  padding: 2px 10px 2px 10px;
   &:hover{
     background-color: #FFD6D6; 
     cursor: pointer;
+  }
+  .red-color{
+    color: #8e1352;
   }
 }
 
