@@ -58,6 +58,7 @@ export default {
           .then((result) => {
             this.tableau = result;
             console.log("le resultat est :", this.tableau)
+            this.$router.push('/accueil')//NOUS FAIT ALLER SUR L"ACCUEIL https://router.vuejs.org/guide/essentials/navigation.html#navigate-to-a-different-location
           })
     }
   }

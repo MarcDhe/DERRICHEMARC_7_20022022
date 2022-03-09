@@ -1,7 +1,10 @@
 <template>
   <main>
     <div class="post">
-      <div v-if="this.method === 'update'"><CreatePost/></div>
+      <div v-if="this.method === 'update'">
+        <PostText/>
+        <button @click="sendUpdatePost()">Envoyez</button>
+      </div>
       <div v-if="this.method === 'read'">
         
         <!-- <div class="owner">   FAIT PLANTER LA PAGE
@@ -53,12 +56,13 @@
 </template>
 
 <script>
-  import CreatePost from './CreatePost.vue';
+  import PostText from '@/components/PostText.vue';
+
 
 export default {
   name:'Post',
   components:{
-    CreatePost
+    PostText
   },
   data(){
     return {
@@ -158,6 +162,39 @@ export default {
       document.getElementById('create-post__title').value = this.onePost.title;
       document.getElementById('create-post__content').value = this.onePost.content; 
     },
+    //SEND UPDATE POST CONTENT
+    sendUpdatePost(){
+      const title = document.getElementById('create-post__title').value;
+      const content = document.getElementById('create-post__content').value; 
+      const post = JSON.stringify({title, content})
+      console.log("strigify est", post)
+      //https://stackoverflow.com/questions/48284011/how-to-post-image-with-fetch
+      const fileInput = document.getElementById('create-post__file');  //https://www.tech-wiki.online/fr/how-to-upload-files-fetch.html
+      const formData = new FormData(); // utilisation de .append() https://serversideup.net/file-uploads-using-fetch-api-and-vuejs/
+      formData.append('post',post); // A FAIRE ATTENTION ICI
+      formData.append('image',fileInput.files[0]);// nommé image a cause de multer
+      console.log('le file est ',formData);
+
+       fetch(`http://localhost:3000/api/post/${this.post_id}`,{
+          method: "POST",
+          headers: {
+            'Authorization' : `Bearer ${this.$store.state.userToken}`,  // attention au majuscule
+            'Accept': 'application/json', 
+            // 'Content-Type': 'multipart/form-data' // ATTENTION ICI CHANGEMENT EN FORM-DATA
+          },
+          body: formData
+        })
+          .then(function(res){
+            if(res.ok){
+              return res.json();
+            }
+          })
+          .then((result) => {
+            this.tableau = result;
+            console.log("le resultat est :", this.tableau)
+          })
+      }
+ 
   },
   mounted(){ 
   //RECUPERATION DE L'ID DANS L'URL https://stackoverflow.com/questions/61946295/get-the-id-from-the-url-in-vuejs

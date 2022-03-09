@@ -2,9 +2,23 @@ const Post = require('../models/Post');
 const User = require('../models/User');
 const Comment = require('../models/Comment')
 
+
+
 const fs = require('fs'); // package fs ( FileSysteme)  systeme de fichier
 const Liked = require('../models/Liked');
 
+// ESSAI PRENDRE LE DERNIERE POST CREE
+exports.lastId = (req, res, next) =>{ 
+  console.log("huit")
+  console.log(req.auth.userId)
+  // NATIVE
+  // sequelize.query(`SELECT * FROM POST WHERE ID=(SELECT MAX(ID) FROM Post WHERE user_id = ${req.auth.userId})`)
+  Post.findOne({    
+    attributes: [[sequelize.fn('max', sequelize.col('id')), 'MaxId']],
+    where : {user_id: req.auth.userId}})
+
+  .then((post) => res.status(200).json(post))
+}
 
 exports.addPost = (req, res, next) => {
   console.log('limage est ', req.file)
