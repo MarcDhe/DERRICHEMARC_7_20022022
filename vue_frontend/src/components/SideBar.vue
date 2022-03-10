@@ -18,7 +18,6 @@
       </router-link>
       <!-- <router-link to="/login">Login</router-link> 
       <router-link to="/signup">Signup</router-link>  -->
-      <p>Ici metter petite icone <i class="fa-solid fa-ellipsis"></i></p>
     </div>
   </nav>
   
@@ -59,8 +58,7 @@ export default {
   }
 
   #make_post{
-      border: 1px solid red;
-
+    border: 1px solid red;
     background-color: #FD2D00;
     color: white;
     text-decoration: none;
@@ -69,7 +67,7 @@ export default {
     text-align: center;
     font-size: 12px;
     &:hover{
-    background-color: darken($color: #FD2D00, $amount: 5%);
+    background-color: darken($color: #FD2D00, $amount: 10%);
     }
   }
 
