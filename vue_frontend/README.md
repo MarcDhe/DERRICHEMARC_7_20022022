@@ -1,5 +1,6 @@
+# -------
 # backend
-
+# -------
 npm install
 
 # create database
@@ -10,7 +11,9 @@ sequelize db:migrate
 
 nodemon server
 
+# -------
 # vue_frontend
+# -------
 
 ## Project setup
 ```
