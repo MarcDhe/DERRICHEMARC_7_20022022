@@ -18,7 +18,13 @@ module.exports = {
         type: Sequelize.STRING(65),
         allowNull: false,
       },
-      avatar:  Sequelize.STRING(),
+      avatar: Sequelize.STRING(),
+      firstname: Sequelize.STRING(65),
+      lastname: Sequelize.STRING(65),
+      email: {
+        type: Sequelize.STRING(65),
+        unique: true
+      },
       createdAt: Sequelize.DATE(),
       
     }); //https://stackoverflow.com/questions/21114499/how-to-make-sequelize-use-singular-table-names

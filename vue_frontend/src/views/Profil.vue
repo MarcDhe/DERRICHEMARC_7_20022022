@@ -42,7 +42,9 @@ export default {
 <style lang="scss" scoped>
 .banner{
   height: 100px;
-  background-color: greenyellow;
+  background-image: url('../assets/societe.png');
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .profil{
