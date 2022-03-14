@@ -8,7 +8,7 @@ const multerAvatar = require('../middleware/multer-avatar');
 
 router.post("/signup", userCtrl.signUp);
 router.post('/login', userCtrl.login);
-router.get('/user', auth, userCtrl.foundUser); // attention remettre la route des auth 
+router.get('/user', auth, userCtrl.foundUser);  
 router.post('/user/avatar', auth, multerAvatar, userCtrl.updateAvatar);
 router.post('/user/password', auth, userCtrl.changePassword)
 router.delete('/user/delete', auth, userCtrl.deleteUser);

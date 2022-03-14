@@ -12,25 +12,24 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 
 export default {
   name:'NavBar',
-    computed:{
-    ...mapState(["userProfil","userToken"]) // attention met en read only ne peut etre modifié sans le 'lien' complet
+  data(){
+    return {
+    }
   },
   methods:{
     log(){
-      console.log('userProfil:', this.userProfil,'usertoken', this.userToken)
-      if(this.userToken === ""){ 
+      if(localStorage.user == undefined){ 
+        console.log("crac")
         window.location = '/Login' // ici on peu l'utilisé vu que l'on sen fiche si celui ci est ou non sauvegarder 
       }else{
-        this.$store.state.userProfil = {}; // double mais pour etre sur que tout soit bien supprimé
-        this.$store.state.userToken = "";
+        localStorage.clear();
         console.log('you are logout');
         window.location = '/Login' // ici on peu l'utilisé vu que l'on sen fiche si celui ci est ou non sauvegarder 
       }
-    }
+    },
   },
 
 

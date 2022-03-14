@@ -6,7 +6,8 @@
         <input id='username' placeholder= "Username" required>
         <input id='password' type='password'  placeholder= "Password" required>
       </form>
-      <button @click='sendForm()'>Login to your Account</button>
+      <button @click='login()'>Login to your Account</button>
+      <p v-if='error' class='red-text'>{{error}}</p>
       <router-link class="signup-link" to="/signUp" > 
         <p>Still not member ? <strong>Signup</strong></p>
       </router-link>
@@ -22,15 +23,25 @@ export default {
   name: 'Login',
   data(){
     return{
-      tableau : []
+      tableau : [],
+      error: null,
     }
   },
   methods:{
-      sendForm(){ /// faire marché event.preventDefault() ??
-        let username = document.getElementById('username').value;
-        let passwd = document.getElementById('password').value;
-        console.log(JSON.stringify({username, passwd}));
-        fetch('http://localhost:3000/api/auth/login',{
+    //LOG LE USER ET SAUVEGARDE SUR LOCALSTORAGE
+    async login(){
+      const user = await this.getUserDetails();
+      if(user.error){
+        return this.error = user.error;
+      }
+      localStorage.setItem('user', JSON.stringify(user));
+      this.$router.push('/accueil');
+    },
+    //RECUPRATION DES INFOMATION DU USER
+    async getUserDetails(){
+      let username = document.getElementById('username').value;
+      let passwd = document.getElementById('password').value;
+       return fetch('http://localhost:3000/api/auth/login',{
           method: "POST",
           headers: {
             'Accept': 'application/json', 
@@ -38,20 +49,11 @@ export default {
           },
           body: JSON.stringify({username, passwd})
         })
-          .then(function(res){ 
-            if(res.ok){
-              console.log('test')
-              return res.json();
-            }
-          })
-          .then((res)  => {  // attention au context function ou => si pâs => plus de contexwt this
-            console.log('le token es', res.token)
-            this.$store.state.userToken = res.token;
-            console.log("le resultat est assigné :", this.$store.state.userToken)
-            this.$router.push('/accueil')//NOUS FAIT ALLER SUR L"ACCUEIL https://router.vuejs.org/guide/essentials/navigation.html#navigate-to-a-different-location
-          })
-          .catch(() => console.log("oops ca ne marche pas!"))
-    }
+        .then(res => {
+          return res.json();
+        })
+        .catch(() => console.log('Oups, je ne sais pas non plus ce qu il se passe!'));
+    },
   }
 }
 
@@ -109,5 +111,8 @@ export default {
     border: 0px
    }
  }
+   .red-text{
+    color: red;
+  }
 
 </style>

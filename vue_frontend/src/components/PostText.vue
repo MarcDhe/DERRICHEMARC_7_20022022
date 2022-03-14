@@ -1,10 +1,10 @@
 <template>
       <div class=create-post>
-        <input id='create-post__title' placeholder='Titre' maxlength="125" required>  <!-- maxlenght cf model backend-->
+        <input id='create-post__title' :value="title" placeholder='Titre' maxlength="125" required>
         <figure>
           <img v-if="url" :src="url" />
         </figure>
-        <textarea  id='create-post__content'  placeholder='Text' maxlength="300" required></textarea>
+        <textarea  id='create-post__content' :value="content" placeholder='Text' maxlength="300" required></textarea>
         <label for='create-post__file'>Ajouter une image ou une vidéo :{{this.picture}} </label>
         <input id='create-post__file' type="file" @change="previewFile"> 
     </div>
@@ -13,9 +13,14 @@
 <script>
 export default {
   name:'PostText',
+  props:[ // attention notation props dans le JS
+    "imageUrl",
+    "title",
+    "content",
+  ],
   data(){
     return{
-      url: null
+      url : this.imageUrl // La prop est seulement utilisée pour passer une valeur initiale ;
     }
   },
     methods:{
@@ -24,6 +29,8 @@ export default {
       const file = e.target.files[0];
       this.url = URL.createObjectURL(file);
     },
+    mounted(){
+    }
   }
 }
 </script>

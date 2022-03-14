@@ -2,10 +2,10 @@
   <main id='profile'>
   <div class="banner">Banniere</div>
     <div class="user">
-      <img class="user__avatar" v-bind:src="userProfil.avatar" />
+      <img class="user__avatar" v-bind:src="user?.avatar" />
       <div class="user__details">
-        <h1 class="username">{{userProfil.username}}</h1> 
-        <p class="create-at">Membre depuis le: {{userProfil.createdAt}}</p>
+        <h1 class="username">{{user?.username}}</h1> 
+        <p class="create-at">Membre depuis le: {{user?.createdAt}}</p>
       </div>
     </div>
   <div class="container">
@@ -47,13 +47,17 @@ export default {
 
   data(){
     return{
+      user : null,
     }
   },
   computed: {
         ...mapState(["userProfil"])
     },
   mounted(){
-
+    if(localStorage.user == undefined){
+      this.$router.push(`/login`);
+    }
+    this.user = JSON.parse(localStorage.getItem('user'));
   }
 }
 

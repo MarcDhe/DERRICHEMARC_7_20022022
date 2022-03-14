@@ -7,6 +7,11 @@ const fs = require('fs');
 
 
 exports.signUp = (req, res, next) => {
+  User.findOne({where: {username: req.body.username}})
+    .then(user => {
+    if(user){
+      return res.status(400).json({ error: 'Username déjà utilisé !'})
+    }
   bcrypt.hash(req.body.passwd, 10) // renvoi une promesse
     .then(hash=> {
        const user = new User ({   // ATENTION  PROBLEME VEUT ABSOLUMENT CR2E UNE DATE updated created
@@ -17,6 +22,7 @@ exports.signUp = (req, res, next) => {
         .then(() => res.status(201).json({ message : 'Utilisateur crée !'}))
         .catch(error => res.status(400).json({ error }));
     })
+  })
   .catch( error => res.status(500).json({ error }))
 }
 
@@ -37,7 +43,10 @@ exports.login = (req, res, next) => {
             return res.status(401).json({ error : 'Mot de passe incorect !'});
           }
           res.status(200).json({
-            userId: user.id,
+            id : user.id,
+            username : user.username,
+            avatar : user.avatar,
+            createdAt : user.createdAt,
             token: jwt.sign( // CREATION DU TOKEN
               {userId: user.id}, // user du token
               `TEST_TOKEN`, // A MODIF AVANT PRODUCTION
@@ -49,15 +58,16 @@ exports.login = (req, res, next) => {
     })
     .catch(error => res.status(500).json({ error }));
 }
-
+// POUR L INSTANT PLUS D'UTILITE renvoyer par le login
 exports.foundUser = ( req, res, next)=>{  
+  console.log('ok')
   User.findOne({where:{id : req.auth.userId}}) // attention ici modif pour test
     .then((user) => {
       const userInfo = {  // pour ne pas transmetter le mot de passe
         id : user.id,
         username : user.username,
         avatar : user.avatar,
-        createdAt : user.createdAt
+        createdAt : user.createdAt,
       }
       res.status(200).json(userInfo)})
 }
@@ -77,8 +87,8 @@ exports.updateAvatar = (req, res, next ) => {
         console.log('File is deleted ')  // voir pour remove plus tard une fois essay concluent
         })
     }
-    user.update(userNewAvatar) // ATTENTION ICI ORDRE DIFFERENT DE MONGODB
-        .then(() => res.status(200).json({ message: 'Avatar modifié!'}))
+    user.update(userNewAvatar) // RETOURNE NOTRE NOUVELLE AVATAR
+        .then(() => res.status(200).json(userNewAvatar))
         .catch(error => res.status(400).json({ error }));
   })
   .catch(error => res.status(400).json({ error }))

@@ -1,25 +1,24 @@
 <template>
   <main>
     <h1> Créer votre poste  </h1>
-    <div class=create-post>
-        <input id='create-post__title' placeholder='Titre' maxlength="125" required>  <!-- maxlenght cf model backend-->
-        <figure>
-          <img v-if="url" :src="url" />
-        </figure>
-        <textarea  id='create-post__content'  placeholder='Text' maxlength="300" required></textarea>
-        <label for='create-post__file'>Ajouter une image ou une vidéo :{{this.picture}} </label>
-        <input id='create-post__file' type="file" @change="previewFile"> 
-    </div>
+      <PostText/>
     <button @click='sendPost()'>Post it</button>
   </main>
 </template>
 
 <script>
+import PostText from '@/components/PostText.vue';
+
 export default {
+
   name: 'CreatePost',
+  components: {
+    PostText,
+  },
   data(){
     return{
       url : null,
+      user: null
     }
   },
   methods:{
@@ -43,7 +42,7 @@ export default {
        fetch('http://localhost:3000/api/post',{
           method: "POST",
           headers: {
-            'Authorization' : `Bearer ${this.$store.state.userToken}`,  // attention au majuscule
+            'Authorization' : `Bearer ${this.user.token}`,  // attention au majuscule
             'Accept': 'application/json', 
             // 'Content-Type': 'multipart/form-data' // ATTENTION ICI CHANGEMENT EN FORM-DATA
           },
@@ -58,6 +57,13 @@ export default {
             this.$router.push(`/post/${result.new_post_id}`)
           })
     }
+  },
+  mounted(){
+     if(localStorage.user == undefined){
+      this.$router.push(`/login`);
+    }
+    this.user = JSON.parse(localStorage.getItem('user'));
+
   }
 }
 </script>

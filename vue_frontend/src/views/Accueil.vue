@@ -1,21 +1,22 @@
 <template>
 <div id="main">
   <h1>Accueil</h1>
+  <!-- <p>{{ this.try }}</p> -->
   <div class="move-to-post">
     <div class="user">
       <figure>
-        <img class="user__avatar" v-bind:src="$store.state.userProfil.avatar"/>
+        <img class="user__avatar" v-bind:src="user?.avatar"/>
       </figure>
-      <p>{{$store.state.userProfil.username}}</p>
+      <p>{{user?.username}}</p>
     </div>
     <router-link to="/createPost"> <!-- renvoi vers la creation de post -->
       <input class="input-post" type="text" placeholder="Écrivez votre post."/>
     </router-link>
   </div>  
   <div class="red-block"></div>
-  <div class="post" v-for="post in posts" :key="post.content">
-    <!-- <router-link class="unlink" v-bind:to="{path:'post', params: { id: post.id }}"> attention a revoir ecriture non bonne   -->
-    <router-link class="unlink" v-bind:to="`/post/${post.id}`">   <!-- EN ATTENDANT DAVOIR LA BONNE SOLUTION--> 
+  <div class="post" v-for="post in posts " :key="post.content">
+    <!-- <router-link class="unlink" :to={name:'post', params: { id: post.id }}> attention a revoir ecriture non bonne   -->
+    <router-link class="unlink" v-bind:to="`/post/${post.id}`">  <!-- EN ATTENDANT DAVOIR LA BONNE SOLUTION  -->
       <div class="info">
         <div class="owner">
           <div class="redim">
@@ -35,7 +36,7 @@
          <figure>
           <img :src='post.imageUrl' />
         </figure>
-        <p>{{ post.content}}</p>
+        <p>{{post.content}}</p>
       </div>
       </router-link>
       <div class="post__action">
@@ -53,14 +54,13 @@
 </template>
 
 <script>
-// import axios from 'axios';
 
 export default {
   name:"Accueil",
   data(){
     return {
         posts : [],
-        
+        user: null,
     }
   },
   methods:{
@@ -70,22 +70,16 @@ export default {
   },
 
   mounted(){ // pour executé la methods au chargement de la page
-      fetch('http://localhost:3000/api/auth/user',{
-        method: "GET",
-        headers: { 'Authorization' : `Bearer ${this.$store.state.userToken}`}
-      })
-      .then((res) => res.json())
-      .then(result => {
-        this.$store.state.userProfil = result 
-      })
-      .catch(() => console.log("oops ca ne marche pas!"))
+    if(localStorage.user == undefined){
+      this.$router.push(`/login`);
+    }
+    this.user = JSON.parse(localStorage.getItem('user'));
 
     fetch('http://localhost:3000/api/post')
       .then(res => res.json())
-      .then(result => this.posts = result)
+      .then(result => { this.posts = result })
       .catch(() => console.log("oops ca ne marche pas!"))
-
-        console.log("sur app l'utilisateur est: ", this.$store.state.userProfil.token)
+    console.log("sur app l'utilisateur est: ", this.user.token)
     }
   }
   

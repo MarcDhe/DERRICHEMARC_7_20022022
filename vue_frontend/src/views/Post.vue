@@ -1,30 +1,31 @@
 <template>
   <main>
     <div class="post">
-      <div v-show="this.method === 'update'">
-        <PostText/>
+      <div v-if="this.method === 'update'">
+        <PostText 
+        :imageUrl=this.onePost.imageUrl
+        :title=this.onePost.title
+        :content=this.onePost.content
+        />
         <button @click="sendUpdatePost()">Envoyer</button>
         <button @click="cancelUpdate()">Annuler</button>
       </div>
       <div v-if="this.method === 'read'">
-        
-        <!-- <div class="owner"> 
+        <div class="owner"> 
           <figure>
-            <img class="owner__avatar" v-bind:src="onePost.User.avatar" alt="avatar"/>
+            <img class="owner__avatar" v-bind:src="onePost.User?.avatar" alt="avatar"/>
           </figure>
           <div class="owner__details">
-            <p class="owner__details__username"> {{ onePost.User.username }}</p>
-            <p class="owner__details__updatedAt"> posté le {{ onePost.updatedAt}}</p>
+            <p class="owner__details__username"> {{ onePost.User?.username }}</p>
+            <p class="owner__details__updatedAt"> posté le {{ onePost?.updatedAt}}</p>
           </div>
-        </div>  -->
-
-        <h1>{{ $store.state.userProfil.id}} :</h1>
+        </div> 
+        <h1>{{ onePost.title}} :</h1>
         <div class="post__content">
-          <figure class="post__file">
+          <figure v-if="onePost.imageUrl" class="post__file">
             <img :src="onePost.imageUrl"/>
           </figure>
           <p>{{onePost.content}}</p>
-          <p>{{onePost.User}}</p>
         </div>
       </div>
         <div class="post__add">
@@ -67,6 +68,7 @@ export default {
   },
   data(){
     return {
+        user: null,
         postOwner: null,
         commentOwner: null,
         onePost : {},
@@ -79,13 +81,13 @@ export default {
   methods:{
     //CHECK IF USER IS POST OWNER / COMMENT Owner
     checkPostOwner(){
-      if(this.$store.state.userProfil.id == this.onePost.user_id){
+      if(this.user.id == this.onePost.user_id){
         this.postOwner = true;
         console.log('et les resultat est :', this.postOwner)
       }
     },
       checkCommentOwner(data){
-      if(this.$store.state.userProfil.id == data.Comment.user_id){
+      if(this.user.id == data.Comment.user_id){
         this.commentOwner = true;
       }
     },
@@ -99,7 +101,7 @@ export default {
       fetch(`http://localhost:3000/api/comment/${this.post_id}`,{
         method: "POST",
         headers: {
-          'Authorization' : `Bearer ${this.$store.state.userToken}`,  // attention au majuscule
+          'Authorization' : `Bearer ${this.user.token}`,  // attention au majuscule
           'Accept': 'application/json', 
           'Content-Type': 'application/json' 
         },
@@ -122,7 +124,7 @@ export default {
       fetch(`http://localhost:3000/api/post/${this.post_id}`,{
         method: "DELETE",
         headers:{
-          'Authorization' : `Bearer ${this.$store.state.userToken}`,  // attention au majuscule
+          'Authorization' : `Bearer ${this.user.token}`,  // attention au majuscule
         }
       })
       .then((res) => {
@@ -141,7 +143,7 @@ export default {
       fetch(`http://localhost:3000/api/like/${this.post_id}`,{
         method: "POST",
         headers:{
-          'Authorization' : `Bearer ${this.$store.state.userToken}`,
+          'Authorization' : `Bearer ${this.user.token}`,
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
@@ -157,7 +159,7 @@ export default {
       fetch(`http://localhost:3000/api/like/${this.post_id}`,{
         method: "POST",
         headers:{
-          'Authorization' : `Bearer ${this.$store.state.userToken}`,
+          'Authorization' : `Bearer ${this.user.token}`,
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
@@ -171,7 +173,7 @@ export default {
     // CHECK IF USER LIKE ALREADY OR NOT
     checkUserLike(data){
       for(let i in data.Liked){
-        if(data.Liked[i].user_id == this.$store.state.userProfil.id){
+        if(data.Liked[i].user_id == this.user.id){
           this.likeStatus = true;
         }
       }
@@ -183,8 +185,6 @@ export default {
     //UPDATE POST:
     updatePost(){
       this.method = "update";
-      document.getElementById('create-post__title').value = this.onePost.title;
-      document.getElementById('create-post__content').value = this.onePost.content;
     },
     //SEND UPDATE POST CONTENT
     sendUpdatePost(){
@@ -202,7 +202,7 @@ export default {
        fetch(`http://localhost:3000/api/post/${this.post_id}`,{
           method: "POST",
           headers: {
-            'Authorization' : `Bearer ${this.$store.state.userToken}`,  // attention au majuscule
+            'Authorization' : `Bearer ${this.user.token}`,  // attention au majuscule
             'Accept': 'application/json', 
             // 'Content-Type': 'multipart/form-data' // ATTENTION ICI CHANGEMENT EN FORM-DATA
           },
@@ -223,14 +223,20 @@ export default {
  
   },
   mounted(){ 
+    if(localStorage.user == undefined){
+      this.$router.push(`/login`);
+    }
   //RECUPERATION DE L'ID DANS L'URL https://stackoverflow.com/questions/61946295/get-the-id-from-the-url-in-vuejs
   console.log("l'id d'url est: ", this.$route.params.id );
   this.post_id = this.$route.params.id;
-
-
+  
+  // RECUPERATION USER SUR LOCALSTORAGE
+    this.user = JSON.parse(localStorage.getItem('user'));
+  
     fetch(`http://localhost:3000/api/post/${this.post_id}`) // plus tard mettre autre chose
     .then(res => res.json())
     .then((data) => { 
+      console.log('+++',data)
       this.onePost = data;
       this.countLike(data);
       this.checkUserLike(data);
@@ -295,6 +301,9 @@ main{
     margin: 5px;
     padding: 5px;
     border-radius: 5px;
+    figure{
+      margin:0;
+    }
   }
   &__add{
     margin-top:0px;

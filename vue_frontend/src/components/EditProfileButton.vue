@@ -1,5 +1,6 @@
 <template>
   <div id='option'>
+ 
     <div class="menu">
       <p @click='selectEditAvatar()' class='select-avatar border'>Avatar</p>
       <p @click="selectEditPassword()" class='select-password border'>Password</p>
@@ -11,7 +12,7 @@
       </figure>
       <p>Selectionné un nouvelle avatar:</p>
       <input id='new-avatar' type="file" @change="previewFile"> 
-      <button @click="sendAvatar()">Envoyé</button>
+      <button @click="changeAvatar()">Envoyé</button>
     </div>
     <div v-if='this.element == "password"' class='option__password'>
       <h2>Changement de mot de passe</h2>
@@ -23,7 +24,10 @@
         <label for="new-password-check">Confirmez votre new mot de passe :</label>
         <input id='new-password-check' placeholder="confirmer" required>
         <button @click="sendNewPassword()">Envoyé</button>
+      </div>
     </div>
+    <div v-if='this.element == "delete"' class='option__delete'>
+    
     </div>
 
   </div>
@@ -35,7 +39,8 @@ export default {
   data(){
     return {
       element : "password",
-      url: this.$store.state.userProfil.avatar,
+      url: null,
+      user: null,
     }
   },
   methods:{
@@ -45,24 +50,33 @@ export default {
       this.url = URL.createObjectURL(file);
     },
     //ENVOI DU NOUVELLE AVATAR
-    sendAvatar(){
+    async changeAvatar(){
+      const avatarRefresh = await this.updateAvatar();
+      this.user.avatar = avatarRefresh.avatar
+      localStorage.setItem('user', JSON.stringify(this.user));
+    },
+    //MISE A JOUR AVATAR
+    async updateAvatar(){
       const fileInput = document.getElementById('new-avatar');
       const formData = new FormData();
       formData.append('image', fileInput.files[0]);
-      fetch('http://localhost:3000/api/auth/user/avatar',{
+       return fetch('http://localhost:3000/api/auth/user/avatar',{
           method: "POST",
           headers: {
-            'Authorization' : `Bearer ${this.$store.state.userToken}`,  // attention au majuscule
+            'Authorization' : `Bearer ${this.user.token}`,  // attention au majuscule
             'Accept': 'application/json', 
             // 'Content-Type': 'multipart/form-data' // ATTENTION ICI CHANGEMENT EN FORM-DATA
           },
           body: formData
         })
-        .then(() => {
-            // ici faire recharger la page
+        .then((res) => { 
+          if(res.ok){
+           return res.json()
+          }
         })
         .catch(() => console.log('Oops !'))
     },
+    //
     //SUPPRESSION ATTRIBUT BORDER BOTTOM
     removeBorderBottom(){
       const blocAvatar = document.getElementsByClassName('select-avatar')[0];
@@ -74,19 +88,21 @@ export default {
     },
     //AFFICHAGE DU BLOC AVATAR 
       selectEditAvatar(){
+      this.removeBorderBottom();
       this.element = "avatar";
       const blocAvatar = document.getElementsByClassName('select-avatar')[0];
       blocAvatar.classList.add('border-bottom');
     },
     //AFFICHAGE DU BLOC PASSWORD
       selectEditPassword(){
-        // this.removeBorderBottom();
+      this.removeBorderBottom();
       this.element = "password";
       const blocPassword = document.getElementsByClassName('select-password')[0];
       blocPassword.classList.add('border-bottom');
     },
     //AFFICHAGE DU BLOC DELETE
     selectEditDelete(){
+      this.removeBorderBottom();
       this.element= "delete";
       console.log(this.element)
       const blocDelete  = document.getElementsByClassName('select-delete')[0];
@@ -101,7 +117,7 @@ export default {
       fetch(' http://localhost:3000/api/auth/user/password',{
           method: "POST",
           headers: {
-            'Authorization' : `Bearer ${this.$store.state.userToken}`,  // attention au majuscule
+            'Authorization' : `Bearer ${this.user.token}`,  // attention au majuscule
             'Accept': 'application/json', 
             'Content-Type': 'application/json' 
           },
@@ -115,6 +131,10 @@ export default {
           .catch(() => console.log('Oops !'))
     }
  
+  },
+  mounted(){
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.url = this.user.avatar
   }
 }
 </script>

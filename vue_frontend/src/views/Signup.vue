@@ -5,25 +5,42 @@
       <form>
         <input id='username' placeholder= "Username" required>
         <input id='password' type="password" placeholder= "Password" required>
-        <button @click='sendForm()'>Sign Up now</button>
       </form>
+      <p v-if='error' class='red-text'>{{error}}</p>
+        <button @click='signup()'>Sign Up now</button>
     </div>
   </main>
 </template>
 
-
 <script>
-
 
 export default {
   name: 'Signup',
+  data(){
+    return {
+      error: null,
+    }
+  },
   methods:{
-      sendForm(){ /// faire marché event.preventDefault() ??
-        let username = document.getElementById('username').value;
-        let passwd = document.getElementById('password').value;
-        console.log(JSON.stringify({username, passwd}));
-
-        fetch('http://localhost:3000/api/auth/signup',{
+    async signup(){
+      let username = document.getElementById('username').value;
+      let passwd = document.getElementById('password').value;
+      console.log(username, passwd)
+      const userSignup = await this.createUser(username, passwd);
+      console.log('userSignupp est:', userSignup)
+      if(userSignup.error){
+        return this.error = userSignup.error;
+      }
+      const user = await this.getUserDetails(username, passwd);
+      if(user.error){
+        return this.error = "Service momentanement indisponible"
+      }
+      localStorage.setItem('user', JSON.stringify(user));
+      this.$router.push('/accueil');
+    },
+    // CREATION D'UN NOUVEAU USER
+    async  createUser(username, passwd){
+      return  fetch('http://localhost:3000/api/auth/signup',{
           method: "POST",
           headers: {
             'Accept': 'application/json', 
@@ -31,15 +48,26 @@ export default {
           },
           body: JSON.stringify({username, passwd})
         })
-          .then(function(res){
-            if(res.ok){
+          .then(res => {
               return res.json();
-            }
           })
-          .then(function(res){
-            console.log("le resultat est :",res)
-          })
-      }
+        .catch(() => console.log('Oups, je ne sais pas non plus ce qu il se passe!'));
+      },
+    //RECUPRATION DES INFOMATION DU USER
+    async getUserDetails(username, passwd){
+       return fetch('http://localhost:3000/api/auth/login',{
+          method: "POST",
+          headers: {
+            'Accept': 'application/json', 
+            'Content-Type': 'application/json' 
+          },
+          body: JSON.stringify({username, passwd})
+        })
+        .then(res => {
+          return res.json();
+        })
+        .catch(() => console.log('Oups, je ne sais pas non plus ce qu il se passe!'));
+    },
 
     }
   
@@ -89,5 +117,8 @@ main{
     color: white;
     font-weight: 600;
    }
+ }
+ .red-text{
+   color: red;
  }
 </style>
