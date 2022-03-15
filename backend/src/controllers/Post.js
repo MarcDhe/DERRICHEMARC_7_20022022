@@ -52,7 +52,7 @@ exports.updateOne = (req, res, next ) => {
        return res.status(404).json({ error: 'Post non trouvé !'})
       }
       if(post.user_id !== req.auth.userId){
-       return res.status(403).json({ error: 'requete non autorisé !'})
+       return res.status(403).json({ error: 'Requete non autorisé !'})
       }else{
         console.log('tata',req.body.post)
       const postObject = req.file? 

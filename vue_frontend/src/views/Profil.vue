@@ -2,7 +2,9 @@
   <main id='profile'>
   <div class="banner">Banniere</div>
     <div class="user">
-      <img class="user__avatar" v-bind:src="user?.avatar" />
+      <figure>
+        <img class="user__avatar" v-bind:src="user?.avatar" alt='avatar'/>
+      </figure>
       <div class="user__details">
         <h1 class="username">{{user?.username}}</h1> 
         <p class="create-at">Membre depuis le: {{user?.createdAt}}</p>
@@ -24,7 +26,7 @@
       </div>
     </div>
     <div class=''>
-      <EditProfileButton/>
+      <EditProfileButton v-on:update-user="updateUser" />
     </div>
   </div>
 <p>edition</p>
@@ -48,6 +50,11 @@ export default {
   data(){
     return{
       user : null,
+    }
+  },
+  methods:{
+    updateUser(payload){
+      this.user.avatar = payload.avatar
     }
   },
   computed: {
@@ -76,13 +83,16 @@ export default {
     display: flex;
     align-items: center;
     background-color: aliceblue;
+    figure{
+      margin: 0;
+    }
     &__avatar{
-      background-color: aqua;
       height: 100px;
       width: 100px;
       border-radius: 70px;
       margin-top: -60px;
-      margin-left: 20px
+      margin-left: 20px;
+      object-fit: cover;
     }
     &__details{
       display: flex;

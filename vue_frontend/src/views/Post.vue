@@ -1,5 +1,10 @@
 <template>
   <main>
+    <div id="alert"  v-if="alertMessage">
+      <div> </div>
+      <p id="alert__text">{{ alertMessage }}</p>
+      <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+    </div>
     <div class="post">
       <div v-if="this.method === 'update'">
         <PostText 
@@ -28,6 +33,7 @@
           <p>{{onePost.content}}</p>
         </div>
       </div>
+        <div id="comment-zone" class='ancre'></div>
         <div class="post__add">
           <p v-if="this.likeStatus == false" id="like-post" @click="addLike()"><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> ({{ numberOfLike }})</p>
           <p v-if="this.likeStatus == true" id="unlike-post" @click="unLike()"><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> ({{ numberOfLike }})</p>
@@ -37,19 +43,21 @@
         <div class="new-comment">
           <textarea id='new-comment__content' placeholder='Ecrivez votre commentaire' maxlength="300" required></textarea>
           <div class="new-comment__option">
-            <button @click='sendComment()'>Envoyez</button>           
+            <button v-if='this.commentMethod == "read"' @click='sendComment()'>Envoyez</button>  
+            <button v-if='this.commentMethod == "update"' @click='cancelUpdate()'>Annuler</button>           
+            <button v-if='this.commentMethod == "update"' @click='updateComment()'>Sauvegardez</button>           
           </div>
         </div>
-      <div class="commentary" v-for="comment in onePost.Comment" :key="comment.content">
-        <figure class="commentary__avatar"> 
-          <img :src="comment.User.avatar" alt="avatar">
+      <div class="commentary" v-for="comment in onePost.Comment" :key="comment.id">
+        <figure > 
+          <img class="commentary__avatar" :src="comment.User.avatar" alt="avatar">
         </figure>
         <div class="commentary__details">
           <p class="commentary__details__username"> {{ comment.User.username }}<strong class="date"> {{comment.updatedAt}}</strong></p>
           <p class="commentary__details__content">{{ comment.content }}</p>
           <div class="commentary__update">
-            <p ><i class="red-color fa-solid fa-trash-can"></i>  Delete </p>
-            <p><i class="red-color fa-regular fa-pen-to-square"></i>  Update</p>
+            <p v-if="comment.User.id == user.id" @click="deleteComment(comment)"><i class="red-color fa-solid fa-trash-can"></i>  Delete </p>
+            <a href="#comment-zone"><p v-if="comment.User.id == user.id" @click="goToUpdateComment(comment)"><i class="red-color fa-regular fa-pen-to-square"></i>  Update</p></a>
           </div>
         </div>
       </div>
@@ -74,8 +82,11 @@ export default {
         onePost : {},
         post_id : "",
         method: "read",
+        commentMethod: "read",
+        idComment: null,
         likeStatus: false,
         numberOfLike: 0,
+        alertMessage: null,
     }
   },
   methods:{
@@ -92,13 +103,18 @@ export default {
       }
     },
     //ENVOI DU COMMENTAIRE A L'API
-    sendComment(){
+    async sendComment(){
       let content = document.getElementById('new-comment__content').value;
       if(content == ""){
         console.log('contenu vide');
         return 0;
       }
-      fetch(`http://localhost:3000/api/comment/${this.post_id}`,{
+      await this.newComment(content);
+      this.$forceUpdate()
+    },
+    //NOUVEAU COMMENTAIRE
+    async newComment(content){
+      fetch(`http://localhost:3000/api/comment/${this.post_id}/add`,{
         method: "POST",
         headers: {
           'Authorization' : `Bearer ${this.user.token}`,  // attention au majuscule
@@ -178,9 +194,11 @@ export default {
         }
       }
     },
-    // CANCEL UPDATE:
+    // CANCEL ALL UPDATE:
     cancelUpdate(){
       this.method="read";
+      this.commentMethod="read";
+      document.getElementById('new-comment__content').value = "";
     },
     //UPDATE POST:
     updatePost(){
@@ -219,8 +237,49 @@ export default {
             // ATTENTION NON VIABLE DECONNECTE
             // this.$router.go() // RECHARGE LA PAGE MAIS DECONNECTE :x
           })
-      }
- 
+      },
+    // RENVOI A LA POSSIBILITE DE MODIFICATION DU COMMENTAIRE
+    goToUpdateComment(comment){ // PASSAGE de COMMENT DANS LE PARAMETRE dans le HTML
+    console.log(comment)
+    this.commentMethod = "update";
+    this.idComment = comment.id;
+    document.getElementById('new-comment__content').value = comment.content;
+    //TROUVER LA SOLUTION POUR RENVOYUER VERS UNE ANCRE DE LA PAGE EN JS
+    this.$router.push('#new-comment__content')
+
+    },
+    // MANAGE L'UPDATE du commentaire
+    async updateComment(){
+    const content = document.getElementById('new-comment__content').value;
+    console.log("content",content,'tat:',this.idComment) 
+    const updateStatus = await fetch(`http://localhost:3000/api/comment/${this.idComment}/update`,{
+        method: "POST",
+        headers: {
+          'Authorization' : `Bearer ${this.user.token}`,
+          'Accept': 'application/json',  // ATTENTION SI ENVOI JSON NE PAS LES OUBLIES SINON HS
+          'Content-Type': 'application/json' 
+          },
+        body: JSON.stringify({content}),
+      })
+      .then(res => {
+        return res.json()
+      })
+      .catch(() => console.log('Oops !'))
+      this.alertMessage = updateStatus.message
+    },
+    // SUPRESSION COMMENT
+    async deleteComment(comment){
+    const deleteStatus = await  fetch(`http://localhost:3000/api/comment/${comment.id}`,{
+        method: "DELETE",
+        headers: {'Authorization' : `Bearer ${this.user.token}`},
+      })
+      .then(res => {
+        return res.json()
+      })
+      .catch(() => console.log('Oops !'))
+      this.alertMessage = deleteStatus.message;
+    }
+    
   },
   mounted(){ 
     if(localStorage.user == undefined){
@@ -249,6 +308,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#alert{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-right:5px;
+  margin-left: 5px;
+  padding-right:5px;
+  padding-left: 5px;
+   background-color: #D4ECD9;
+}
+
 main{
   height: 100%;
   overflow: scroll;
@@ -256,6 +327,14 @@ main{
   background-image: url("../assets/icon.png");
   background-position: center;
   background-repeat: no-repeat;
+  a{
+    text-decoration: none;
+    color: black;
+  }
+  .ancre{
+     position: relative;
+     top: -20px;
+  }
 }
 .owner{
   display: flex;
@@ -269,6 +348,7 @@ main{
       border-radius: 30px;
       overflow: hidden;
       margin-right: 10px;
+      object-fit: cover;
   }
   &__details{
     text-align: start;
@@ -328,6 +408,11 @@ main{
     padding: 5px;
     resize: vertical;
   }
+  &__option{
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 5px;
+  }
 }
 .commentary{
   background-color: rgba(250, 250, 250, 0.8);
@@ -344,8 +429,8 @@ main{
     width: 50px;
     border:1px solid #d2d2d2;
     border-radius: 30px;
-    overflow: hidden;
     margin-right: 10px;
+    object-fit: cover;
   }
   &__update{
     display: flex;
@@ -358,6 +443,9 @@ main{
 .commentary__details{
   text-align: start;
   padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   p{
     margin:0;
   }

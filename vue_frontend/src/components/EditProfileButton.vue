@@ -38,13 +38,13 @@ export default {
   name: 'EditProfileButton',
   data(){
     return {
-      element : "password",
+      element : "avatar",
       url: null,
       user: null,
     }
   },
   methods:{
-        // //AFFICHAGE PICTURE: https://blog.enguehard.info/previsualiser-image-input-type-file/
+     // //AFFICHAGE PICTURE: https://blog.enguehard.info/previsualiser-image-input-type-file/
      previewFile(e) { // interessant de voir e.target qui est lendroit ou ce declenche levent
       const file = e.target.files[0];
       this.url = URL.createObjectURL(file);
@@ -54,6 +54,14 @@ export default {
       const avatarRefresh = await this.updateAvatar();
       this.user.avatar = avatarRefresh.avatar
       localStorage.setItem('user', JSON.stringify(this.user));
+      this.sendParentComponent();
+    },
+    //UPDATE COMPOPSANT PARENT
+    sendParentComponent(){
+      this.$emit('update-user', //payload en deuxieme argument, objet pour faire passer un maximum d'info
+      {
+        avatar:`${this.user.avatar}` 
+      })
     },
     //MISE A JOUR AVATAR
     async updateAvatar(){
