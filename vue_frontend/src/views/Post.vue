@@ -22,7 +22,7 @@
           </figure>
           <div class="owner__details">
             <p class="owner__details__username"> {{ onePost.User?.username }}</p>
-            <p class="owner__details__updatedAt"> posté le {{ onePost?.updatedAt}}</p>
+            <p class="owner__details__updatedAt"> {{ this.setDate(onePost?.updatedAt)}}</p>
           </div>
         </div> 
         <h1>{{ onePost.title}} :</h1>
@@ -53,7 +53,7 @@
           <img class="commentary__avatar" :src="comment.User.avatar" alt="avatar">
         </figure>
         <div class="commentary__details">
-          <p class="commentary__details__username"> {{ comment.User.username }}<strong class="date"> {{comment.updatedAt}}</strong></p>
+          <p class="commentary__details__username"> {{ comment.User.username }}<strong class="date"> {{this.setDate(comment.updatedAt)}}</strong></p>
           <p class="commentary__details__content">{{ comment.content }}</p>
           <div class="commentary__update">
             <p v-if="comment.User.id == user.id" @click="deleteComment(comment)"><i class="red-color fa-solid fa-trash-can"></i>  Delete </p>
@@ -90,6 +90,40 @@ export default {
     }
   },
   methods:{
+    //CREATION FONCTION SOUSTRACTION DATE 
+    dateDiff(date1, date2){ //SORUCE: http://www.finalclap.com/faq/88-javascript-difference-date
+      let diff = {}                           // Initialisation du retour
+      let tmp = date2 - date1;
+  
+      tmp = Math.floor(tmp/1000);             // Nombre de secondes entre les 2 dates
+      diff.sec = tmp % 60;                    // Extraction du nombre de secondes
+  
+      tmp = Math.floor((tmp-diff.sec)/60);    // Nombre de minutes (partie entière)
+      diff.min = tmp % 60;                    // Extraction du nombre de minutes
+  
+      tmp = Math.floor((tmp-diff.min)/60);    // Nombre d'heures (entières)
+      diff.hour = tmp % 24;                   // Extraction du nombre d'heures
+      
+      tmp = Math.floor((tmp-diff.hour)/24);   // Nombre de jours restants
+      diff.day = tmp;
+      
+      return diff;
+    },
+    //GESTION DE L'AFFICHAGE DES DATES
+    setDate(date){
+      const currentTime = new Date()
+      let newDate = new Date((date))
+      // const dayDate = newDate.toLocaleDateString() pour afficher uniquement le jour et/ou l'heure
+      // const timeDate = newDate.toLocaleTimeString()
+      const compareDate = this.dateDiff(newDate,currentTime); // retourne un objet
+      if(compareDate.day == 0 && compareDate.hour == 0){
+        return `posté il y a ${compareDate.min}min`
+      }
+      if(compareDate.day == 0){
+        return `posté il y a ${compareDate.hour}h`
+      }
+      return `posté il y a ${compareDate.day}j`
+    },
     //CHECK IF USER IS POST OWNER / COMMENT Owner
     checkPostOwner(){
       if(this.user.id == this.onePost.user_id){
@@ -449,6 +483,7 @@ main{
   p{
     margin:0;
   }
+
   &__username{
     color: #982778;
     font-weight: 600;
