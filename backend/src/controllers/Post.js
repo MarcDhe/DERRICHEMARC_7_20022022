@@ -40,7 +40,10 @@ exports.getOnePost = (req, res, next) => { // ATTENTION ENVOI LES MDP
 }
 
 exports.getAllPost = (req, res, next) => {
-  Post.findAll({include:[{model: User, as:"User"},{model: Liked, as:"Liked"}]})
+  Post.findAll({ include:[
+                   {model: User, as:"User"},
+                   {model: Liked, as:"Liked"}],
+                 order:[['createdAt', 'DESC']]})  // SOURCE: https://stackoverflow.com/questions/20718534/sort-sequelize-js-query-by-date
   .then((posts) => res.status(200).json(posts))
   .catch(error => res.status(400).json({ error }))
 }
@@ -98,18 +101,11 @@ exports.deleteOnePost = (req, res, next) => {
     .catch(error => res.status(500).json({ error })); 
 }
 
-
-// // ESSAI PRENDRE LE DERNIERE POST CREE
-// exports.lastId = (req, res, next) =>{ 
-//   console.log("huit")
-//   console.log(req.auth.userId)
-//   // NATIVE
-//   // sequelize.query(`SELECT * FROM POST WHERE ID=(SELECT MAX(ID) FROM Post WHERE user_id = ${req.auth.userId})`)
-//   Post.findOne({    
-//     attributes: [[sequelize.fn('max', sequelize.col('id')), 'MaxId']],
-//     where : {user_id: req.auth.userId}})
-//   .then((post) => res.status(200).json(post))
-//   .catch(error => res.status(400).json({ error }))
-// }
-
+exports.getAllUserPost = (req, res, next) => {
+  Post.findAll({ where:{user_id: req.auth.userId},
+                  include: [{model: Liked, as:"Liked"}],
+                  order:[['createdAt', 'DESC']]})  
+.then((posts) => res.status(200).json(posts))
+.catch(error => res.status(400).json({ error }))
+}
 

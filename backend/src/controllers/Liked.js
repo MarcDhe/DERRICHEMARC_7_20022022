@@ -35,3 +35,10 @@ exports.manageLike = (req, res, next) => {
     })
     .catch(error => res.status(500).json({ error }));
 }
+
+exports.getAllLikedPost = (req, res, next) => {
+  Liked.findAll({ where: {user_id: req.auth.userId}, 
+                  inculude: [{model: Post, as:'Post'}] })
+    .then((likeds) => res.status(200).json(likeds))
+    .catch(error => res.status(400).json({ error }))
+}

@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const ctrlLike = require('../controllers/Liked');
+const likeCtrl = require('../controllers/Liked');
 const auth = require('../middleware/auth');
 
-router.post('/:id', auth, ctrlLike.manageLike)
+router.post('/:id', auth, likeCtrl.manageLike)
+router.get('/', auth, likeCtrl.getAllLikedPost)
 
 module.exports = router;

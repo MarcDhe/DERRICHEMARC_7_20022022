@@ -2,11 +2,11 @@
   <div id='option'>
  
     <div class="menu">
-      <p @click='selectEditAvatar()' class='select-avatar border'>Avatar</p>
+      <p @click='selectEditAvatar()' class='select-avatar border border-bottom'>Avatar</p>
       <p @click="selectEditPassword()" class='select-password border'>Password</p>
       <p @click="selectEditDelete()" class='select-delete'>Delete</p>
     </div>
-    <div v-if="this.element == 'avatar'" class="option__edit">
+    <div v-if="this.element == 'avatar'" class="option__avatar">
       <figure>
         <img :src="url" alt='avatar'/>
       </figure>
@@ -21,13 +21,14 @@
         <input id='current-password' placeholder="mot de passe" require/>
         <label for="new-password">Votre nouveau mot de passe :</label>
         <input id='new-password' placeholder="nouveau mdp" required>
-        <label for="new-password-check">Confirmez votre new mot de passe :</label>
+        <label for="new-password-check">Confirmez votre nouveau mot de passe :</label>
         <input id='new-password-check' placeholder="confirmer" required>
         <button @click="sendNewPassword()">Envoyé</button>
+        <p class="red-color" v-if="alertMessage">{{ alertMessage }}</p>
       </div>
     </div>
     <div v-if='this.element == "delete"' class='option__delete'>
-    
+     <p> en attente résolution {onDelete: 'Cascade}' qui ne marche pas </p>
     </div>
 
   </div>
@@ -41,6 +42,7 @@ export default {
       element : "avatar",
       url: null,
       user: null,
+      alertMessage: null,
     }
   },
   methods:{
@@ -117,12 +119,12 @@ export default {
       blocDelete.classList.add('border-bottom');
     },
     //ENVOYE DU NOUVEAU PASSWORD
-    sendNewPassword(){
+    async sendNewPassword(){
       const currentPassword = document.getElementById('current-password').value ;
       const newPassword = document.getElementById('new-password').value;
       const newPasswordCheck = document.getElementById('new-password-check').value;
 
-      fetch(' http://localhost:3000/api/auth/user/password',{
+      const resMessage = await fetch(' http://localhost:3000/api/auth/user/password',{
           method: "POST",
           headers: {
             'Authorization' : `Bearer ${this.user.token}`,  // attention au majuscule
@@ -132,13 +134,14 @@ export default {
           body: JSON.stringify({currentPassword, newPassword, newPasswordCheck})
         })
           .then(function(res){
-            if(res.ok){
               return res.json();
-            }
           })
           .catch(() => console.log('Oops !'))
+      if(resMessage.error){
+       return this.alertMessage = resMessage.error
+      }
+      this.alertMessage = resMessage.message
     }
- 
   },
   mounted(){
     this.user = JSON.parse(localStorage.getItem('user'));
@@ -171,14 +174,14 @@ export default {
         border-right: 1px solid #EDF2F6;
       }
     }
-  .option__edit{
+  .option__avatar{
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-bottom:10px;
     figure{
       margin:0;
-      margin-top:5px;
+      margin-top:15px;
       max-width: 50%;
     }
     img{
@@ -193,9 +196,20 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      margin-bottom: 10px;
       .label{
         display: inline;
       }
+      input{
+        margin-top: 5px;
+        margin-bottom: 5px;;
+      }
+      button{
+        margin-bottom: 5px;
+      }
+    }
+    .red-color{
+      color: #FD2D00;
     }
   }
 }

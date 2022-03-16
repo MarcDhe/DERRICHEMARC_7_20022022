@@ -36,7 +36,9 @@ app.use('/api/comment', commentRoutes);
 // ROUTES LIKE
 const likeRoutes = require('./src/routes/Liked');
 app.use('/api/like', likeRoutes);
-
+// ROUTES MESSAGE
+const messageRoutes = require('./src/routes/Message');
+app.use('/api/message', messageRoutes);
 
 app.use('/pictures/', express.static(path.join(__dirname, 'pictures'))); //reponds au requete envoyer a /images et sert un serveur static express.static() et path.join() pour connaitre le chemin avec en (__direname, 'images)
 

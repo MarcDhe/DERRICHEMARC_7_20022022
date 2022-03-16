@@ -22,7 +22,7 @@
           </figure>
           <div class="owner__details">
             <p class="owner__details__username"> {{ onePost.User?.username }}</p>
-            <p class="owner__details__updatedAt"> {{ this.setDate(onePost?.updatedAt)}}</p>
+            <p class="owner__details__updatedAt"> {{ setDate(onePost?.updatedAt)}}</p>
           </div>
         </div> 
         <h1>{{ onePost.title}} :</h1>
@@ -53,7 +53,7 @@
           <img class="commentary__avatar" :src="comment.User.avatar" alt="avatar">
         </figure>
         <div class="commentary__details">
-          <p class="commentary__details__username"> {{ comment.User.username }}<strong class="date"> {{this.setDate(comment.updatedAt)}}</strong></p>
+          <p class="commentary__details__username"> {{ comment.User.username }}<strong class="date"> {{setDate(comment.updatedAt)}}</strong></p>
           <p class="commentary__details__content">{{ comment.content }}</p>
           <div class="commentary__update">
             <p v-if="comment.User.id == user.id" @click="deleteComment(comment)"><i class="red-color fa-solid fa-trash-can"></i>  Delete </p>

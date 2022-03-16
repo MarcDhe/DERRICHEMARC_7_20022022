@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 const fs = require('fs');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 
 
@@ -102,7 +104,7 @@ exports.changePassword = (req, res, next) => {
       return res.status(404).json({ error: "Utilisateur inexistant !"})
     }
     if(req.body.newPassword !== req.body.newPasswordCheck || req.body.newPassword == ""){
-      return res.status(400).json({ error: "Nouveau mot de passe incorrecte"})
+      return res.status(400).json({ error: "Nouveau mot de passe incorrecte !"})
     }
     bcrypt.compare(req.body.currentPassword, user.passwd)
         .then(valid => {
@@ -127,18 +129,33 @@ exports.deleteUser = (req, res, next) => {
   User.findOne({where:{id : req.auth.userId}})
     .then((user) => {
       if(!user){
-        return res.status(404).json({ error: "Utilisateur inexistant !"})
-      }
+        return res.status(404).json({ error: "Utilisateur inexistant !"});
+      };
       if(user.avatar !== `http://localhost:3000/pictures/avatars/default_avatar.png`){
         const filename = user.avatar.split('/pictures/avatars/')[1]; // recup du nom du fichier pour le supprimé
         fs.unlink(`pictures/avatars/${filename}`, () => {
         console.log('File is deleted ')  // voir pour remove plus tard une fois essay concluent
-        })
-
+        });
       }
       user.destroy()
         .then(() => res.status(200).json({ message: 'Utilisateur supprimé !'}))
         .catch(error => res.status(400).json({ error }))
+    })
+    .catch(error => res.status(400).json({ error }))
+}
+
+exports.toUserMessage = (req, res, next ) => {
+  console.log('ici',req.body.username)
+  User.findAll({where : {username : {[Op.like]:`${req.body.username}%`}}}) // SOURCE https://sequelize.org/master/manual/model-querying-basics.html
+    .then((users) => {
+      if(!users[0]){ // CAR FINDALL RENVOI UN TABLEAU
+        return res.status(404).json({ error : 'Aucun Utilisateur trouvé !'});
+      }
+      const userArray = [];
+      for(let i in users){
+        userArray[i] = {id: users[i].id, username:users[i].username, }
+      }
+      res.status(200).json({userArray});
     })
     .catch(error => res.status(400).json({ error }))
 }

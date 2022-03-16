@@ -41,6 +41,11 @@ const routes = [
   name: 'Post',
   component: () => import('../views/Post.vue')
   },
+  {
+  path:'/messaging',
+  name: 'Messaging',
+  component: () => import('../views/Messaging.vue')
+  }
 
 ]
 

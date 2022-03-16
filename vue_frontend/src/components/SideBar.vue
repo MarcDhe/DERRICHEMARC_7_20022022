@@ -7,7 +7,7 @@
       <router-link class="nav__link" to=""> 
         <h2><i class="fa-solid fa-bell"></i> Notifications</h2>
       </router-link>
-      <router-link class="nav__link" to=''>
+      <router-link class="nav__link" to='/messaging'>
         <h2><i class="fa-solid fa-envelope"></i> Message</h2>
       </router-link>
       <router-link  class="nav__link" to="/profil">

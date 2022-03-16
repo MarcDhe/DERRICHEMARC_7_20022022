@@ -1,5 +1,5 @@
 <template>
-<div id="main">
+<main id="home">
   <h1>Accueil</h1>
   <!-- <p>{{ this.try }}</p> -->
   <div class="move-to-post">
@@ -26,7 +26,7 @@
           </div>
           <div class="owner__details">
             <div class="owner__username"> {{post.User.username}} {{ post.id }}</div>
-            <div class="owner__relase" >{{this.setDate(post.createdAt)}}</div>
+            <div class="owner__relase" >posté il y a {{setDate(post.createdAt)}}</div>
             <!-- <div class="owner__relase">posté le {{post.createdAt}}</div> -->
 
           </div>
@@ -65,13 +65,11 @@
 
     <button @click='printf'> cliquer pour afficher </button>
   <router-link to="/createPost">You want to post something ?</router-link>
-</div>
+</main>
 </template>
 
 <script>
-
-
-
+import date from '../service/Date.js';
 export default {
   name:"Accueil",
   data(){
@@ -84,40 +82,9 @@ export default {
     }
   },
   methods:{
-    //CREATION FONCTION SOUSTRACTION DATE 
-    dateDiff(date1, date2){ //SORUCE: http://www.finalclap.com/faq/88-javascript-difference-date
-    let diff = {}                           // Initialisation du retour
-    let tmp = date2 - date1;
- 
-    tmp = Math.floor(tmp/1000);             // Nombre de secondes entre les 2 dates
-    diff.sec = tmp % 60;                    // Extraction du nombre de secondes
- 
-    tmp = Math.floor((tmp-diff.sec)/60);    // Nombre de minutes (partie entière)
-    diff.min = tmp % 60;                    // Extraction du nombre de minutes
- 
-    tmp = Math.floor((tmp-diff.min)/60);    // Nombre d'heures (entières)
-    diff.hour = tmp % 24;                   // Extraction du nombre d'heures
-     
-    tmp = Math.floor((tmp-diff.hour)/24);   // Nombre de jours restants
-    diff.day = tmp;
-     
-    return diff;
-    },
-    //GESTION DE L'AFFICHAGE DES DATES
-    setDate(date){
-      const currentTime = new Date()
-      let newDate = new Date((date))
-      // const dayDate = newDate.toLocaleDateString() pour afficher uniquement le jour et/ou l'heure
-      // const timeDate = newDate.toLocaleTimeString()
-      const compareDate = this.dateDiff(newDate,currentTime); // retourne un objet
-      if(compareDate.day == 0 && compareDate.hour == 0){
-        return `posté il y a ${compareDate.min}min`
-      }
-      if(compareDate.day == 0){
-        return `posté il y a ${compareDate.hour}h`
-      }
-        return `posté il y a ${compareDate.day}j`
-    },
+    setDate: date.setDate, // METHODE D'APPEL DU FONCTION IMPORTER
+    dateDiff: date.dateDiff, // SOURCE : https://forum.vuejs.org/t/how-to-use-helper-functions-for-imported-modules-in-vuejs-vue-template/6266
+
     printf(){
       console.log(" valeur recuperer :", this.posts)
     },
@@ -204,6 +171,7 @@ export default {
   },
 
   mounted(){ // pour executé la methods au chargement de la page
+  
     if(localStorage.user == undefined){
       this.$router.push(`/login`);
     }
@@ -220,13 +188,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#main{
+#home{
   height: 100%;
   overflow: scroll;
   overflow-wrap: break-word;
   background-image: url("../assets/icon.png");
   background-position: center;
   background-repeat: no-repeat;
+  h1{
+    margin:0px;
+    background-color: white;
+  }
   .move-to-post{
     margin: 5px 5px 10px 5px;
     padding:10px 5px 0px 0px;

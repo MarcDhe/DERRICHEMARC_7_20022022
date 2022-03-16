@@ -6,7 +6,7 @@
         <input id='username' placeholder= "Username" required>
         <input id='password' type='password'  placeholder= "Password" required>
       </form>
-      <button @click='login()'>Login to your Account</button>
+        <button @click='login()'>Login to your Account</button>
       <p v-if='error' class='red-text'>{{error}}</p>
       <router-link class="signup-link" to="/signUp" > 
         <p>Still not member ? <strong>Signup</strong></p>

@@ -23,6 +23,6 @@ Comment.belongsTo(Post, { as: 'Post', foreignKey: 'post_id'});
 
 // RELATION One TO MANY post --> liked
 Post.hasMany(Liked , {as: "Liked", foreignKey:'post_id'})
-Liked.belongsTo(Post, {as: "PostLiked", foreignKey: 'post_id'})
+Liked.belongsTo(Post, {as: "Post", foreignKey: 'post_id'})
 
 
