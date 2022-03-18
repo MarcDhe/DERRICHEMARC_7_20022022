@@ -2,14 +2,17 @@
   <main id="messaging">
   <h1 class='border-bottom'> Messagerie </h1>
   <NewMessage/>
+  <AllMessage/>
   </main>
 </template>
 
 <script>
 import NewMessage from '@/components/NewMessage'
+import AllMessage from '@/components/AllMessage'
+
 export default{
   name:'Messaging',
-  components:{NewMessage},
+  components:{NewMessage, AllMessage},
   mounted(){
         if(localStorage.user == undefined){
       this.$router.push(`/login`);

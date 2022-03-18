@@ -18,6 +18,8 @@
       <button @click='sendMessage()'>Envoyez</button>
       <button @click='backToMessagingMenu()'>Annulez</button>
       </div>
+      <p class="message__alert red-alert" v-if='alertMessage'>{{alertMessage}}</p>
+      <p class="message__alert green-alert" v-if='resMessage'>{{resMessage}}</p>
     </div>
     <p id='essai'>{{searchUser}}</p>
   </section>
@@ -29,20 +31,25 @@ export default {
   data(){
     return{
       user: null,
-      toUser:null,
+      toUser: null,
       searchUser: [],
+      alertMessage: null,
+      resMessage: null,
     }
   },
   methods:{
     //RECHERCHE DU USERNAME 
     async manageSearchUsername(e){ // pour faire passer le (e) dans le html ne pas mettre de () a la fonciton
-      console.log(e.target.value)
-      const result = await this.searchUsername(e.target.value);
+      const tryUsername = e.target.value
+      if(tryUsername.length == 0){ // pour désafficher le menu déroulant 
+        return this.searchUser = "";
+      }
+      const result = await this.searchUsername(tryUsername);
       if(result.error){
-       return this.searchUser = result
+       return this.searchUser = result;
       }
       this.searchUser = result.userArray;
-      console.log(this.searchUser)
+      console.log(this.searchUser);
     },
     // ENVOI RECHERCHE API
   async searchUsername(username){
@@ -62,12 +69,41 @@ export default {
   },
   //SELECTION DU USER VOULU
   selectUser(user){
-    console.log('userSelect est:',user)
+    console.log('userSelect est:',user);
     this.toUser = user;
     document.getElementById('username').value = this.toUser.username;
     this.searchUser = [] ; // ne pas oublié pour enlever les v-if
-    console.log('searchUSer vaut:',this.searchUser)
-  }
+    console.log('searchUSer vaut:',this.searchUser);
+    document.getElementsByClassName('message__content')[0].focus(); // met le focus sur l'element
+
+  },
+  //ENVOIE DU MESSAGE
+  async sendMessage(){
+    const to_id = this.toUser.id;
+    console.log('user id est',to_id);
+    const content = document.getElementsByClassName('message__content')[0].value;
+    console.log('content: ', content);
+    const resMessage = await this.sendMessageToApi(to_id, content);
+    if(resMessage.error){
+      return this.alertMessage = resMessage.error
+    }
+    this.resMessage = resMessage.message
+    console.log(resMessage)
+  },
+  //ENVOIE DU MESSAGE A L API
+  async sendMessageToApi(to_id, content){
+        return fetch('http://localhost:3000/api/message/new',{
+            method: "POST",
+            headers:{
+              'Authorization' : `Bearer ${this.user.token}`,
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({to_id, content})
+        })
+      .then((res) => { return res.json()})
+      .catch(() => console.log("Oops une chose c'est mal passé !"));
+  },
 
   },
   mounted(){
@@ -102,6 +138,15 @@ export default {
     }
     &__option{
       margin: 5px;
+    }
+    &__alert{
+      padding: 5px;
+    }
+    .red-alert{
+      background-color: #F8D6D9;
+    }
+    .green-alert{
+      background-color: #D4ECD9;
     }
     .found{
       background-color: white;

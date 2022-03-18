@@ -41,7 +41,7 @@
           <p v-if="this.postOwner == true" id="update-post" @click='updatePost(this.updateOne)'><i class="red-color fa-regular fa-pen-to-square"></i> Update</p>
         </div>
         <div class="new-comment">
-          <textarea id='new-comment__content' placeholder='Ecrivez votre commentaire' maxlength="300" required></textarea>
+          <textarea id='new-comment__content'  placeholder='Ecrivez votre commentaire' maxlength="300" required></textarea>
           <div class="new-comment__option">
             <button v-if='this.commentMethod == "read"' @click='sendComment()'>Envoyez</button>  
             <button v-if='this.commentMethod == "update"' @click='cancelUpdate()'>Annuler</button>           
@@ -278,8 +278,9 @@ export default {
     this.commentMethod = "update";
     this.idComment = comment.id;
     document.getElementById('new-comment__content').value = comment.content;
-    //TROUVER LA SOLUTION POUR RENVOYUER VERS UNE ANCRE DE LA PAGE EN JS
+    //RENVOIE VERS UNE ANCRE DE LA PAGE 
     this.$router.push('#new-comment__content')
+    // document.getElementById('new-comment__content').focus(); // NE MARCHE PAS ICI MAIS MARCE SI DANS MOUNTED HMMMM
 
     },
     // MANAGE L'UPDATE du commentaire

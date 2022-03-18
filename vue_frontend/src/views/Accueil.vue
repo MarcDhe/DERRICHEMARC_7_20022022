@@ -92,6 +92,7 @@ export default {
     showComment(post){
       this.commentStatus = post.id
       this.resMessage = null
+      
     },
     // ANNULE LA CREATION DU COMMENTAIRE
     cancelCommentary(){
