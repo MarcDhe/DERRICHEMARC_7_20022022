@@ -16,19 +16,21 @@
     </div>
     <div v-if='this.element == "password"' class='option__password'>
       <h2>Changement de mot de passe</h2>
-      <div class="password-form">
-        <label for='current-password'>Votre mot de passe :</label>
-        <input id='current-password' placeholder="mot de passe" require/>
-        <label for="new-password">Votre nouveau mot de passe :</label>
-        <input id='new-password' placeholder="nouveau mdp" required>
-        <label for="new-password-check">Confirmez votre nouveau mot de passe :</label>
-        <input id='new-password-check' placeholder="confirmer" required>
-        <button @click="sendNewPassword()">Envoyé</button>
-        <p class="red-color" v-if="alertMessage">{{ alertMessage }}</p>
-      </div>
+        <form @submit.prevent="sendNewPassword()" class="password-form">
+          <label for='current-password'>Votre mot de passe :</label>
+          <input id='current-password' placeholder="mot de passe" type='password' required/>
+          <label for="new-password">Votre nouveau mot de passe :</label>
+          <input id='new-password' placeholder="nouveau mdp" type='password' required>
+          <label for="new-password-check">Confirmez votre nouveau mot de passe :</label>
+          <input id='new-password-check' placeholder="confirmer" type='password' required>
+          <button >Envoyé</button>
+          <p class="red-color" v-if="alertMessage">{{ alertMessage }}</p>
+        </form>
     </div>
     <div v-if='this.element == "delete"' class='option__delete'>
-     <p> en attente résolution {onDelete: 'Cascade}' qui ne marche pas </p>
+     <p>Supprimer votre compte ?</p>
+     <p></p>
+     <button @click='deleteUser()'>Supprimer</button>
     </div>
 
   </div>
@@ -114,9 +116,23 @@ export default {
     selectEditDelete(){
       this.removeBorderBottom();
       this.element= "delete";
-      console.log(this.element)
       const blocDelete  = document.getElementsByClassName('select-delete')[0];
       blocDelete.classList.add('border-bottom');
+    },
+    //SUPPRESSION DU COMPTE
+    async deleteUser(){
+      const answer = confirm("Voulez vous supprimer votre compte ? \n(Attention toutes vos données seront perdus)")
+      if(answer == false){
+        return 0;
+      }
+      await fetch('http://localhost:3000/api/auth/user/delete',{
+        method:'DELETE',
+        headers:{'Authorization' : `Bearer ${this.user.token}`}
+      })
+        .catch(() => console.log("Oops cela ne marche pas !"))
+
+      localStorage.clear();
+      window.location = '/Login' // ici on peu l'utilisé vu que l'on sen fiche si celui ci est ou non sauvegarder 
     },
     //ENVOYE DU NOUVEAU PASSWORD
     async sendNewPassword(){
@@ -205,11 +221,19 @@ export default {
         margin-bottom: 5px;;
       }
       button{
+        margin-top: 5px;
         margin-bottom: 5px;
       }
     }
     .red-color{
       color: #FD2D00;
+    }
+  }
+  .option__delete{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    button{
+      margin-top:5px;
     }
   }
 }

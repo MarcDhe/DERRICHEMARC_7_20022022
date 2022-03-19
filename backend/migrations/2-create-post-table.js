@@ -1,5 +1,4 @@
 'use strict';
-
 module.exports = {
   async up (queryInterface, Sequelize) {
       return queryInterface.createTable("Post",{
@@ -14,7 +13,12 @@ module.exports = {
         imageUrl: Sequelize.STRING(255),
         likes: Sequelize.INTEGER(10),
         userLiked: Sequelize.JSON(), 
-        user_id: Sequelize.INTEGER(11),
+        user_id: {
+          type: Sequelize.INTEGER(11),
+          onDelete: 'CASCADE',
+          references: {
+            model: 'User',
+            as: 'user_id',}},
         createdAt: Sequelize.DATE,
         updatedAt: Sequelize.DATE
       });
