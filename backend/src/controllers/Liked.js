@@ -38,7 +38,9 @@ exports.manageLike = (req, res, next) => {
 
 exports.getAllLikedPost = (req, res, next) => {
   Liked.findAll({ where: {user_id: req.auth.userId}, 
-                  inculude: [{model: Post, as:'Post'}] })
+                  include: [{model: Post, as:'Post',
+                      include: [{model: Liked, as:"Liked" }]}
+                  ] })
     .then((likeds) => res.status(200).json(likeds))
     .catch(error => res.status(400).json({ error }))
 }

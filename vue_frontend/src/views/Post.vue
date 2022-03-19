@@ -6,15 +6,15 @@
       <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
     </div>
     <div class="post">
-      <div v-if="this.method === 'update'">
+      <form @submit.prevent="sendUpdatePost()" v-if="this.method === 'update'">
         <PostText 
         :imageUrl=this.onePost.imageUrl
         :title=this.onePost.title
         :content=this.onePost.content
         />
-        <button @click="sendUpdatePost()">Envoyer</button>
-        <button @click="cancelUpdate()">Annuler</button>
-      </div>
+        <button type='submit'>Envoyer</button>
+        <button type="button" @click="cancelUpdate()">Annuler</button>
+      </form>
       <div v-if="this.method === 'read'">
         <div class="owner"> 
           <figure>
@@ -67,6 +67,7 @@
 
 <script>
   import PostText from '@/components/PostText.vue';
+  import date from '../service/Date.js';
 
 
 export default {
@@ -90,40 +91,9 @@ export default {
     }
   },
   methods:{
-    //CREATION FONCTION SOUSTRACTION DATE 
-    dateDiff(date1, date2){ //SORUCE: http://www.finalclap.com/faq/88-javascript-difference-date
-      let diff = {}                           // Initialisation du retour
-      let tmp = date2 - date1;
-  
-      tmp = Math.floor(tmp/1000);             // Nombre de secondes entre les 2 dates
-      diff.sec = tmp % 60;                    // Extraction du nombre de secondes
-  
-      tmp = Math.floor((tmp-diff.sec)/60);    // Nombre de minutes (partie entière)
-      diff.min = tmp % 60;                    // Extraction du nombre de minutes
-  
-      tmp = Math.floor((tmp-diff.min)/60);    // Nombre d'heures (entières)
-      diff.hour = tmp % 24;                   // Extraction du nombre d'heures
-      
-      tmp = Math.floor((tmp-diff.hour)/24);   // Nombre de jours restants
-      diff.day = tmp;
-      
-      return diff;
-    },
-    //GESTION DE L'AFFICHAGE DES DATES
-    setDate(date){
-      const currentTime = new Date()
-      let newDate = new Date((date))
-      // const dayDate = newDate.toLocaleDateString() pour afficher uniquement le jour et/ou l'heure
-      // const timeDate = newDate.toLocaleTimeString()
-      const compareDate = this.dateDiff(newDate,currentTime); // retourne un objet
-      if(compareDate.day == 0 && compareDate.hour == 0){
-        return `posté il y a ${compareDate.min}min`
-      }
-      if(compareDate.day == 0){
-        return `posté il y a ${compareDate.hour}h`
-      }
-      return `posté il y a ${compareDate.day}j`
-    },
+    dateDiff: date.dateDiff,
+    setDate : date.setDate,
+
     //CHECK IF USER IS POST OWNER / COMMENT Owner
     checkPostOwner(){
       if(this.user.id == this.onePost.user_id){
@@ -280,8 +250,7 @@ export default {
     document.getElementById('new-comment__content').value = comment.content;
     //RENVOIE VERS UNE ANCRE DE LA PAGE 
     this.$router.push('#new-comment__content')
-    // document.getElementById('new-comment__content').focus(); // NE MARCHE PAS ICI MAIS MARCE SI DANS MOUNTED HMMMM
-
+    document.getElementById('new-comment__content').focus(); // NE MARCHE PAS ICI MAIS MARCE SI DANS MOUNTED HMMMM
     },
     // MANAGE L'UPDATE du commentaire
     async updateComment(){
@@ -301,6 +270,7 @@ export default {
       })
       .catch(() => console.log('Oops !'))
       this.alertMessage = updateStatus.message
+      this.$router.mounted
     },
     // SUPRESSION COMMENT
     async deleteComment(comment){
@@ -317,6 +287,7 @@ export default {
     
   },
   mounted(){ 
+    
     if(localStorage.user == undefined){
       this.$router.push(`/login`);
     }

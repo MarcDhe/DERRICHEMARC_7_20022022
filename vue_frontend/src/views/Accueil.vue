@@ -42,8 +42,8 @@
       </div>
       </router-link>
       <div class="post__action">
-        <p v-if='testLike(post.Liked)' @click='unlike(post)' class="unlike" ><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> Like:({{post.Liked.length}})</p>
-        <p v-if='!testLike(post.Liked)' @click='addLike(post)' class="like" ><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> Like:({{post.Liked.length}})</p>
+        <p v-if='testLike(post.id)' @click='unlike(post)' class="unlike" ><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> Like:({{post.Liked.length}})</p>
+        <p v-if='!testLike(post.id)' @click='addLike(post)' class="like" ><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> Like:({{post.Liked.length}})</p>
         <p @click='showComment(post)' class="commentary" alt="rara" tilte="rere"><i class="red-color fa-solid fa-comment-dots"></i> Commenter </p>
       </div>
       <div v-if="commentStatus == post.id && resMessage" class='green-background'>
@@ -75,6 +75,7 @@ export default {
   data(){
     return {
         posts : [],
+        userLiked: [],
         user: null,
         commentStatus: null,
         resMessage: null,
@@ -131,15 +132,10 @@ export default {
         })
         .catch(() => console.log('oops ca ne marche pas!'));
     },
+
     //TEST LIKE
-    testLike(data){
-      console.log(data)
-      for(let i in data){
-        if(this.user.id == data[i].user_id){
-          return true;
-        }
-      return false;
-      }
+    testLike(post_id){
+      return this.userLiked.includes(post_id) // true or false
     },
     // AJOUT D'UN LIKE
     addLike(post){
@@ -154,6 +150,10 @@ export default {
         },
         body: JSON.stringify({like})
       })
+      this.userLiked.push(post.id);
+      post.Liked.length++;
+
+
     },
     // RETIRE UN LIKE
     unlike(post){
@@ -168,23 +168,47 @@ export default {
         },
         body: JSON.stringify({like})
       })
+      .then((res) => { 
+        if(res.ok){
+        return res.json()
+      }
+      })
+      .catch(error => console.log(error))
+      this.userLiked = this.userLiked.filter(item => item !== post.id) // SOURCE: https://waytolearnx.com/2019/09/supprimer-un-element-dun-tableau-en-javascript-2.html
+      post.Liked.length--;
     }
   },
 
-  mounted(){ // pour executé la methods au chargement de la page
+  async mounted(){ // pour executé la methods au chargement de la page
   
     if(localStorage.user == undefined){
       this.$router.push(`/login`);
     }
     this.user = JSON.parse(localStorage.getItem('user'));
 
-    fetch('http://localhost:3000/api/post')
+   await fetch('http://localhost:3000/api/post')
       .then(res => res.json())
       .then(result => { this.posts = result })
       .catch(() => console.log("oops ca ne marche pas!"))
     console.log("sur app l'utilisateur est: ", this.user.token)
+  
+
+    // CREATION TABLEAU USERLIKED QUI CONTIENT LE POST_ID DES POST LIKÉ
+  const createUserLiked = (post) => {
+    for(let i in post){
+      for(let y in post[i].Liked){
+        if(post[i].Liked[y].user_id == this.user.id){
+          this.userLiked.push(post[i].Liked[y].post_id)
+        }
+      }
     }
+    console.log('ici',this.userLiked)
   }
+    createUserLiked(this.posts)
+    
+    
+  }
+}
   
 </script>
 

@@ -2,12 +2,13 @@
   <main>
     <div class='login'>
       <h1>Signup</h1>
-      <form>
+      <form @submit.prevent='signup()'>
         <input id='username' placeholder= "Username" required>
         <input id='password' type="password" placeholder= "Password" required>
+        <button >Sign Up now</button>
+
       </form>
       <p v-if='error' class='red-text'>{{error}}</p>
-        <button @click='signup()'>Sign Up now</button>
     </div>
   </main>
 </template>

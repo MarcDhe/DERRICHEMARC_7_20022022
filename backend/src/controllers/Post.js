@@ -64,7 +64,7 @@ exports.updateOne = (req, res, next ) => {
           imageUrl: `${req.protocol}://${req.get('host')}/pictures/${req.file.filename}`
         } 
         : { ...JSON.parse(req.body.post) };
-      if(req.file){
+      if(req.file && post.imageUrl){
         console.log('dans le delete img')
         const filename = post.imageUrl.split('/pictures')[1]; // recup du nom du fichier pour le supprimé
         fs.unlink(`pictures/${filename}`, () => {

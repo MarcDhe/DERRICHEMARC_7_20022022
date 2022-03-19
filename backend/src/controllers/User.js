@@ -1,11 +1,11 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-
 const fs = require('fs');
+
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
+const User = require('../models/User');
 
 
 exports.signUp = (req, res, next) => {

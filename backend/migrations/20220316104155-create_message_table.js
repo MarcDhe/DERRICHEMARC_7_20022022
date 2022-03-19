@@ -15,7 +15,7 @@ module.exports = {
       content:{ type: Sequelize.STRING(300), required: true},
       createdAt: Sequelize.DATE,
       readedAt: Sequelize.DATE,
-
+      
     });
   },
 

@@ -1,8 +1,10 @@
 <template>
   <main>
     <h1> Créer votre poste  </h1>
-      <PostText/>
-    <button @click='sendPost()'>Post it</button>
+    <form @submit.prevent="sendPost()">
+    <PostText/>
+    <button>Post it</button>
+    </form>
   </main>
 </template>
 

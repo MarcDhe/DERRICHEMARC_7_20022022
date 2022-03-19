@@ -7,6 +7,7 @@
     <!-- MY POSTS -->
     <div v-if='select == "post"'>
       <div class="post" v-for="post in allPosts " :key="post.id">
+        <router-link class="unlink" v-bind:to="`/post/${post.id}`">  <!-- EN ATTENDANT DAVOIR LA BONNE SOLUTION  -->
         <div class="post__info">
           <div class="align-start">
             <h3 class="post__title">{{post.title}}:</h3>
@@ -14,7 +15,6 @@
           </div>
             <p><i class="red-color fa-solid fa-hand-holding-heart" alt="Number of like"></i> {{post.Liked.length}}</p>
         </div>
-        <router-link class="unlink" v-bind:to="`/post/${post.id}`">  <!-- EN ATTENDANT DAVOIR LA BONNE SOLUTION  -->
           <div class="post__body">
             <figure v-if='post.imageUrl'>
               <img class="post__picture" :src="post.imageUrl" alt="avatar"/>
@@ -26,20 +26,20 @@
     </div>
     <!-- POSTS LIKED -->
     <div v-if='select == "liked" && allLiked !== null'>
-      <div class="liked" v-for="liked in allLiked " :key="liked.post_id">
-        <div class="post__info">
-          <div class="align-start">
-            <h3 class="post__title">{{liked.post.title}}:</h3>
-            <p class="post__release">- {{setDate(liked.post.createdAt)}} -</p>
-          </div>
-            <p><i class="red-color fa-solid fa-hand-holding-heart" alt="Number of like"></i> {{post.Liked.length}}</p>
-        </div>
+      <div class="post" v-for="liked in allLiked " :key="liked.post_id">
         <router-link class="unlink" v-bind:to="`/post/${liked.post_id}`">  <!-- EN ATTENDANT DAVOIR LA BONNE SOLUTION  -->
-          <div class="post__body">
-            <figure v-if='liked.post.imageUrl'>
-              <img class="post__picture" :src="liked.post.imageUrl" alt="avatar"/>
+          <div class="post__info">
+            <div class="align-start">
+              <h3 class="post__title">{{liked.Post.title}}:</h3>
+              <p class="post__release">- {{setDate(liked.Post.createdAt)}} -</p>
+            </div>
+              <p><i class="red-color fa-solid fa-hand-holding-heart" alt="like"></i> {{liked.Post.Liked.length}}</p>
+          </div>
+            <div class="post__body">
+            <figure v-if='liked.Post.imageUrl'>
+              <img class="post__picture" :src="liked.Post.imageUrl" alt="avatar"/>
             </figure>
-            <p class="post__content">{{liked.post.content}}</p>
+            <p class="post__content">{{liked.Post.content}}</p>
           </div>
         </router-link>
       </div>
@@ -102,14 +102,13 @@ export default {
       .catch(() => console.log("oops ca ne marche pas!"))
 
     //RECUPERATION DE TOUT LES COMMENTS FAIT PAR DATE
-      // await fetch('http://localhost:3000/api/like',{
-      //   method: "GET",
-      //   headers:{'Authorization' : `Bearer ${this.user.token}`}
-      // })
-      // .then(res => res.json())
-      // .then(result => { this.allLiked = result 
-      // console.log(result)})
-      // .catch(() => console.log("oops ca ne marche pas!"))
+      await fetch('http://localhost:3000/api/like',{
+        method: "GET",
+        headers:{'Authorization' : `Bearer ${this.user.token}`}
+      })
+      .then(res => res.json())
+      .then(result => { this.allLiked = result })
+      .catch(() => console.log("oops ca ne marche pas!"))
 
   }
 }

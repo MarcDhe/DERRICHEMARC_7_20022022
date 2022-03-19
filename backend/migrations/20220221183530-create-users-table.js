@@ -1,5 +1,8 @@
 'use strict';
 
+
+
+
 module.exports = {
   async up (queryInterface, Sequelize) {
     return queryInterface.createTable("User", {
@@ -26,7 +29,7 @@ module.exports = {
         unique: true
       },
       createdAt: Sequelize.DATE(),
-      
+
     }); //https://stackoverflow.com/questions/21114499/how-to-make-sequelize-use-singular-table-names
   },
 

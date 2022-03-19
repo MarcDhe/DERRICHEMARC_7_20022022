@@ -2,11 +2,11 @@
   <main>
     <div class='login'>
       <h1>Account Login</h1>
-      <form>
+      <form @submit.prevent='login()'>
         <input id='username' placeholder= "Username" required>
         <input id='password' type='password'  placeholder= "Password" required>
+        <button>Login to your Account</button>
       </form>
-        <button @click='login()'>Login to your Account</button>
       <p v-if='error' class='red-text'>{{error}}</p>
       <router-link class="signup-link" to="/signUp" > 
         <p>Still not member ? <strong>Signup</strong></p>
