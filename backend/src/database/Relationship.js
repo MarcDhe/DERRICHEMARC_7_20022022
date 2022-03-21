@@ -3,6 +3,7 @@ const Comment = require('../models/Comment');
 const User = require('../models/User')
 const Post = require('../models/Post');
 const Liked = require('../models/Liked');
+const Message = require('../models/Message');
 
 
 // // RELATION  ON TO MANY user --> comment
@@ -29,3 +30,8 @@ Liked.belongsTo(Post, {as: "Post", foreignKey: 'post_id'})
 User.hasMany(Liked, {as: "Liked", foreignKey:'user_id', onDelete:'CASCADE'});
 Liked.belongsTo(User, {as: "User", foreignKey: 'user_id'})
 
+User.hasMany(Message, {as: "Message", foreignKey:'from_id'})
+Message.belongsTo(User, {as: "User", foreignKey: 'from_id'})
+
+User.hasMany(Message, {as: "Message2", foreignKey:'to_id'})
+Message.belongsTo(User, {as: "User1", foreignKey: 'to_id'})

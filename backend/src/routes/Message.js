@@ -6,5 +6,6 @@ const auth = require('../middleware/auth');
 
 router.post('/new', auth, messageCtrl.newMessage),
 router.get('/', auth, messageCtrl.getAllMyMessage),
-
+router.get('/:id', auth, messageCtrl.getConversation)
+router.get('/:id/read', auth, messageCtrl.markReaded)
 module.exports = router;

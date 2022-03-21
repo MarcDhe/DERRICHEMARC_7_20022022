@@ -21,7 +21,6 @@
       <p class="message__alert red-alert" v-if='alertMessage'>{{alertMessage}}</p>
       <p class="message__alert green-alert" v-if='resMessage'>{{resMessage}}</p>
     </div>
-    <p id='essai'>{{searchUser}}</p>
   </section>
 </template>
 
@@ -104,6 +103,9 @@ export default {
       .then((res) => { return res.json()})
       .catch(() => console.log("Oops une chose c'est mal passé !"));
   },
+  backToMessagingMenu(){
+    this.$emit('update-status')
+  }
 
   },
   mounted(){

@@ -1,4 +1,6 @@
 const Message = require('../models/Message');
+const User= require('../models/User')
+const Post=require('../models/Post')
 
 const Sequelize = require('sequelize');
 const sequelize = require('../database/connection');
@@ -14,9 +16,55 @@ exports.newMessage = (req, res, next) => {
     .catch(error => res.status(400).json({ error }))
 }
 
+exports.getConversation = (req, res, next) => {
+  Message.findAll({
+    where: {
+      [Op.or]: [ {to_id: req.params.id, from_id:req.auth.userId}, {from_id: req.params.id, to_id: req.auth.userId} ],  //SOURCE https://sequelize.org/master/manual/model-querying-basics.html
+      },
+    order:[['createdAt', 'DESC']]
+    })
+    .then((conversation) => {
+      if(!conversation[0]){
+       return res.status(404).json({ error : 'Aucune Conversation trouvée'})
+      }
+      return res.status(200).json(conversation)
+    })
+    .catch((error) => res.status(400).json({ error }))
+}
 
-exports.getAllMyMessage = (req, res, next ) => {
-  sequelize.query('SELECT DISTINCT CASE WHEN to_id = 2 THEN from_id ELSE to_id END AS to_id, COUNT(case when readedAt = null then 1 else 0 end) as not_read  from MESSAGE  where from_id = 2 group by to_id LEFT OUTER JOIN User AS User ON to_id = user.id')
+exports.markReaded = (req, res, next) => {
+  Message.findAll({ where: {from_id: req.params.id, to_id: req.auth.userId, readedAt:null }})
+    .then((messages) => {
+      const localTime = new Date();
+      for(let i in messages){
+        messages[i].update({ readedAt: localTime})
+          .catch((error) => {return res.status(400).json({ error })})
+      }
+      return res.status(200).json({ message : 'Message(s) marqué(s) lu(s) !'})
+    })
+}
+
+// exports.getAllMyMessage = (req, res, next ) => {
+//   sequelize.query(`
+// SELECT * FROM message M
+// LEFT OUTER JOIN User AS User  ON M.from_id = User.id 
+//  						 AND M.to_id = 4
+//  					 OR M.to_id = User.id
+// 					  	AND M.from_id = 4`)
+//   //ATTENTION ON RECOIT 2 TABLEAU
+//   .then((messages) => res.status(200).json(messages))
+//   .catch(error => res.status(400).json({ error }))
+// }
+
+
+exports.getAllMyMessage = (req, res, next ) => { //https://stackoverflow.com/questions/3057746/how-to-count-null-values-in-mysql
+  sequelize.query(`  
+  SELECT
+    DISTINCT CASE WHEN to_id = ${req.auth.userId} THEN from_id ELSE to_id END AS user_id,
+    SUM(CASE WHEN readedAt IS null AND to_id = ${req.auth.userId} THEN 1 else 0 END) AS not_read,
+    MAX(createdAt) AS createdAt  
+  FROM Message  WHERE from_id = ${req.auth.userId} 
+  GROUP BY to_id ORDER BY createdAt desc`)
   //ATTENTION ON RECOIT 2 TABLEAU
   .then((messages) => res.status(200).json(messages[0]))
   .catch(error => res.status(400).json({ error }))
