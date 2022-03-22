@@ -1,22 +1,18 @@
+<!-- PAGE TEST PROPS ET EVENEMENT ENFANT -> PARENTS -->
 <template>
   <main id="messaging">
     <h1 class='border-bottom'> Messagerie </h1>
-    <div v-if="status == 'showMessage'" class='button-propriety'>
+    <div v-if="status == 'showMessage'" class='button-propriety border-bottom'>
       <button @click='showNewMessage()'>Ecrire un nouveau message <i class="fa-solid fa-feather-pointed"></i></button>
     </div>
     <div v-if='status == "writeMessage"'>
       <NewMessage v-on:update-status='updateStatus' />
     </div>
     <div v-if="status == 'showMessage'">
-      <div class='colonne-description'>
-      <p>Messages</p>
-      <p>Non lus</p>
-      </div>
-      <AllMessage  v-on:get-conversationNumber='updateConversationNumber' />
+      <AllMessage  v-on:get-conversationDetails='updateConversationDetails' />
     </div>
-    <div v-if='conversationNumber !== null' >
-      <p>tata{{conversationNumber}}</p>
-      <Conversation  :data='this.conversationNumber' />
+    <div class="full-height" v-if='conversationDetails !== null && status == "showConversation"' >
+      <Conversation  :data='this.conversationDetails' v-on:back-to-all-messages='backToAllMessages'/>
     </div>
   </main>
 </template>
@@ -32,23 +28,30 @@ export default{
   data(){
     return {
       status: 'showMessage',
-      conversationNumber: null,
+      conversationDetails: null,
     }
   },
   methods:{
       //CHANGE STATUS TO NEX MESAGE
       showNewMessage(){
-        this.status = 'writeMessage'
+        this.status = 'writeMessage';
       },
       //CHANGEMENT DE STATUS DEPUIS L'ENFANT
       updateStatus(){
         this.status = "showMessage";
       },
       //RECUPERATION DE L'ID DE L'INTERLOCUTEUR EN PROVENANCE DE L'ENFANT
-      updateConversationNumber(payload){
-        this.conversationNumber = payload.number
-        console.log('messaging',this.conversationNumber)
-      }
+      updateConversationDetails(payload){
+        this.conversationDetails = payload.details.message;
+        this.status = payload.details.newStatus;
+        console.log('messaging',this.conversationDetails);
+        console.log('le status est', this.status)
+      },
+      //RETOUR AFFICHAGE DE TOUT LES MESSAGE  
+      backToAllMessages(payload){
+        console.log(payload)
+        this.status = payload.newStatus
+      },
   },
   mounted(){
     if(localStorage.user == undefined){
@@ -80,6 +83,8 @@ export default{
     display: flex;
     justify-content: end;
     margin-top:5px;
+    padding-bottom: 5px;
+
     button{
       background-color:#FD2D00;
       border-radius: 15px;
@@ -87,13 +92,8 @@ export default{
       cursor: pointer;
     }
   }
-  .colonne-description{
-    display: flex;
-    justify-content: space-between;
-    margin-top: 5px;
-    margin-right:10px;
-    margin-left: 10px;
-    
+  .full-height{
+    height: 100%;
   }
 
 

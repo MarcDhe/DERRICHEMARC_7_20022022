@@ -1,6 +1,6 @@
 <template>
   <section id="create-message">
-    <h3>Nouveau Message</h3>
+    <h3 class='border-bottom'>Nouveau Message</h3>
     <div class='message'>
       <input @keyup='manageSearchUsername' id="username" class="message__to" placeholder="To:" required='true' autocomplete="off">
       <div>
@@ -116,9 +116,15 @@ export default {
 
 <style lang='scss'>
 #create-message{
-  
+  .border-bottom{
+    padding-bottom:2px;
+    border-bottom: 2px solid red;
+    margin:10px 5px 10px 5px;
+
+  }
   .message{
-    background-color: rgba(250, 250, 250, 0.8);
+    background-color: rgba(245, 245, 245, 0.8);
+    
     border:1px solid rgb(210, 210, 210);
     border-radius: 5px;
     margin: 5px;
@@ -172,6 +178,7 @@ export default {
     }
 
   }
+  
 
 }
 </style>

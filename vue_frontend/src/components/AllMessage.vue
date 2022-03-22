@@ -4,12 +4,21 @@
     <p>Aucun Message</p>
   </div>
   <div v-if="allMessage[0]">
+    <div class='colonne-description'>
+      <p>Messages</p>
+      <p>Non lus</p>
+    </div>
     <ul v-for='message in allMessage' :key='message.user_id'> 
       <li>
-        <a class='message' @click='getConversationNumber(message)'>
-          <div class='message__details'>
-            <p class="message__username">Boby {{message.user_id}}</p> <!-- attention à rectfier avec le bon retour api-->
-            <p class='message__createdat'>dernier message il y a {{setDate(message.createdAt)}}</p>
+        <a class='message' @click='getConversationDetails(message)'>
+          <div class='display-flex'>
+            <figure>
+              <img class='message__avatar' :src='message.avatar' alt='avatar'/>
+            </figure>
+            <div class='message__details'>
+             <p class="message__username">{{message.username}}</p> <!-- attention à rectfier avec le bon retour api-->
+             <p class='message__createdat'>dernier message il y a {{setDate(message.createdAt)}}</p>
+            </div>
           </div>
           <p v-if='message.not_read > 0' class="message__not-read">{{message.not_read}}</p>
         </a>
@@ -34,11 +43,12 @@ export default {
     setDate: date.setDate, 
     dateDiff: date.dateDiff,
     //RECUPERATION DE L'ID DE L'INTEROLOCUTEUR
-    getConversationNumber(message){
-      this.$emit('get-conversationNumber',{
-        number: message.user_id
+    getConversationDetails(message){
+      let newStatus = 'showConversation'
+      this.$emit('get-conversationDetails',{
+        details: {message, newStatus}
       })
-      console.log('allMessage:', message.user_id)
+      console.log('allMessage:', message)
     }
   },
   async mounted(){
@@ -62,6 +72,15 @@ export default {
 
 <style lang='scss'>
 #all-message{
+  background-color: rgba(245, 245, 245, 0.8);
+  padding: 5px;
+  .colonne-description{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    margin-right:10px;
+    margin-left: 10px;
+  }
   ul, li{
     margin: 0;
     padding:0;
@@ -79,6 +98,22 @@ export default {
     &:hover{
       background-color: #FFD6D6; 
       cursor: pointer;
+    }
+    .display-flex{
+      display: flex;
+      align-items: center;
+      figure{
+        margin:0;
+      }
+    }
+    &__avatar{
+      border-radius: 25px;
+      border:1px solid rgb(210, 210, 210);
+      height: 40px;
+      width: 40px;
+      object-fit: cover;
+      margin-right:10px;
+      margin-top: 5px;
     }
     &__details{
       display: flex;
@@ -98,6 +133,11 @@ export default {
     }
     &__username{
       text-align: start;
+      font-weight: 600;
+      color: #3F4156;
+    }
+    &__createdat{
+      color:#7A8891;
     }
     p{
       margin:0;
@@ -106,7 +146,8 @@ export default {
       text-decoration: none;
       color: black;
     }
-    }
+  }
+  
   
 }
 </style>
