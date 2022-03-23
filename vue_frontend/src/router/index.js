@@ -37,7 +37,7 @@ const routes = [
     component: () => import('../views/Profil.vue')
   },
   {
-  path: '/post/:id',
+  path: '/post/:id',   // https://router.vuejs.org/guide/essentials/named-routes.html
   name: 'Post',
   component: () => import('../views/Post.vue')
   },
@@ -45,7 +45,12 @@ const routes = [
   path:'/messaging',
   name: 'Messaging',
   component: () => import('../views/Messaging.vue')
-  }
+  },
+  {
+    path:'/search/:value',
+    name: 'Search',
+    component: () => import('../views/Search.vue')
+    }
 
 ]
 

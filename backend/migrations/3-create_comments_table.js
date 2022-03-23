@@ -10,7 +10,7 @@ module.exports = {
         autoIncrement: true,
         primaryKey : true
       },
-      content: Sequelize.STRING(300),
+      content: {type: Sequelize.STRING(300), required: true},
       imageUrl: Sequelize.STRING(255),
       user_id: {
         type: Sequelize.INTEGER(11),

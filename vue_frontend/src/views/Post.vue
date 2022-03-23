@@ -48,7 +48,7 @@
             <button v-if='this.commentMethod == "update"' @click='updateComment()'>Sauvegardez</button>           
           </div>
         </div>
-      <div class="commentary" v-for="comment in onePost.Comment" :key="comment.id">
+      <div class="commentary" v-for="(comment, index) in onePost.Comment" :key="index">
         <figure > 
           <img class="commentary__avatar" :src="comment.User.avatar" alt="avatar">
         </figure>
@@ -56,8 +56,8 @@
           <p class="commentary__details__username"> {{ comment.User.username }}<strong class="date"> {{setDate(comment.updatedAt)}}</strong></p>
           <p class="commentary__details__content">{{ comment.content }}</p>
           <div class="commentary__update">
-            <p v-if="comment.User.id == user.id" @click="deleteComment(comment)"><i class="red-color fa-solid fa-trash-can"></i>  Delete </p>
-            <a href="#comment-zone"><p v-if="comment.User.id == user.id" @click="goToUpdateComment(comment)"><i class="red-color fa-regular fa-pen-to-square"></i>  Update</p></a>
+            <p class='commentary__update__delete' v-if="comment.user_id == user.id || user.power == 'admin'" @click="deleteComment(comment, index)"><i class="red-color fa-solid fa-trash-can"></i> Delete </p>
+            <a href="#comment-zone"><p class='commentary__update__update' v-if="comment.user_id == user.id || user.power == 'admin'" @click="goToUpdateComment(comment, index)"><i class="red-color fa-regular fa-pen-to-square"></i>  Update</p></a>
           </div>
         </div>
       </div>
@@ -88,6 +88,7 @@ export default {
         likeStatus: false,
         numberOfLike: 0,
         alertMessage: null,
+        indexUpdate: null,
     }
   },
   methods:{
@@ -100,6 +101,9 @@ export default {
         this.postOwner = true;
         console.log('et les resultat est :', this.postOwner)
       }
+      if(this.user.power == 'admin' ){
+        this.postOwner = true
+      }
     },
       checkCommentOwner(data){
       if(this.user.id == data.Comment.user_id){
@@ -109,16 +113,26 @@ export default {
     //ENVOI DU COMMENTAIRE A L'API
     async sendComment(){
       let content = document.getElementById('new-comment__content').value;
-      if(content == ""){
-        console.log('contenu vide');
+      // if(content == ""){
+      //   console.log('contenu vide');
+      //   return 0;
+      // }
+      const commentPush = await this.newComment(content);
+      if(commentPush.error){
+        console.log(commentPush)
         return 0;
       }
-      await this.newComment(content);
-      this.$forceUpdate()
+      const User = {avatar: this.user.avatar, username: this.user.username, id: this.user.id}
+      console.log('new one:', commentPush)
+      commentPush.User = User  // AJOUT NOUVELLE ELEMENT A UN OBJET  SOURCE: https://grafikart.fr/forum/15626
+      console.log('after add user ', commentPush)
+      this.onePost.Comment.unshift(commentPush)  // unshift "push" au début d'un tableau
+      document.getElementById('new-comment__content').value = '';
+      
     },
     //NOUVEAU COMMENTAIRE
     async newComment(content){
-      fetch(`http://localhost:3000/api/comment/${this.post_id}/add`,{
+      return fetch(`http://localhost:3000/api/comment/${this.post_id}/add`,{
         method: "POST",
         headers: {
           'Authorization' : `Bearer ${this.user.token}`,  // attention au majuscule
@@ -128,9 +142,7 @@ export default {
         body: JSON.stringify({content})
         })
         .then(function(res){
-          if(res.ok){
             return res.json();
-          }
         })
         .catch(() => console.log('oops ca ne marche pas!'));
     },
@@ -209,7 +221,7 @@ export default {
       this.method = "update";
     },
     //SEND UPDATE POST CONTENT
-    sendUpdatePost(){
+    async sendUpdatePost(){
       const title = document.getElementById('create-post__title').value;
       const content = document.getElementById('create-post__content').value; 
       const post = JSON.stringify({title, content})
@@ -221,7 +233,7 @@ export default {
       formData.append('image',fileInput.files[0]);// nommé image a cause de multer
       console.log('le file est ',formData);
 
-       fetch(`http://localhost:3000/api/post/${this.post_id}`,{
+     await  fetch(`http://localhost:3000/api/post/${this.post_id}`,{
           method: "POST",
           headers: {
             'Authorization' : `Bearer ${this.user.token}`,  // attention au majuscule
@@ -237,20 +249,34 @@ export default {
           })
           .then((result) => {
             this.tableau = result;
-            console.log("le resultat est :", this.tableau)
+            console.log("le resultat est :", this.tableau);
             // ATTENTION NON VIABLE DECONNECTE
             // this.$router.go() // RECHARGE LA PAGE MAIS DECONNECTE :x
           })
+      // ON RAFRAICHI LE ONEPOST POUR AVOIR LE NOUVEAU CONTENU "OBILIGE"  CAR NOUS NAVONS PAS LADRESSE DE LA NOUVELLE IMAGE
+     await fetch(`http://localhost:3000/api/post/${this.post_id}`) // plus tard mettre autre chose
+        .then(res => res.json())
+        .then((data) => { 
+          console.log('+++',data)
+          this.onePost = data;
+          this.countLike(data);
+          this.checkUserLike(data);
+          this.checkPostOwner();
+          })
+        .catch(() => console.log("oops ca ne marche pas!"))
+
+        this.method = "read";
       },
     // RENVOI A LA POSSIBILITE DE MODIFICATION DU COMMENTAIRE
-    goToUpdateComment(comment){ // PASSAGE de COMMENT DANS LE PARAMETRE dans le HTML
+    goToUpdateComment(comment, index){ // PASSAGE de COMMENT DANS LE PARAMETRE dans le HTML
     console.log(comment)
     this.commentMethod = "update";
     this.idComment = comment.id;
     document.getElementById('new-comment__content').value = comment.content;
     //RENVOIE VERS UNE ANCRE DE LA PAGE 
-    this.$router.push('#new-comment__content')
-    document.getElementById('new-comment__content').focus(); // NE MARCHE PAS ICI MAIS MARCE SI DANS MOUNTED HMMMM
+    this.$router.push('#new-comment__content');
+    document.getElementById('new-comment__content').focus(); // NE MARCHE PAS ICI MAIS MARCHE SI DANS MOUNTED 
+    this.indexUpdate = index;
     },
     // MANAGE L'UPDATE du commentaire
     async updateComment(){
@@ -270,10 +296,13 @@ export default {
       })
       .catch(() => console.log('Oops !'))
       this.alertMessage = updateStatus.message
-      this.$router.mounted
+      this.onePost.Comment[this.indexUpdate].content = content
+      this.commentMethod="read"
+      document.getElementById('new-comment__content').value = '';
     },
     // SUPRESSION COMMENT
-    async deleteComment(comment){
+    async deleteComment(comment, index){
+      console.log('index est :',index)
     const deleteStatus = await  fetch(`http://localhost:3000/api/comment/${comment.id}`,{
         method: "DELETE",
         headers: {'Authorization' : `Bearer ${this.user.token}`},
@@ -283,6 +312,7 @@ export default {
       })
       .catch(() => console.log('Oops !'))
       this.alertMessage = deleteStatus.message;
+      this.onePost.Comment.splice(index,1); // SOURCE DE L UTILISATION INDEX : https://codesource.io/vue-js-snippets-delete-item-from-list/#:~:text=In%20the%20%2C%20we,from%20the%20list%20using%20Array.
     }
     
   },
@@ -440,9 +470,13 @@ main{
   }
   &__update{
     display: flex;
-    p{
+    &__delete, &__update{
+      cursor: pointer;
       padding-right: 10px;
       font-size: 15px;
+      &:hover{
+        color: #982778;
+      }
     }
   }
 }

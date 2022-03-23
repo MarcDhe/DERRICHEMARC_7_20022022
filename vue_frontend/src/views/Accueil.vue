@@ -15,8 +15,7 @@
   </div>  
   <div class="red-block"></div>
   <div class="post" v-for="post in posts " :key="post.id">
-    <!-- <router-link class="unlink" :to={name:'post', params: { id: post.id }}> attention a revoir ecriture non bonne   -->
-    <router-link class="unlink" v-bind:to="`/post/${post.id}`">  <!-- EN ATTENDANT DAVOIR LA BONNE SOLUTION  -->
+    <router-link class="unlink" :to="{name:'Post', params: { id: post.id }}">
       <div class="info">
         <div class="owner">
           <div class="redim">
@@ -27,8 +26,6 @@
           <div class="owner__details">
             <div class="owner__username"> {{post.User.username}} {{ post.id }}</div>
             <div class="owner__relase" >posté il y a {{setDate(post.createdAt)}}</div>
-            <!-- <div class="owner__relase">posté le {{post.createdAt}}</div> -->
-
           </div>
         </div>
           <p><i class="fa-solid fa-user-plus"></i></p>
@@ -112,7 +109,7 @@ export default {
       if(message.error){
        return this.errMessage = message.error;
       }
-      this.resMessage = message.message;
+      this.resMessage = "Commentaire envoyé !";
     },
     //NOUVEAU COMMENTAIRE
     async newComment(content, id){

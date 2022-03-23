@@ -5,8 +5,8 @@
   </div>
   <div v-if="allMessage[0]">
     <div class='colonne-description'>
-      <p>Messages</p>
-      <p>Non lus</p>
+      <p>Message(s)</p>
+      <p>Non lu(s)</p>
     </div>
     <ul v-for='message in allMessage' :key='message.user_id'> 
       <li>

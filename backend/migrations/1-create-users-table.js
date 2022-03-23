@@ -29,6 +29,10 @@ module.exports = {
         unique: true
       },
       createdAt: Sequelize.DATE(),
+      power:{
+        type: Sequelize.STRING(10),
+        defaultValue: 'plebs'
+      }
 
     }); //https://stackoverflow.com/questions/21114499/how-to-make-sequelize-use-singular-table-names
   },

@@ -6,13 +6,16 @@ const Op = Sequelize.Op;
 
 
 exports.addComment = (req, res, next) => {
+  if(req.body.content == ''){
+    return res.status(400).json({ error : 'Contenu obligatoire !'})
+  }
   let newComment = {
     user_id: req.auth.userId,
     post_id: req.params.id,
     ...req.body
   };
   Comment.create(newComment)
-    .then(() => res.status(200).json({ message: ' Commentaire crée ! '}))
+    .then((createOne) => res.status(200).json(createOne))
     .catch( error => res.status(400).json({ error }))
 }
 
@@ -28,7 +31,7 @@ exports.deleteComment = (req, res, next) => {
       if(!comment){
         return res.status(404).json({ error: 'Commentaire non trouvé !'})
       }
-      if(comment.user_id !== req.auth.userId){
+      if(comment.user_id !== req.auth.userId && req.auth.power !== 'admin'){
         return res.status(403).json({ error : 'Requete non autorisé !'})
       }
       comment.destroy()
@@ -39,13 +42,16 @@ exports.deleteComment = (req, res, next) => {
 }
 
 exports.updateComment = (req, res, next) => { // RIP CETTE ROUTE EN ATTENTE 
+  if(req.body.content == ''){
+    return res.status(400).json({ error : 'Contenu obligatoire !'})
+  }
   Comment.findOne({where: {id: req.params.id}})
     .then(comment => {
       console.log(req.body.content)
       if(!comment){
         return res.status(200).json({ message: 'Commentaire non trouvé !'})
       }
-    if(comment.user_id !== req.auth.userId){
+    if(comment.user_id !== req.auth.userId && req.auth.power !== 'admin'){
       return res.status(403).json({ error : 'Requete non autorisé !'})
     }
     comment.update({content: req.body.content})

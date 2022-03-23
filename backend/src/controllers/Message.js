@@ -21,7 +21,8 @@ exports.getConversation = (req, res, next) => {
     where: {
       [Op.or]: [ {to_id: req.params.id, from_id:req.auth.userId}, {from_id: req.params.id, to_id: req.auth.userId} ],  //SOURCE https://sequelize.org/master/manual/model-querying-basics.html
       },
-    order:[['createdAt', 'DESC']]
+    order:[['createdAt', 'DESC']],
+    limit: req.body.limit
     })
     .then((conversation) => {
       if(!conversation[0]){
@@ -46,14 +47,20 @@ exports.markReaded = (req, res, next) => {
 
 exports.lastMessages = (req, res, next) => {
   sequelize.query(`
-  SELECT 
-  DISTINCT CASE WHEN to_id = ${req.auth.userId} THEN from_id ELSE to_id END AS user_id, `)
-    .then((messages) => {
-      if(!messages[0]){
-        return res.status(404).json({ error: 'Aucun message trouvé !'})
-      }
-      return res.status(200).json({ messages })
-    })
+  SELECT * FROM 
+  (SELECT 
+    DISTINCT CASE WHEN to_id = ${req.auth.userId} THEN from_id ELSE to_id END AS user_id,
+    CASE WHEN from_id = ${req.auth.userId} THEN 'sended' ELSE 'received' END as status, 
+    content, createdAt, id 
+  FROM message 
+  WHERE to_id=${req.auth.userId} OR from_id=${req.auth.userId} 
+  ORDER BY createdAt DESC)
+  AS message
+  LEFT JOIN (SELECT username, avatar, id AS user_id  FROM User )
+  AS User  
+  ON message.user_id = User.user_id
+  ORDER BY createdAt DESC`)
+    .then((messages) =>res.status(200).json(messages[0]))
     .catch((error) => res.status(400).json({ error }))
 }
 
@@ -78,8 +85,9 @@ exports.getAllMyMessage = (req, res, next ) => { //https://stackoverflow.com/que
       DISTINCT CASE WHEN to_id = ${req.auth.userId} THEN from_id ELSE to_id END AS user_id, 
       MAX(createdAt) as createdAt,sum(case when readedAt IS null AND to_id= ${req.auth.userId} then 1 else 0 end) as not_read 
       FROM message 
+      WHERE to_id=${req.auth.userId} OR from_id=${req.auth.userId}
 	    GROUP BY user_id
-	    ORDER BY createdAt desc ) 
+	    ORDER BY createdAt DESC ) 
     AS message 
   LEFT JOIN (SELECT username, avatar, id AS user_id  FROM User )
   AS User  

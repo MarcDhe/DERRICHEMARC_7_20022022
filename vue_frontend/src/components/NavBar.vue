@@ -2,10 +2,10 @@
  <header>
    <div class="flex-row ">
     <h1><img class="logo" src="../assets/white_logo.png" alt="logo groupomania"></h1>
-    <div class="search">
-      <input id="search__bar" type="search" placeholder="Search Groupomania"/>
+      <form @submit.prevent='goToSearch' class="search">
+        <input id="search__bar" type="search" placeholder="Search Groupomania" required/>
       <i class="search-icone fa-solid fa-magnifying-glass"></i>
-    </div>
+      </form>
    </div>
   <button id="logout" @click="log" ><i class="fa-solid fa-power-off"></i></button>
  </header> 
@@ -30,6 +30,12 @@ export default {
         window.location = '/Login' // ici on peu l'utilisé vu que l'on sen fiche si celui ci est ou non sauvegarder 
       }
     },
+    //ENVOIR VERS SEARCH AVEC PARAMS DANS L'URL
+    goToSearch(){
+      const searchValue = document.getElementById('search__bar').value 
+      console.log('ici',searchValue)
+      this.$router.push({ name: 'Search', params: { value: searchValue } })
+    }
   },
 
 
@@ -96,7 +102,7 @@ header{
     border: 0;
     cursor: pointer;
     &:hover{
-       background-color: darken($color: #FD2D00, $amount: 5%);
+       background-color: darken($color: #FD2D00, $amount: 10%);
     }
   }
 }

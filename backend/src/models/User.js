@@ -35,5 +35,10 @@ module.exports = sequelize.define("User", {  // ici rien de plus car defini en g
     type: Sequelize.DATE(3),
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3)'),
   },
+  power:{
+    type: Sequelize.STRING(10),
+    defaultValue: 'plebs'
+  }
+
 },{timestamps: false, tableName: 'user'}) //https://stackoverflow.com/questions/21114499/how-to-make-sequelize-use-singular-table-names
 

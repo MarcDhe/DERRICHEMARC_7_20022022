@@ -9,6 +9,9 @@ const User = require('../models/User');
 
 
 exports.signUp = (req, res, next) => {
+  if(req.body.username.length < 4 ){
+    return res.status(400).json({ error : 'Username : 4 Charactères requis !'})
+  }
   User.findOne({where: {username: req.body.username}})
     .then(user => {
     if(user){
@@ -18,7 +21,7 @@ exports.signUp = (req, res, next) => {
     .then(hash=> {
        const user = new User ({   // ATENTION  PROBLEME VEUT ABSOLUMENT CR2E UNE DATE updated created
         username: req.body.username,
-        passwd: hash
+        passwd: hash,
       });
       user.save()
         .then(() => res.status(201).json({ message : 'Utilisateur crée !'}))
@@ -41,6 +44,7 @@ exports.login = (req, res, next) => {
       }
       bcrypt.compare(req.body.passwd, user.passwd)
         .then(valid => {
+          console.log('+++++++++++++++++++',user.power)
           if(!valid){
             return res.status(401).json({ error : 'Mot de passe incorect !'});
           }
@@ -49,8 +53,9 @@ exports.login = (req, res, next) => {
             username : user.username,
             avatar : user.avatar,
             createdAt : user.createdAt,
+            power: user.power,
             token: jwt.sign( // CREATION DU TOKEN
-              {userId: user.id}, // user du token
+              {userId: user.id, power: user.power}, // user du token
               `TEST_TOKEN`, // A MODIF AVANT PRODUCTION
               {expiresIn: '24h'} // A MODIF AVANT PRODUCTION
             )

@@ -92,10 +92,5 @@ export default{
       cursor: pointer;
     }
   }
-  .full-height{
-    height: 100%;
-  }
-
-
 }
 </style>

@@ -17,6 +17,12 @@ exports.addPost = (req, res, next) => {
     ...JSON.parse(req.body.post),
     user_id: req.auth.userId
   }
+  if(postObject.title == ''){
+    return res.status(400).json({ error : 'Titre obligatoire !'})
+  }
+  if(postObject.content == ''){
+    return res.status(400).json({ error : 'Contenu obligatoire !'})
+  }
   Post.create(postObject)
     .then(() => {
       //NOUS RENVOIS LE DERNIER ID DE POST CREE DE L'UTILISATEUR ( CELUI TOUT JUSTE CREE)
@@ -25,14 +31,14 @@ exports.addPost = (req, res, next) => {
         where : {user_id: req.auth.userId}
       })
       .then((post) => res.status(200).json(post))
-      .catch(error => res.status(404).json({ error : 'Post non trouvée !'}))
+      .catch((error) => res.status(404).json({ error : 'Post non trouvée !'}))
     })
   .catch(error => res.status(400).json({ error }))
 }
 
 exports.getOnePost = (req, res, next) => { // ATTENTION ENVOI LES MDP
-  Post.findOne({where: {id: req.params.id}, include:[{model: Liked, as:"Liked"},{model: User, as:"User"},{model : Comment, as: 'Comment', include:[{model: User, as: 'User' } ] }] }) // FAIRE TRES ATTENTION A LA NOTATION PREMIER USER POUR USER_ID DU POST DEUXIEME POOUR LES COMMENTAIRES
-  // User.findAll({ where: {_id: req.params.id}, include: [{model : Post, as: 'Post'}] })
+  Post.findOne({where: {id: req.params.id}, include:[{model: Liked, as:"Liked"},{model: User, as:"User",attributes: ['username', 'avatar']},{model : Comment, as: 'Comment', include:[{model: User, as: 'User',attributes: ['username', 'avatar'] } ]}], order:[[{model:Comment, as: "Comment"}, "createdAt", "DESC"]] }) // FAIRE TRES ATTENTION A LA NOTATION PREMIER USER POUR USER_ID DU POST DEUXIEME POOUR LES COMMENTAIRES
+  // SOURCE DU ORDER POUR LES INCLUDE https://stackoverflow.com/questions/29995116/ordering-results-of-eager-loaded-nested-models-in-node-sequelize#:~:text=If%20you%20also-,use,-%27as%27%20and%20let%27s
   .then(post => res.status(200).json(post))
   .catch(error => {
     console.log(error)
@@ -41,7 +47,7 @@ exports.getOnePost = (req, res, next) => { // ATTENTION ENVOI LES MDP
 
 exports.getAllPost = (req, res, next) => {
   Post.findAll({ include:[
-                   {model: User, as:"User"},
+                   {model: User, as:"User", attributes: ['username', 'avatar']}, // SOURCE ATTRIBUTES https://stackoverflow.com/questions/21883484/how-to-use-an-include-with-attributes-with-sequelize#:~:text=do%20something%20like-,that,-for%20exclude%20or
                    {model: Liked, as:"Liked"}],
                  order:[['createdAt', 'DESC']]})  // SOURCE: https://stackoverflow.com/questions/20718534/sort-sequelize-js-query-by-date
   .then((posts) => res.status(200).json(posts))
@@ -54,7 +60,7 @@ exports.updateOne = (req, res, next ) => {
       if(!post){
        return res.status(404).json({ error: 'Post non trouvé !'})
       }
-      if(post.user_id !== req.auth.userId){
+      if(post.user_id !== req.auth.userId && req.auth.power !== 'admin'){
        return res.status(403).json({ error: 'Requete non autorisé !'})
       }else{
         console.log('tata',req.body.post)
@@ -85,7 +91,7 @@ exports.deleteOnePost = (req, res, next) => {
       if(!post){
        return res.status(404).json({ error: 'Post non trouvée !'})
       }
-      if(post.user_id !== req.auth.userId){
+      if(post.user_id !== req.auth.userId && req.auth.power !== 'admin'){
        return res.status(403).json({ error: 'Requête non authorisée !'})
       }
       if(post.imageUrl != null){

@@ -14,6 +14,16 @@ module.exports = {
         createdAt: Sequelize.literal('CURRENT_TIMESTAMP(3)'),
       }]);
     }
+    const adminPassword = await bcrypt.hash('admin',10)
+    .then(hash => {return hash});
+
+    await queryInterface.bulkInsert('User', [{
+      username: 'admin',
+      passwd: adminPassword,
+      avatar: `http://localhost:3000/pictures/avatars/default_avatar.png`,
+      createdAt: Sequelize.literal('CURRENT_TIMESTAMP(3)'),
+      power: 'admin'
+    }]);
   },
 
   async down (queryInterface, Sequelize) {

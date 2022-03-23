@@ -7,6 +7,7 @@
     </figure>
     <p class='interlocutor__username'>{{conversationDetails.username}}</p>
   </div>
+  <button @click='askMoreMessage()'> Afficher plus </button>
   <div class='reverse-order'>
     <div v-for="message in conversation" :key='message.id'> <!-- https://stackoverflow.com/questions/37638083/how-do-i-reverse-the-order-of-an-array-using-v-for-and-orderby-filter-in-vue-js -->
       <div v-if='message.from_id == user.id' class='text-right'>
@@ -38,7 +39,13 @@ export default {
       user: null,
       conversation: null,
       conversationDetails: this.data,
-      interlocutor: null
+      interlocutor: null,
+      limit: 5,
+    }
+  },
+    computed:{
+    computedMessage(){ // SOURCE https://stackoverflow.com/questions/46622209/how-to-limit-iteration-of-elements-in-v-for
+      return this.limit<=this.conversation.length ? this.conversation.slice(0, this.limit) : this.conversation  // si limit
     }
   },
   methods:{
@@ -66,6 +73,27 @@ export default {
         this.$emit('back-to-all-messages',{
         newStatus : "showMessage"
       })
+    },
+    //DEMANDE CONVERSATION A L'API
+    askMoreMessage(){
+      this.limit += 5;
+      const limit = this.limit
+    fetch(`http://localhost:3000/api/message/${this.conversationDetails.user_id}`,{
+        method: "POST",
+        headers:{
+          'Authorization' : `Bearer ${this.user.token}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({limit})
+      })
+        .then((res) => {
+          if(res.ok){
+            return res.json()
+          }
+        })
+        .then((res) =>{ this.conversation = res })
+        .catch(() => console.log('Oops un pépin est arrivé'))
     }
   },
 
@@ -75,12 +103,13 @@ export default {
 
 
    fetch(`http://localhost:3000/api/message/${this.conversationDetails.user_id}`,{
-        method: "GET",
+        method: "POST",
         headers:{
           'Authorization' : `Bearer ${this.user.token}`,
           'Accept': 'application/json',
           'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify({ limit: 5})
       })
         .then((res) => {
           if(res.ok){
@@ -184,9 +213,11 @@ export default {
     }
     button{
       border-radius: 0px 5px 5px 0px;
+      border-left: 1px;
     }
     .previous{
       margin-bottom: 10px;
+      
     }
     
     

@@ -5,7 +5,10 @@
       <p @click="selectLiked()" class='select-liked border'>Mes Likes</p>
     </div>
     <!-- MY POSTS -->
-    <div v-if='select == "post"'>
+    <div v-if='select == "post" && allPosts !== null'> <!-- si pas de condition !== null fait crashé la page--> 
+        <div  class="default-message" v-if='!allPosts[0]' >
+        <p> Vous n'avez pas posté!</p>
+      </div>
       <div class="post" v-for="post in allPosts " :key="post.id">
         <router-link class="unlink" v-bind:to="`/post/${post.id}`">  <!-- EN ATTENDANT DAVOIR LA BONNE SOLUTION  -->
         <div class="post__info">
@@ -26,6 +29,9 @@
     </div>
     <!-- POSTS LIKED -->
     <div v-if='select == "liked" && allLiked !== null'>
+      <div  class="default-message" v-if='!allLiked[0]' >
+        <p> Vous n'avez pas liké !</p>
+      </div>
       <div class="post" v-for="liked in allLiked " :key="liked.post_id">
         <router-link class="unlink" v-bind:to="`/post/${liked.post_id}`">  <!-- EN ATTENDANT DAVOIR LA BONNE SOLUTION  -->
           <div class="post__info">
@@ -190,6 +196,10 @@ export default {
       color: black
     }
 
+    }
+    .default-message{
+      margin-top:10px;
+      margin-bottom: 10px;
     }
 }
 </style>

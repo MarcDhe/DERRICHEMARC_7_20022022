@@ -32,7 +32,7 @@
         <Activity/>
       </div>
       <div v-if='select == "message"'>
-        <Message/>
+        <MessageProfil/>
       </div>
     </div>
   </main>
@@ -41,12 +41,12 @@
 <script>
 import EditProfileButton from '@/components/EditProfileButton.vue';
 import Activity from '@/components/Activity.vue'
-import Message from '@/components/Message.vue'
+import MessageProfil from '@/components/MessageProfil.vue'
 import { mapState } from 'vuex'
 
 
 export default {
-  components: { EditProfileButton, Activity, Message },
+  components: { EditProfileButton, Activity, MessageProfil },
   name:'Profil',
 
   data(){

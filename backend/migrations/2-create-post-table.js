@@ -8,8 +8,8 @@ module.exports = {
           autoIncrement: true,
           primaryKey : true
         },
-        title: Sequelize.STRING(125),
-        content: Sequelize.STRING(300),
+        title: {type: Sequelize.STRING(125),required: true },
+        content: {type: Sequelize.STRING(300), required: true},
         imageUrl: Sequelize.STRING(255),
         likes: Sequelize.INTEGER(10),
         userLiked: Sequelize.JSON(), 
