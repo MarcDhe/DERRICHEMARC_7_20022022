@@ -10,7 +10,7 @@
       <p>{{user?.username}}</p>
     </div>
     <router-link to="/createPost"> <!-- renvoi vers la creation de post -->
-      <input class="input-post" type="text" placeholder="Écrivez votre post."/>
+      <input class="input-post" type="text" placeholder="Écrivez votre post." aria-label='fake area'/>
     </router-link>
   </div>  
   <div class="red-block"></div>
@@ -50,11 +50,13 @@
         <p>{{errMessage}}</p>
       </div>
       <div v-if="commentStatus == post.id && !resMessage && !errMessage" class="comment">
+        <form @submit.prevent="sendComment(post)">
           <textarea id='comment__content' placeholder='Ecrivez votre commentaire' maxlength="300" required></textarea>
           <div class="comment__option">
-            <button @click="cancelCommentary()">Annulez</button>
-            <button @click="sendComment(post)">Envoyez</button>
+            <button @click.stop="cancelCommentary()">Annulez</button>
+            <button>Envoyez</button>
           </div>
+        </form>
       </div>
     
     
@@ -354,7 +356,7 @@ export default {
         text-align: start;
       }
       &__relase{
-        color:#7A8891;
+        color:#7a7f82;
       }
       &__username{
         font-weight: 600;
@@ -368,7 +370,6 @@ export default {
      padding: 2px 10px 2px 10px;
     &:hover{
       background-color: #FFD6D6; 
-      
     }
   }
   .comment{
@@ -376,6 +377,10 @@ export default {
     display: flex;
     flex-direction: column;
     align-content: center;
+    form{
+      display: flex;
+      flex-direction: column;
+    }
     #comment__content{
       width: auto;
       min-height: 70px;

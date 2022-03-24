@@ -10,7 +10,7 @@
       <i class="search-icone fa-solid fa-magnifying-glass"></i>
       </form>
    </div>
-  <button id="logout" @click="log" ><i class="fa-solid fa-power-off"></i></button>
+  <button id="logout" @click="log" ><i class="fa-solid fa-power-off" aria-label='login / logout'></i></button>
  </header> 
 </template>
 

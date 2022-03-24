@@ -137,7 +137,7 @@ export default {
       color: #3F4156;
     }
     &__createdat{
-      color:#7A8891;
+      color:#66696c;
     }
     p{
       margin:0;

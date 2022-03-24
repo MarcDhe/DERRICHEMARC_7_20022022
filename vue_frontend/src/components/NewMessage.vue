@@ -2,7 +2,9 @@
   <section id="create-message">
     <h3 class='border-bottom'>Nouveau Message</h3>
     <div class='message'>
-      <input @keyup='manageSearchUsername' id="username" class="message__to" placeholder="To:" required='true' autocomplete="off">
+      <form @keyup='manageSearchUsername'>
+       <input  id="username" class="message__to" placeholder="To:" required='true' autocomplete="off">
+      </form>
       <div>
         <div v-if='searchUser.error' class="found">
           <p class="found__user"> {{searchUser.error}}</p>
@@ -13,11 +15,13 @@
           </div>
         </div>
       </div>
-      <textarea class="message__content" placeholder="Votre Message" maxlength="300" required='true' ></textarea>
-      <div class='message__option'>
-      <button @click='sendMessage()'>Envoyez</button>
-      <button @click='backToMessagingMenu()'>Annulez</button>
-      </div>
+      <form @submit.prevent="sendMessage()">
+        <textarea class="message__content" placeholder="Votre Message" maxlength="300" required='true' ></textarea>
+        <div class='message__option'>
+          <button>Envoyez</button>
+          <button @click.stop='backToMessagingMenu()'>Annulez</button>
+        </div>
+      </form>
       <p class="message__alert red-alert" v-if='alertMessage'>{{alertMessage}}</p>
       <p class="message__alert green-alert" v-if='resMessage'>{{resMessage}}</p>
     </div>
@@ -124,7 +128,6 @@ export default {
   }
   .message{
     background-color: rgba(245, 245, 245, 0.8);
-    
     border:1px solid rgb(210, 210, 210);
     border-radius: 5px;
     margin: 5px;
@@ -137,6 +140,10 @@ export default {
       padding: 5px;
       margin-top:5px;
       resize: vertical;
+    }
+    form{
+      display: flex;
+      flex-direction: column;
     }
     &__to{
      border:1px solid rgb(210, 210, 210);

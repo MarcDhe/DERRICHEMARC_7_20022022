@@ -93,7 +93,6 @@ export default {
       display: block;
       width: 25%;
       margin: 0px;
-
     }
     .mobile-off{
       display: none;

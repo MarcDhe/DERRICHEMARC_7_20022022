@@ -60,7 +60,7 @@ exports.lastMessages = (req, res, next) => {
   AS User  
   ON message.user_id = User.user_id
   ORDER BY createdAt DESC`)
-    .then((messages) =>res.status(200).json(messages[0]))
+    .then((messages) =>res.status(200).json(messages))
     .catch((error) => res.status(400).json({ error }))
 }
 
