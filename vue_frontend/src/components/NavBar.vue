@@ -1,7 +1,10 @@
 <template>
  <header>
    <div class="flex-row ">
-    <h1><img class="logo" src="../assets/white_logo.png" alt="logo groupomania"></h1>
+    <h1>
+      <img class="logo mobile-off" src="../assets/white_logo.png" alt="logo groupomania">
+      <img class="logo mobile-on" src="../assets/mobile_logo.png" alt="logo groupomania">
+    </h1>
       <form @submit.prevent='goToSearch' class="search">
         <input id="search__bar" type="search" placeholder="Search Groupomania" required/>
       <i class="search-icone fa-solid fa-magnifying-glass"></i>
@@ -57,7 +60,7 @@ header{
     padding: 7px 10px 7px 10px;
     margin: 0;
     margin-right: 0.3rem;
-    border-radius: 5px;
+    border-radius: 0px 5px 5px 0px;
     background-color: #FD2D00;
     align-self: center; 
     img{
@@ -105,6 +108,36 @@ header{
        background-color: darken($color: #FD2D00, $amount: 10%);
     }
   }
+  .mobile-on{
+    display: none;
+  }
 }
+@media screen and (max-width : 767px) {
+
+header{
+  .mobile-off{
+    display: none;
+  }
+  .mobile-on{
+    display: block;
+  }
+ .flex-row{
+   width: 100%;
+   margin-right:3px;
+    .search{
+      width: 100%;
+      #search__bar{
+        height: 50px;
+        width: 100%;
+        &:focus{
+          background-color: white;
+        }
+      }
+    }
+ }
+}
+
+}
+
 
 </style>

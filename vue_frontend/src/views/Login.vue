@@ -65,9 +65,7 @@ export default {
   width: 100%;
   height: 100%;
   background-image: url("../assets/societe.png");
-  background-position: center;
-  background-size: 100%;
-  background-repeat: no-repeat;
+  background-size: cover;
   display: flex;
   justify-content: center;
  }

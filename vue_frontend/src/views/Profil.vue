@@ -182,4 +182,14 @@ export default {
   };
   
 }
+
+@media screen and (max-width : 767px) {
+  #profile{
+    .row-icon{
+      .message, .activity, .edit{
+       width: 33%;
+      }
+    }
+  }
+}
 </style>

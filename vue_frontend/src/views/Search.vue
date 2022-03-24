@@ -1,6 +1,8 @@
 <template>
-  <p>Search Page</p>
+<main id='search'>
+  <h1 class='border-bottom'> Recherche </h1>
   <p>{{searchResult}}</p>
+</main>
 </template>
 
 <script>
@@ -44,5 +46,14 @@ async mounted(){
 </script>
 
 <style lang='scss'>
+#search{
+  h1{
+  margin: 0px 5px 0px 5px;
+  background-color: white;
 
+  }
+  .border-bottom{
+    border-bottom: 2px solid red;
+  }
+}
 </style>

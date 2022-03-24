@@ -4,8 +4,6 @@
   <nav><NavBar/></nav>
   <main><router-view /></main>
   <div id="sidebar"><SideBar/></div>
-  <div id="content1">Content1</div>
-  <div id="content2">Content2</div>
 </div>
 </template>
 
@@ -28,12 +26,12 @@ export default {
   display: grid;
   height: 100vh;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-auto-rows: 0.2fr 1.5fr 1.2fr 0.8fr;
+  grid-auto-rows: 50px 1.5fr 1.2fr 0.8fr;
   grid-template-areas: 
     "nav nav nav nav"
-    "sidebar main main content1"
-    "sidebar main main content1"
-    "sidebar main main content2";
+    "sidebar main main main"
+    "sidebar main main main"
+    "sidebar main main main";
   grid-gap: 0.3rem;
   align-self: center;
   text-align: center;
@@ -45,30 +43,26 @@ nav{
   grid-area: nav;
 }
 main{
-  background-color: aquamarine;
   grid-area: main;
 }
 #sidebar{
-  background-color: white;
   grid-area: sidebar;
 }
 #content1{
-  background-color: #a7ffeb;
   grid-area: content1;
   overflow-wrap: break-word;
 }
-#content2{
-  background-color: #84ffff;
-  grid-area: content2;
 
+@media screen and (max-width : 767px) {
+  .bloc{
+    grid-template-areas: 
+      "nav"
+      "sidebar"
+      "main "
+      "main";
+    grid-template-columns: 1fr;
+    grid-auto-rows: 50px 0.1fr 1fr 1fr;
+  }
 }
-#content3{
-  background-color: #73ffba;
-  grid-area: content3;
 
-}
-footer{
-  background-color: #1de9b6;
-  grid-area: footer;
-}
 </style>

@@ -81,8 +81,8 @@ export default {
 main{
   width: 100%;
   height: 100%;
-  // background-image: url("../assets/icon-above-font.png");
-  // background-position: center;
+  background-image: url("../assets/societe.png");
+  background-size: cover;
   display: flex;
   justify-content: center;
  }

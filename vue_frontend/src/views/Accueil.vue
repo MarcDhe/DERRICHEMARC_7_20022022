@@ -32,7 +32,7 @@
       </div>
       <div class="post__details">
         <h2>{{post.title}} :</h2>
-         <figure>
+         <figure class='post__picture' v-if='post.imageUrl'>
           <img :src='post.imageUrl' />
         </figure>
         <p>{{post.content}}</p>
@@ -219,7 +219,13 @@ export default {
   background-repeat: no-repeat;
   h1{
     margin:0px;
+    margin-left:5px;
+    margin-right: 5px;
     background-color: white;
+    border-bottom: 2px solid red;
+  }
+  figure{
+    margin: 0;
   }
   .move-to-post{
     margin: 5px 5px 10px 5px;
@@ -234,9 +240,6 @@ export default {
       justify-content: flex-start;
       margin-left: 15px;
       margin-bottom: 10px;
-      figure{
-        margin: 0;
-      }
       &__avatar{
         height:50px;
         width: 50px;
@@ -275,13 +278,18 @@ export default {
       text-decoration: none;
       color: black
     }
-      &__details{
-      text-align: start;
-      margin: 10px 5px 0px 5px;
-      padding: 10px;
-      border:1px solid rgb(210, 210, 210);
-      border-radius: 5px;    
-      background-color: white;
+    &__picture{
+      display: flex;
+      justify-content: center;
+    }
+    &__details{
+    text-align: start;
+    margin: 10px 5px 0px 5px;
+    padding: 10px;
+    border:1px solid rgb(210, 210, 210);
+    border-radius: 5px;    
+    background-color: white;
+
       h2{
         margin:0;
         margin-bottom: 5px;
@@ -293,28 +301,28 @@ export default {
         margin: 0;
       }
     }
-    &__action{
-      display: flex;
-      justify-content: space-around;
-      .like, .unlike, .comment{
-        border-radius: 10px;
-        padding: 2px 10px 2px 10px;
-        &:hover{
-          background-color: #FFD6D6; 
-          cursor: pointer;
-        }
-      }
-      .like, .commentary{
-        .red-color{
-        color: #8e1352;
-        }
-      }
-      .unlike{
-        .red-color{
-          color: #FD2D00;
-        }
+  &__action{
+    display: flex;
+    justify-content: space-around;
+    .like, .unlike, .comment{
+      border-radius: 10px;
+      padding: 2px 10px 2px 10px;
+      &:hover{
+        background-color: #FFD6D6; 
+        cursor: pointer;
       }
     }
+    .like, .commentary{
+      .red-color{
+      color: #8e1352;
+      }
+    }
+    .unlike{
+      .red-color{
+        color: #FD2D00;
+      }
+    }
+  }
     
   }
 
@@ -326,9 +334,6 @@ export default {
     .owner{
       display: flex;
       align-items: center;
-      figure{
-        margin: 0;
-      }
       &__avatar{
         height: 50px;
         width: 50px;
