@@ -1,7 +1,7 @@
 node_modules
 pictures/* 
 pictures/avatars/*
-
+.env
 # Attention a la notation, car le fichier default_avatar a besoin d'un dossier avatars qui existe
 # But not these files...
 !pictures/avatars/

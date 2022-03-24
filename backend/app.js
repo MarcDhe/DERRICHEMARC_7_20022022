@@ -1,3 +1,8 @@
+
+require('dotenv').config() // SECURITE 
+const helmet = require("helmet"); // SECURITE
+const rateLimit = require('express-rate-limit'); // SECURITE
+
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -10,8 +15,16 @@ require('./src/database/connection');
 // AJOUT DES RELATIONS A LA BASE DE DONNEE
 require('./src/database/Relationship');
 
+//LIMIT A MODIFIER AVANT RENDU FINAL
+const limiter = rateLimit({  // SECURITE
+  windowsMs: 15 * 60 * 1000, // 15 minutes
+  max: 1000, // limite each IP to 1000 requests per windowMs 
+  message : "Trop de requete envoyer"
+});
+
 // INTERCEPTE TOUT LES TYPES DE REQUETES
 app.use(express.json());
+app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' })); // SECURITE 
 
 // CORS 'autorisation' 'd'acces/de connexion'
 app.use((req, res, next) => {
@@ -23,7 +36,8 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json()); // va de paire avec le bodyParser d'en haut
 
-
+// SECURITE : Apply the rate limiting to All standard APi call 
+app.use('/api', limiter) 
 //ROUTE USER
 const userRoutes = require('./src/routes/User');
 app.use('/api/auth', userRoutes);

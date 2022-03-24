@@ -1,3 +1,4 @@
+require('dotenv').config() // SECURITE 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
@@ -44,7 +45,6 @@ exports.login = (req, res, next) => {
       }
       bcrypt.compare(req.body.passwd, user.passwd)
         .then(valid => {
-          console.log('+++++++++++++++++++',user.power)
           if(!valid){
             return res.status(401).json({ error : 'Mot de passe incorect !'});
           }
@@ -56,7 +56,7 @@ exports.login = (req, res, next) => {
             power: user.power,
             token: jwt.sign( // CREATION DU TOKEN
               {userId: user.id, power: user.power}, // user du token
-              `TEST_TOKEN`, // A MODIF AVANT PRODUCTION
+              `${process.env.MY_SECRET_TOKEN}`, // A MODIF AVANT PRODUCTION
               {expiresIn: '24h'} // A MODIF AVANT PRODUCTION
             )
           })
