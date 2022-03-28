@@ -115,3 +115,13 @@ exports.getAllUserPost = (req, res, next) => {
 .catch(error => res.status(400).json({ error }))
 }
 
+exports.getAllUserSearchPost = (req, res, next) => {
+  Post.findAll({where : {user_id : req.params.id},
+                include: [
+                  {model: User, as:"User", attributes: ['username', 'avatar']}
+                ]})
+    .then((posts) => {
+      console.log(posts)
+      res.status(200).json(posts)})
+    .catch(error => res.status(400).json({ error }))
+}

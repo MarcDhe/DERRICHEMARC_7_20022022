@@ -2,7 +2,7 @@
 
 <div class="bloc">
   <nav><NavBar/></nav>
-  <main><router-view /></main>
+  <main><router-view :key='$store.state.searchKey'/></main>
   <div id="sidebar"><SideBar/></div>
 </div>
 </template>

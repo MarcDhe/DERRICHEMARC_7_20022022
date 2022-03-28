@@ -1,9 +1,8 @@
 <template>
 <div id="last-messages">
     <p class="section-title border-bottom"> Les derniers messages </p>
-    <div  v-if='lastMessages !== null' >
-      <p v-if='!lastMessages[0]'>Aucun Message</p>
-      <div v-if='lastMessages[0]'>
+    <p v-if='lastMessages?.length == 0'>Aucun Message</p>
+      <div v-if='lastMessages'>
         <div v-for='message, in computedMessage' :key='message.id'>
           <div class='message'>
             <div  class="message__flex">
@@ -23,7 +22,6 @@
           <button @click='changeLimit()'>Afficher plus</button>
         </div>
       </div>
-    </div>
       
 </div>
 </template>
@@ -48,7 +46,7 @@ export default {
     changeLimit(){
     this.limit += 5;
     console.log(this.limit)
-    }
+    },
   },
   async mounted(){
     //RECUPERATION USER 
@@ -61,8 +59,10 @@ export default {
       .then(res => res.json())
       .then(result => { this.lastMessages = result })
       .catch(() => console.log("oops ca ne marche pas!"))
+      console.log(this.lastMessages.length)
 
-  }
+    }
+
 }
 </script>
 

@@ -3,7 +3,7 @@
     <h3 class='border-bottom'>Nouveau Message</h3>
     <div class='message'>
       <form @keyup='manageSearchUsername'>
-       <input  id="username" class="message__to" placeholder="To:" required='true' autocomplete="off">
+       <input  id="username" class="message__to" placeholder="À:" required='true' autocomplete="off">
       </form>
       <div>
         <div v-if='searchUser.error' class="found">

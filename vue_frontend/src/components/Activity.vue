@@ -6,7 +6,7 @@
     </div>
     <!-- MY POSTS -->
     <div v-if='select == "post" && allPosts !== null'> <!-- si pas de condition !== null fait crashé la page--> 
-        <div  class="default-message" v-if='!allPosts[0]' >
+        <div  class="default-message" v-if='allPosts.length == 0' >
         <p> Vous n'avez pas posté!</p>
       </div>
       <div class="post" v-for="post in allPosts " :key="post.id">
@@ -29,7 +29,7 @@
     </div>
     <!-- POSTS LIKED -->
     <div v-if='select == "liked" && allLiked !== null'>
-      <div  class="default-message" v-if='!allLiked[0]' >
+      <div  class="default-message" v-if='allLiked.length == 0' >
         <p> Vous n'avez pas liké !</p>
       </div>
       <div class="post" v-for="liked in allLiked " :key="liked.post_id">
@@ -61,8 +61,8 @@ export default {
   data(){
     return{
       user: null,
-      allPosts: null,
-      allLiked: null,
+      allPosts: [],
+      allLiked: [],
       select: "post",
     }
   },

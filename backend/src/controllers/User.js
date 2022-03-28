@@ -10,9 +10,17 @@ const User = require('../models/User');
 
 
 exports.signUp = (req, res, next) => {
-  if(req.body.username.length < 4 ){
+  let regName = new RegExp('^[a-zA-Z\-]+$') // DEBUT FINI PAR LETTRE AVEC POSSIBILITE -
+  let regUsername = new RegExp('^[a-zA-Z0-9]+$') // CHIFFRE OU LETTRE 
+  if(regUsername.test(req.body.username) || req.body.username.length < 4 ){
     return res.status(400).json({ error : 'Username : 4 Charactères requis !'})
   }
+  if(!regName.test(req.body.lastname) || req.body.lastname == ''){
+    return res.status(400).json({ error : 'Nom de famille incorrect !'})
+  }
+  if(!regName.test(req.body.firstname) || req.body.firstname == ''){
+    return res.status(400).json({ error : 'Prénom incorrect !'})
+  } 
   User.findOne({where: {username: req.body.username}})
     .then(user => {
     if(user){
@@ -22,6 +30,8 @@ exports.signUp = (req, res, next) => {
     .then(hash=> {
        const user = new User ({   // ATENTION  PROBLEME VEUT ABSOLUMENT CR2E UNE DATE updated created
         username: req.body.username,
+        lastname: req.body.lastname,
+        firstname: req.body.firstname,
         passwd: hash,
       });
       user.save()

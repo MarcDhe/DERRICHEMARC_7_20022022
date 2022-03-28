@@ -1,15 +1,15 @@
 <template>
   <main>
     <div class='login'>
-      <h1>Account Login</h1>
+      <h1>Connection au compte</h1>
       <form @submit.prevent='login()'>
-        <input id='username' placeholder= "Username" required>
-        <input id='password' type='password'  placeholder= "Password" required>
-        <button>Login to your Account</button>
+        <input id='username' placeholder= "Nom d'utilisateur" required>
+        <input id='password' type='password'  placeholder= "Mot de passe" required>
+        <button>Se connecter</button>
       </form>
       <p v-if='error' class='red-text'>{{error}}</p>
       <router-link class="signup-link" to="/signUp" > 
-        <p>Still not member ? <strong>Signup</strong></p>
+        <p>Pas encore membre ? <strong>S'enregistrer</strong></p>
       </router-link>
     </div>
   </main>
@@ -35,7 +35,7 @@ export default {
         return this.error = user.error;
       }
       localStorage.setItem('user', JSON.stringify(user));
-      this.$router.push('/accueil');
+      this.$router.push('/');
     },
     //RECUPRATION DES INFOMATION DU USER
     async getUserDetails(){

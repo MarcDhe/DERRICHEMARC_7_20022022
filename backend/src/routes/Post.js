@@ -11,6 +11,7 @@ router.get('/:id', multer, postCtrl.getOnePost);
 router.post('/:id', auth, multer, postCtrl.updateOne);
 router.delete('/:id', auth, postCtrl.deleteOnePost);
 router.get('/user/post', auth, postCtrl.getAllUserPost)
+router.get('/search/:id', auth, postCtrl.getAllUserSearchPost)
 // router.get('/lastId/try', auth, postCtrl.lastId);
 // router.post('/',  auth, multer, postCtrl.tryUpFile)
 // router.post('/:id/like', auth, postCtrl.addLike)

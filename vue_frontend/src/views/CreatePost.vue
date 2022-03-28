@@ -3,7 +3,7 @@
     <h1> Créer votre poste  </h1>
     <form @submit.prevent="sendPost()">
     <PostText/>
-    <button>Post it</button>
+    <button>Poster</button>
     </form>
   </main>
 </template>

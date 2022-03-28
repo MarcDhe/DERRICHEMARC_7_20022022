@@ -40,7 +40,6 @@
           <p v-if="this.postOwner == true" id="delete-post" @click='deletePost()' ><i class="red-color fa-solid fa-trash-can"></i> Delete </p>
           <p v-if="this.postOwner == true" id="update-post" @click='updatePost(this.updateOne)'><i class="red-color fa-regular fa-pen-to-square"></i> Update</p>
         </div>
-        <!-- A REVOIR -->
         <form class="new-comment">
           <textarea id='new-comment__content'  placeholder='Ecrivez votre commentaire' maxlength="300" required></textarea>
           <div class="new-comment__option">

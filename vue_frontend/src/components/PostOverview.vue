@@ -1,0 +1,122 @@
+<template>
+<article class='post'>
+      <router-link class="unlink" :to="{name:'Post', params: { id: post.id }}">
+      <div class="info">
+        <div class="owner">
+          <div class="redim">
+            <figure>
+              <img class="owner__avatar" :src="post.User.avatar" alt="avatar"/>
+            </figure>
+          </div>
+          <div class="owner__details">
+            <div class="owner__username"> {{post.User.username}} {{ post.id }}</div>
+            <div class="owner__relase" >posté il y a {{setDate(post.createdAt)}}</div>
+          </div>
+        </div>
+
+      </div>
+      <div class="post__details">
+        <h2>{{post.title}} :</h2>
+         <figure class='post__picture' v-if='post.imageUrl'>
+          <img :src='post.imageUrl' />
+        </figure>
+        <p>{{post.content}}</p>
+      </div>
+        </router-link>
+</article>
+</template>
+
+<script>
+import date from '../service/Date'
+
+export default {
+props: [ 'post' ],
+name:'PostOverview',
+data(){
+  return{
+    allPost: this.post,
+  }
+},
+methods:{
+    setDate: date.setDate, 
+    dateDiff: date.dateDiff, 
+  //push post
+ async try(){
+    this.allPosts = this.post
+  }
+},
+async mounted(){
+  await this.try();
+  console.log('oweverwien', this.allPosts)
+}
+}
+</script>
+
+<style lang='scss'>
+.post{
+  border:1px solid rgb(210, 210, 210);
+  border-radius: 5px;
+  background-color: rgba(250, 250, 250, 0.8);
+  margin: 5px 5px 10px 5px;
+  padding: 5px;
+  .unlink{
+    text-decoration: none;
+    color: black
+  }
+  &__picture{
+    display: flex;
+    justify-content: center;
+  }
+  &__details{
+  text-align: start;
+  margin: 10px 5px 0px 5px;
+  padding: 10px;
+  border:1px solid rgb(210, 210, 210);
+  border-radius: 5px;    
+  background-color: white;
+    h2{
+      margin:0;
+      margin-bottom: 5px;
+    }
+    img{
+      max-width: 100%;
+    }
+    p{
+      margin: 0;
+    }
+  }
+  figure{
+    margin:0px;
+  }
+.info{
+    display: flex;
+    justify-content: space-between;
+    padding-left: 10px;
+    padding-right: 10px;
+    .owner{
+      display: flex;
+      align-items: center;
+      &__avatar{
+        border-radius: 25px;
+        border:1px solid rgb(210, 210, 210);
+        height: 50px;
+        width: 50px;
+        object-fit: cover;
+        margin-right:5px;
+      }
+      &__details{
+        padding-left: 10px;
+        text-align: start;
+      }
+      &__relase{
+        color:#7a7f82;
+      }
+      &__username{
+        font-weight: 600;
+        color: #3F4156;
+      }
+    }
+  }
+}
+
+</style>

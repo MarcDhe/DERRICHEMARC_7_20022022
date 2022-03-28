@@ -1,47 +1,34 @@
 <template>
-<main id='search'>
+<main id='search' >
   <h1 class='border-bottom'> Recherche </h1>
-  <p>{{searchResult}}</p>
+  <div v-if='user_idSearch == null'>
+  <StandardSearch v-on:all-user-post='searchUserPost'/>
+  </div>
+  <div v-if='user_idSearch !== null'>
+  <UserSearch :data='this.user_idSearch'/>
+  </div>
 </main>
 </template>
 
 <script>
+import UserSearch from '@/components/UserSearch.vue';
+import StandardSearch from '@/components/StandardSearch.vue'
+
 export default {
+components: { UserSearch, StandardSearch },
 name: 'Search',
 data(){
   return {
-    user: null,
-    searchResult: null
+    user_idSearch: null 
   }
 },
-async mounted(){
-   
-    if(localStorage.user == undefined){
-      this.$router.push(`/login`);
-    }
-    this.user = JSON.parse(localStorage.getItem('user'));
-
-    const termSearch = this.$route.params.value
-    console.log("route value", termSearch) 
-  
-    await fetch('http://localhost:3000/api/search',{
-      method: "POST",
-      headers:{
-        'Accept': 'application/json', 
-        'Content-Type': 'application/json',
-        'Authorization' : `Bearer ${this.user.token}`
-        },
-      body: JSON.stringify({term: termSearch})
-    })
-      .then((res) => {
-           return res.json()
-      })
-      .then((result) => { this.searchResult = result;
-      console.log(result)})
-      .catch(() => console.log('Oops ca ne marche pas !'))
-
-      console.log('result is :',this.searchResult) 
+methods:{
+  //RECEPTION EVENEMENT DE L'ENFANT
+  searchUserPost(payload){
+    this.user_idSearch = payload.user_id
+    console.log('tata',payload.user_id)
   }
+},
 }
 </script>
 

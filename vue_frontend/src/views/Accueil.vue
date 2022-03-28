@@ -28,7 +28,7 @@
             <div class="owner__relase" >posté il y a {{setDate(post.createdAt)}}</div>
           </div>
         </div>
-          <p><i class="fa-solid fa-user-plus"></i></p>
+
       </div>
       <div class="post__details">
         <h2>{{post.title}} :</h2>

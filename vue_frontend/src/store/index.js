@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: { 
-    not_read: 0,
+    searchKey: 0,
 
   },
   getters: { // se def comme une fonction avec state en parametre
