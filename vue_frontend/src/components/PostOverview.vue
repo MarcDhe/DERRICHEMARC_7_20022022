@@ -1,28 +1,29 @@
 <template>
-<article class='post'>
-      <router-link class="unlink" :to="{name:'Post', params: { id: post.id }}">
-      <div class="info">
-        <div class="owner">
-          <div class="redim">
-            <figure>
-              <img class="owner__avatar" :src="post.User.avatar" alt="avatar"/>
-            </figure>
-          </div>
-          <div class="owner__details">
-            <div class="owner__username"> {{post.User.username}} {{ post.id }}</div>
-            <div class="owner__relase" >posté il y a {{setDate(post.createdAt)}}</div>
-          </div>
+<article class='post-overview'>
+  <router-link class="unlink" :to="{name:'Post', params: { id: post.id }}">
+    <div class="info">
+      <div class="owner">
+        <div class="redim">
+          <figure>
+            <img class="owner__avatar" :src="post.User.avatar" alt="avatar"/>
+          </figure>
         </div>
+        <div class="owner__details">
+          <div class="owner__username"> {{post.User.username}} {{ post.id }}</div>
+          <div class="owner__relase" >posté il y a {{setDate(post.createdAt)}}</div>
+        </div>
+      </div>
 
-      </div>
-      <div class="post__details">
-        <h2>{{post.title}} :</h2>
-         <figure class='post__picture' v-if='post.imageUrl'>
-          <img :src='post.imageUrl' />
-        </figure>
-        <p>{{post.content}}</p>
-      </div>
-        </router-link>
+    </div>
+    <div class="post__details">
+      <h2>{{post.title}} :</h2>
+      <figure class='post__picture' v-if='post.imageUrl'>
+        <img :src='post.imageUrl' />
+      </figure>
+      <p>{{post.content}}</p>
+    </div>
+  </router-link>
+  <slot></slot>  <!-- SOURCE = https://openclassrooms.com/fr/courses/6390311-creez-une-application-web-avec-vue-js/6865121-creez-des-composants-flexibles-en-utilisant-les-slots  -->
 </article>
 </template>
 
@@ -53,7 +54,7 @@ async mounted(){
 </script>
 
 <style lang='scss'>
-.post{
+.post-overview{
   border:1px solid rgb(210, 210, 210);
   border-radius: 5px;
   background-color: rgba(250, 250, 250, 0.8);
@@ -63,11 +64,11 @@ async mounted(){
     text-decoration: none;
     color: black
   }
-  &__picture{
+  .post__picture{
     display: flex;
     justify-content: center;
   }
-  &__details{
+  .post__details{
   text-align: start;
   margin: 10px 5px 0px 5px;
   padding: 10px;

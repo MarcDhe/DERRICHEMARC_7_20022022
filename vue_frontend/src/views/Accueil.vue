@@ -15,29 +15,7 @@
   </div>  
   <div class="red-block"></div>
   <div class="post" v-for="post in posts " :key="post.id">
-    <router-link class="unlink" :to="{name:'Post', params: { id: post.id }}">
-      <div class="info">
-        <div class="owner">
-          <div class="redim">
-            <figure>
-              <img class="owner__avatar" :src="post.User.avatar" alt="avatar"/>
-            </figure>
-          </div>
-          <div class="owner__details">
-            <div class="owner__username"> {{post.User.username}} {{ post.id }}</div>
-            <div class="owner__relase" >posté il y a {{setDate(post.createdAt)}}</div>
-          </div>
-        </div>
-
-      </div>
-      <div class="post__details">
-        <h2>{{post.title}} :</h2>
-         <figure class='post__picture' v-if='post.imageUrl'>
-          <img :src='post.imageUrl' />
-        </figure>
-        <p>{{post.content}}</p>
-      </div>
-      </router-link>
+    <PostOverview :post='post'>
       <div class="post__action">
         <p v-if='testLike(post.id)' @click='unlike(post)' class="unlike" ><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> Like:({{post.Liked.length}})</p>
         <p v-if='!testLike(post.id)' @click='addLike(post)' class="like" ><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> Like:({{post.Liked.length}})</p>
@@ -58,7 +36,7 @@
           </div>
         </form>
       </div>
-    
+    </PostOverview>
     
   </div>
 
@@ -69,7 +47,10 @@
 
 <script>
 import date from '../service/Date.js';
+import PostOverview from '../components/PostOverview.vue';
+
 export default {
+components: { PostOverview }, 
   name:"Accueil",
   data(){
     return {
@@ -271,38 +252,6 @@ export default {
   }
 
   .post{
-    border:1px solid rgb(210, 210, 210);
-    border-radius: 5px;
-    background-color: rgba(250, 250, 250, 0.8);
-    margin: 5px 5px 10px 5px;
-    padding: 5px;
-    .unlink{
-      text-decoration: none;
-      color: black
-    }
-    &__picture{
-      display: flex;
-      justify-content: center;
-    }
-    &__details{
-    text-align: start;
-    margin: 10px 5px 0px 5px;
-    padding: 10px;
-    border:1px solid rgb(210, 210, 210);
-    border-radius: 5px;    
-    background-color: white;
-
-      h2{
-        margin:0;
-        margin-bottom: 5px;
-      }
-      img{
-        max-width: 100%;
-      }
-      p{
-        margin: 0;
-      }
-    }
   &__action{
     display: flex;
     justify-content: space-around;
