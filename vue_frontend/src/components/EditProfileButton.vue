@@ -237,7 +237,17 @@ export default {
     }
   }
 }
-
+button{
+      background-color: #ba2808;
+      color: white;
+      border-radius: 15px;
+      padding: 3px 10px 5px 10px;
+      cursor: pointer;
+      
+      &:hover{
+       background-color: darken($color: #FD2D00, $amount: 10%);
+      }
+    }
 // CLASSE APPELER DANS UNE FONCTION
 .border-bottom{
   border-bottom: 2px solid red;

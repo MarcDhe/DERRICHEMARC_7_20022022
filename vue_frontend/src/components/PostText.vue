@@ -1,10 +1,10 @@
 <template>
       <div class=create-post>
-        <input id='create-post__title' :value="title" placeholder='Titre' maxlength="125" required>
+        <input id='create-post__title' :value="title" placeholder='Titre' maxlength="125" required aria-label='title'>
         <figure>
           <img v-if="url" :src="url" />
         </figure>
-        <textarea  id='create-post__content' :value="content" placeholder='Texte' maxlength="300" required></textarea>
+        <textarea  id='create-post__content' :value="content" placeholder='Texte' maxlength="300" required aria-label='content'></textarea>
         <label for='create-post__file'>Ajouter une image ou une vidéo :{{this.picture}} </label>
         <input id='create-post__file' type="file" @change="previewFile"> 
     </div>
@@ -68,6 +68,7 @@ export default {
   }
   #create-post__file{
     margin-bottom: 10px;
+    
   }
 }
 </style>

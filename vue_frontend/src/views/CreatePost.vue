@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main id="create-post">
     <h1> Créer votre poste  </h1>
     <form @submit.prevent="sendPost()">
     <PostText/>
@@ -71,7 +71,7 @@ export default {
 </script>
 
 <style lang="scss">
-main{
+#create-post{
   height: 100%;
   overflow: scroll;
   background-image: url("../assets/icon.png");
@@ -108,7 +108,18 @@ main{
     #create-post__file{
       margin-bottom: 10px;
     }
+
   }
-  
+      button{
+      background-color: #ba2808;
+      color: white;
+      border-radius: 10px;
+      padding: 3px 10px 5px 10px;
+      cursor: pointer;
+      
+      &:hover{
+       background-color: darken($color: #FD2D00, $amount: 10%);
+      }
+    }
 }
 </style>

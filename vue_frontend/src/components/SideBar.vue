@@ -70,7 +70,7 @@ export default {
 
   #make_post{
     border: 1px solid red;
-    background-color: #FD2D00;
+    background-color: #ba2808;
     color: white;
     text-decoration: none;
     border-radius: 3px;

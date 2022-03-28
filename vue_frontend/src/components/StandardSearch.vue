@@ -315,12 +315,12 @@ async mounted(){
       }
     }
   }
+
   .user{
     cursor: pointer;
     display: flex;
     align-items: center;
     border:1px solid rgb(210, 210, 210);
-    width : 45%;
     border-radius: 5px;
     margin-bottom:5px;
     padding: 5px;

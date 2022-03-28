@@ -86,10 +86,15 @@ export default{
     padding-bottom: 5px;
 
     button{
-      background-color:#FD2D00;
+      background-color: #ba2808;
+      color: white;
       border-radius: 15px;
-      border-width: 1px;
+      padding: 3px 10px 5px 10px;
       cursor: pointer;
+      
+      &:hover{
+       background-color: darken($color: #FD2D00, $amount: 10%);
+      }
     }
   }
 }

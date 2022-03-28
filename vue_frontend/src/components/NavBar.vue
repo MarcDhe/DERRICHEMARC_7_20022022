@@ -5,7 +5,7 @@
       <img class="logo mobile-off" src="../assets/white_logo.png" alt="logo groupomania">
       <img class="logo mobile-on" src="../assets/mobile_logo.png" alt="logo groupomania">
     </h1>
-      <form @submit.prevent='goToSearch' class="search">
+      <form @submit.prevent='goToSearch' class="search" >
         <input id="search__bar" type="search" placeholder="Search Groupomania" required/>
       <i class="search-icone fa-solid fa-magnifying-glass"></i>
       </form>
@@ -63,7 +63,7 @@ header{
     margin: 0;
     margin-right: 0.3rem;
     border-radius: 0px 5px 5px 0px;
-    background-color: #FD2D00;
+    background-color: #ba2808;
     align-self: center; 
     img{
       width: 100%;
@@ -102,7 +102,7 @@ header{
     height: 50px;
     width: 50px;
     padding: 7px;
-    background-color: #FD2D00;
+    background-color: #ba2808;
     color: white;
     border: 0;
     cursor: pointer;

@@ -21,7 +21,7 @@
   <form @submit.prevent='manageSendMessage()'>
     <div id="ancre"></div>
     <textarea class="message__content" placeholder="Votre Message" maxlength="300" required='true' ></textarea>
-    <button><i class="red-color fa-solid fa-paper-plane"></i></button>
+    <button><i class="white-color fa-solid fa-paper-plane"></i></button>
   </form>
   <button class='previous' @click='backToAllMessages()'>retour</button>
   </section>
@@ -199,7 +199,7 @@ export default {
     margin-bottom:5px;
   }
   .red-color{
-    color:red;
+    color:white;
   }
   form{
     display: flex;
@@ -218,9 +218,18 @@ export default {
     .previous{
       margin-bottom: 10px;
       
-    }
-    
-    
+    } 
   }
+  button{
+      background-color: #ba2808;
+      color: white;
+      border-radius: 15px;
+      padding: 3px 10px 5px 10px;
+      cursor: pointer;
+      
+      &:hover{
+       background-color: darken($color: #FD2D00, $amount: 10%);
+      }
+    }
 }
 </style>
