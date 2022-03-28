@@ -8,9 +8,9 @@
     </div>
     <div v-if="this.element == 'avatar'" class="option__avatar">
       <figure>
-        <img :src="url" alt='avatar'/>
+        <img :src="url" alt='new avatar'/>
       </figure>
-      <p>Selectionné un nouvelle avatar:</p>
+      <label for='new-avatar'>Selectionné un nouvelle avatar:</label>
       <input id='new-avatar' type="file" @change="previewFile"> 
       <button @click="changeAvatar()">Envoyé</button>
     </div>
@@ -203,6 +203,9 @@ export default {
     img{
       max-width: 100%;
     }
+    label{
+      padding-bottom:3px;
+    }
     button{
       margin-top: 5px;
     }
@@ -236,21 +239,21 @@ export default {
       margin-top:5px;
     }
   }
-}
+
 button{
       background-color: #ba2808;
       color: white;
       border-radius: 15px;
       padding: 3px 10px 5px 10px;
       cursor: pointer;
-      
       &:hover{
        background-color: darken($color: #FD2D00, $amount: 10%);
       }
     }
+
 // CLASSE APPELER DANS UNE FONCTION
-.border-bottom{
-  border-bottom: 2px solid red;
+  .border-bottom{
+    border-bottom: 2px solid red;
+  }
 }
- 
 </style>

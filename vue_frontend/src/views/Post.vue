@@ -28,7 +28,7 @@
         <h1>{{ onePost.title}} :</h1>
         <div class="post__content">
           <figure v-if="onePost.imageUrl" class="post__file">
-            <img :src="onePost.imageUrl"/>
+            <img :src="onePost.imageUrl" alt="post picture"/>
           </figure>
           <p>{{onePost.content}}</p>
         </div>

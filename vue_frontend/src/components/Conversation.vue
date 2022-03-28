@@ -5,7 +5,7 @@
     <figure>
       <img class='interlocutor__avatar' :src='conversationDetails.avatar' alt='avatar'>
     </figure>
-    <p class='interlocutor__username'>{{conversationDetails.username}}</p>
+    <h2 class='interlocutor__username'>{{conversationDetails.username}}</h2>
   </div>
   <button @click='askMoreMessage()'> Afficher plus </button>
   <div class='reverse-order'>
@@ -21,7 +21,7 @@
   <form @submit.prevent='manageSendMessage()'>
     <div id="ancre"></div>
     <textarea class="message__content" placeholder="Votre Message" maxlength="300" required='true' ></textarea>
-    <button><i class="white-color fa-solid fa-paper-plane"></i></button>
+    <button><i class="white-color fa-solid fa-paper-plane" aria-label='send'></i></button>
   </form>
   <button class='previous' @click='backToAllMessages()'>retour</button>
   </section>

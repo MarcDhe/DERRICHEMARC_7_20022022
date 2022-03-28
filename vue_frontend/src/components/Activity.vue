@@ -10,17 +10,17 @@
         <p> Vous n'avez pas posté!</p>
       </div>
       <div class="post" v-for="post in allPosts " :key="post.id">
-        <router-link class="unlink" v-bind:to="`/post/${post.id}`">  <!-- EN ATTENDANT DAVOIR LA BONNE SOLUTION  -->
-        <div class="post__info">
-          <div class="align-start">
-            <h3 class="post__title">{{post.title}}:</h3>
-            <p class="post__release">- {{setDate(post.createdAt)}} -</p>
+        <router-link class="unlink" :to="{name:'Post', params: { id: post.id }}">
+          <div class="post__info">
+            <div class="align-start">
+              <h2 class="post__title">{{post.title}}:</h2>
+              <p class="post__release">- {{setDate(post.createdAt)}} -</p>
+            </div>
+              <p><i class="red-color fa-solid fa-hand-holding-heart" alt="Number of like"></i> {{post.Liked.length}}</p>
           </div>
-            <p><i class="red-color fa-solid fa-hand-holding-heart" alt="Number of like"></i> {{post.Liked.length}}</p>
-        </div>
           <div class="post__body">
             <figure v-if='post.imageUrl'>
-              <img class="post__picture" :src="post.imageUrl" alt="avatar"/>
+              <img class="post__picture" :src="post.imageUrl" alt="post picture"/>
             </figure>
             <p class="post__content">{{post.content}}</p>
           </div>
@@ -33,7 +33,7 @@
         <p> Vous n'avez pas liké !</p>
       </div>
       <div class="post" v-for="liked in allLiked " :key="liked.post_id">
-        <router-link class="unlink" v-bind:to="`/post/${liked.post_id}`">  <!-- EN ATTENDANT DAVOIR LA BONNE SOLUTION  -->
+        <router-link class="unlink" :to="{name:'Post', params: { id: liked.post.id }}">
           <div class="post__info">
             <div class="align-start">
               <h3 class="post__title">{{liked.Post.title}}:</h3>
@@ -124,7 +124,7 @@ export default {
 #option{
   display: flex;
   flex-direction: column;
-  h3{
+  h2{
     margin:0px;
   }
   p{
@@ -169,7 +169,7 @@ export default {
       }
     }
     &__release{
-        color:#7A8891;
+        color:#3F4156;
     }
     .red-color{
       color: #FD2D00;

@@ -89,7 +89,7 @@ export default {
 #signup{
   width: 100%;
   height: 100%;
-  background-image: url("../assets/societe.png");
+  background-image: url("../assets/societe.webp");
   background-size: cover;
   display: flex;
   justify-content: center;

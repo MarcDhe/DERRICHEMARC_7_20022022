@@ -114,7 +114,7 @@ export default {
 #profile{
   .banner{
     height: 100px;
-    background-image: url('../assets/societe.png');
+    background-image: url('../assets/societe.webp');
     background-size: cover;
     background-repeat: no-repeat;
   }

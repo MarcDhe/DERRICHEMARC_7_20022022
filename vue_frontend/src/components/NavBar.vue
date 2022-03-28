@@ -2,15 +2,15 @@
  <header>
    <div class="flex-row ">
     <h1>
-      <img class="logo mobile-off" src="../assets/white_logo.png" alt="logo groupomania">
-      <img class="logo mobile-on" src="../assets/mobile_logo.png" alt="logo groupomania">
+      <img class="logo mobile-off" src="../assets/white_logo.webp" alt="logo groupomania">
+      <img class="logo mobile-on" src="../assets/mobile_logo.webp" alt="logo groupomania">
     </h1>
       <form @submit.prevent='goToSearch' class="search" >
         <input id="search__bar" type="search" placeholder="Search Groupomania" required/>
-      <i class="search-icone fa-solid fa-magnifying-glass"></i>
+        <i class="search-icone fa-solid fa-magnifying-glass"></i>
       </form>
    </div>
-  <button id="logout" @click="log" ><i class="fa-solid fa-power-off" aria-label='login / logout'></i></button>
+  <button id="logout" @click="log" aria-label='login/logout'><i class="fa-solid fa-power-off" ></i></button>
  </header> 
 </template>
 
@@ -89,12 +89,12 @@ header{
         }
       }
       ::placeholder{
-        color:rgb(200, 200, 200);
+        color:white;
       }
       .search-icone{
         height: 25px;
         margin-left:-35px;
-        color:rgb(200, 200, 200);
+        color:white;
       }
     }
   }

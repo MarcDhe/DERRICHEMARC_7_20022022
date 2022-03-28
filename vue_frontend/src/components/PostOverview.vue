@@ -18,7 +18,7 @@
     <div class="post__details">
       <h2>{{post.title}} :</h2>
       <figure class='post__picture' v-if='post.imageUrl'>
-        <img :src='post.imageUrl' />
+        <img :src='post.imageUrl' alt="post picture"/>
       </figure>
       <p>{{post.content}}</p>
     </div>

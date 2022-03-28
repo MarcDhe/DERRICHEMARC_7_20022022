@@ -5,7 +5,7 @@
         <h2><i class="fa-solid fa-house-chimney-window"></i> Accueil</h2>
       </router-link> 
       <router-link class="nav__link mobile-on" to="/">
-        <h2><i class="fa-solid fa-house-chimney-window"></i></h2>
+        <i class="h2-style fa-solid fa-house-chimney-window"></i>
       </router-link> 
       <!-- <router-link class="nav__link" to=""> 
         <h2><i class="fa-solid fa-bell"></i> Notifications</h2>
@@ -14,18 +14,18 @@
         <h2><i class="fa-solid fa-envelope"></i> Message</h2>
       </router-link>
       <router-link class="nav__link mobile-on" to='/messaging'>
-        <h2><i class="fa-solid fa-envelope"></i></h2>
+        <i class="h2-style fa-solid fa-envelope"></i>
       </router-link>
       <router-link  class="nav__link mobile-off" to="/profil">
         <h2><i class="fa-solid fa-user"></i> Profil</h2>
       </router-link> 
       <router-link  class="nav__link mobile-on" to="/profil">
-        <h2><i class="fa-solid fa-user"></i></h2>
+        <i class="h2-style fa-solid fa-user"></i>
       </router-link> 
-      <router-link id="make_post" class='mobile-off' to='/createPost'>
+      <router-link class='make_post mobile-off' to='/createPost'>
         <h2>Poster</h2>
       </router-link>      
-      <router-link id="make_post" class='mobile-on' to='/createPost'>
+      <router-link  class='make_post mobile-on' to='/createPost'>
         <h2>Poster</h2>
       </router-link>
       <!-- <router-link to="/login">Login</router-link> 
@@ -61,14 +61,14 @@ export default {
         background-color: #FFD6D6; 
         border-radius: 60px
       }
-      h2{
+      h2, .h2-style{
       margin: 10px 0px 10px 0px;
       font-size:20px;
       font-weight: 600;
     }
   }
 
-  #make_post{
+  .make_post{
     border: 1px solid red;
     background-color: #ba2808;
     color: white;

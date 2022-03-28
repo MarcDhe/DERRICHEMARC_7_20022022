@@ -1,16 +1,15 @@
 <template>
 <main id="home">
   <h1>Accueil</h1>
-  <!-- <p>{{ this.try }}</p> -->
   <div class="move-to-post">
     <div class="user">
       <figure>
-        <img class="user__avatar" v-bind:src="user?.avatar"/>
+        <img class="user__avatar" v-bind:src="user?.avatar" alt="user avatar"/>
       </figure>
       <p>{{user?.username}}</p>
     </div>
-    <router-link to="/createPost"> <!-- renvoi vers la creation de post -->
-      <input class="input-post" type="text" placeholder="Écrivez votre post." aria-label='fake area'/>
+    <router-link to="/createPost" class='unlink'>
+      <p class="input-post">Écrivez votre post.</p>
     </router-link>
   </div>  
   <div class="red-block"></div>
@@ -39,9 +38,6 @@
     </PostOverview>
     
   </div>
-
-    <button @click='printf'> cliquer pour afficher </button>
-  <router-link to="/createPost">You want to post something ?</router-link>
 </main>
 </template>
 
@@ -197,7 +193,7 @@ components: { PostOverview },
   height: 100%;
   overflow: scroll;
   overflow-wrap: break-word;
-  background-image: url("../assets/icon.png");
+  background-image: url("../assets/icon.webp");
   background-position: center;
   background-repeat: no-repeat;
   h1{
@@ -211,6 +207,7 @@ components: { PostOverview },
     margin: 0;
   }
   .move-to-post{
+    overflow: hidden;
     margin: 5px 5px 10px 5px;
     padding:10px 5px 0px 0px;
     border:1px solid rgb(210, 210, 210);
@@ -233,10 +230,19 @@ components: { PostOverview },
         object-fit: cover;
       }
     }
+    .unlink{
+      text-decoration: none;
+      color:#3F4156;
+      cursor:text;
+    }
     .input-post{
-      width: 100%;
+      text-align: start;
+      text-decoration: none;
+      margin:0;
+      padding:5px;
       height: 70px;
       border: 0;
+      background-color: white;
       border-top: 1px solid #d2d2d2;
       text-indent:5px; // déplacer le text dans un padding
     }
