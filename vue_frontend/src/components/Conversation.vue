@@ -53,6 +53,8 @@ export default {
       const to_id = this.conversationDetails.user_id;
       const content = document.getElementsByClassName('message__content')[0].value
       await this.sendMessageToApi(to_id, content)
+      this.conversation.unshift({content, from_id:this.user.id})
+      console.log()
     },
     //ENVOI A L'API
     async sendMessageToApi(to_id, content){

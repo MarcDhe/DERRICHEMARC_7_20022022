@@ -118,7 +118,7 @@ exports.changePassword = (req, res, next) => {
     if(!user){
       return res.status(404).json({ error: "Utilisateur inexistant !"})
     }
-    if(req.body.newPassword !== req.body.newPasswordCheck || req.body.newPassword == ""){
+    if(req.body.passwd !== req.body.newPasswordCheck){
       return res.status(400).json({ error: "Nouveau mot de passe incorrecte !"})
     }
     bcrypt.compare(req.body.currentPassword, user.passwd)
@@ -126,7 +126,7 @@ exports.changePassword = (req, res, next) => {
           if(!valid){
             return res.status(401).json({ error : 'Mot de passe incorect !'});
           }
-          bcrypt.hash(req.body.newPassword, 10) // renvoi une promesse
+          bcrypt.hash(req.body.passwd, 10) // renvoi une promesse
           .then(hash=> {
             const userPassword = { passwd: hash };
             user.update(userPassword)

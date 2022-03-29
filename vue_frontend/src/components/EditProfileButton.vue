@@ -137,7 +137,7 @@ export default {
     //ENVOYE DU NOUVEAU PASSWORD
     async sendNewPassword(){
       const currentPassword = document.getElementById('current-password').value ;
-      const newPassword = document.getElementById('new-password').value;
+      const passwd = document.getElementById('new-password').value; // Format pôur le faire passé dans password validator 
       const newPasswordCheck = document.getElementById('new-password-check').value;
 
       const resMessage = await fetch(' http://localhost:3000/api/auth/user/password',{
@@ -147,7 +147,7 @@ export default {
             'Accept': 'application/json', 
             'Content-Type': 'application/json' 
           },
-          body: JSON.stringify({currentPassword, newPassword, newPasswordCheck})
+          body: JSON.stringify({currentPassword, passwd, newPasswordCheck})
         })
           .then(function(res){
               return res.json();

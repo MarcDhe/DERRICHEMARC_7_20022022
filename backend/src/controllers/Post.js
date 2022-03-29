@@ -55,6 +55,12 @@ exports.getAllPost = (req, res, next) => {
 }
 
 exports.updateOne = (req, res, next ) => {
+  if(req.body.title == ''){
+    return res.status(400).json({ error : 'Titre obligatoire !'})
+  }
+  if(req.body.content == ''){
+    return res.status(400).json({ error : 'Contenu obligatoire !'})
+  }
   Post.findOne({where: {id: req.params.id}})
     .then((post) => {
       if(!post){

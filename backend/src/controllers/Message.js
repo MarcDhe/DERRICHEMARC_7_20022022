@@ -7,6 +7,9 @@ const sequelize = require('../database/connection');
 const Op = Sequelize.Op;
 
 exports.newMessage = (req, res, next) => {
+  if(req.body.content == ""){
+    return res.status(400).json({ error })
+  }
   const message = {
     ...req.body,
     from_id : req.auth.userId

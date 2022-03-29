@@ -26,7 +26,6 @@ module.exports = {
           model: 'Post',
           as: 'post_id'}
       },
-      post_user_id : Sequelize.INTEGER(11),
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE
     });

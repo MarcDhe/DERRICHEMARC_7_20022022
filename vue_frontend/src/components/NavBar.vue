@@ -25,11 +25,9 @@ export default {
   methods:{
     log(){
       if(localStorage.user == undefined){ 
-        console.log("crac")
         window.location = '/Login' // ici on peu l'utilisé vu que l'on sen fiche si celui ci est ou non sauvegarder 
       }else{
         localStorage.clear();
-        console.log('you are logout');
         window.location = '/Login' // ici on peu l'utilisé vu que l'on sen fiche si celui ci est ou non sauvegarder 
       }
     },

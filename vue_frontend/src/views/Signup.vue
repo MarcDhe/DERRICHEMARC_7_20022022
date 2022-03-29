@@ -93,11 +93,6 @@ export default {
   background-size: cover;
   display: flex;
   justify-content: center;
-//  label{
-//    color: red;
-//    text-align: start;
-//    padding-bottom: 2px;
-//  }
  .login{
     background-color: #3F4257;
     border-radius: 10px; 

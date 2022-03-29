@@ -24,10 +24,6 @@ module.exports = {
       avatar: Sequelize.STRING(),
       firstname: Sequelize.STRING(65),
       lastname: Sequelize.STRING(65),
-      email: {
-        type: Sequelize.STRING(65),
-        unique: true
-      },
       createdAt: Sequelize.DATE(),
       power:{
         type: Sequelize.STRING(10),

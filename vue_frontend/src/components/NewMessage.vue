@@ -16,7 +16,7 @@
         </div>
       </div>
       <form @submit.prevent="sendMessage()">
-        <textarea class="message__content" placeholder="Votre Message" maxlength="300" required='true' ></textarea>
+        <textarea class="message__content" placeholder="Votre Message" maxlength="300" required></textarea>
         <div class='message__option'>
           <button>Envoyez</button>
           <button @click.stop='backToMessagingMenu()'>Annulez</button>
@@ -185,7 +185,17 @@ export default {
     }
 
   }
-  
+    button{
+      background-color: #ba2808;
+      color: white;
+      border-radius: 15px;
+      padding: 3px 10px 5px 10px;
+      cursor: pointer;
+      
+      &:hover{
+       background-color: darken($color: #FD2D00, $amount: 10%);
+      }
+    }
 
 }
 </style>

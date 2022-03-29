@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main id="login">
     <div class='login'>
       <h1>Connection au compte</h1>
       <form @submit.prevent='login()'>
@@ -34,6 +34,8 @@ export default {
       if(user.error){
         return this.error = user.error;
       }
+      // const expiry = new Date() + 1; // 1 pour 1 sec
+      // user.expiry = expiry // AJOUT NOUVEAU CHAMP A USER + SOURCE https://www.sohamkamani.com/blog/javascript-localstorage-with-ttl-expiry/
       localStorage.setItem('user', JSON.stringify(user));
       this.$router.push('/');
     },
@@ -61,7 +63,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
- main{
+ #login{
   width: 100%;
   height: 100%;
   background-image: url("../assets/societe.webp");

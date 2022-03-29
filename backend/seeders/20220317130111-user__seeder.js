@@ -1,7 +1,5 @@
 'use strict';
 const bcrypt = require('bcrypt');
-const { BLOB } = require('sequelize/types');
-
 
 module.exports = {
   async up (queryInterface, Sequelize) { // SOURCE: https://sequelize.org/master/manual/migrations.html#:~:text=Creating%20the%20first-,Seed,-Suppose%20we%20want
@@ -11,8 +9,8 @@ module.exports = {
       await queryInterface.bulkInsert('User', [{
         username: 'boby'+i,
         passwd: password,
-        lastname: bob, 
-        firstname: dylan, 
+        lastname: 'bob'+i, 
+        firstname: 'dylam'+i, 
         avatar: `http://localhost:3000/pictures/avatars/default_avatar.png`,
         createdAt: Sequelize.literal('CURRENT_TIMESTAMP(3)'),
       }]);

@@ -160,9 +160,19 @@ components: { PostOverview },
     if(localStorage.user == undefined){
       this.$router.push(`/login`);
     }
-    this.user = JSON.parse(localStorage.getItem('user'));
+   this.user = JSON.parse(localStorage.getItem('user'));
+    // const now = new Date();
+    // console.log(this.user.expiry)
+    // if(now > this.user.expiry){
+    //   localStorage.clear();
+    //   this.$router.push(`/login`);
+      
+    // }
 
-   await fetch('http://localhost:3000/api/post')
+   await fetch('http://localhost:3000/api/post',{
+          method: "GET",
+          headers: {'Authorization' : `Bearer ${this.user.token}`}
+          })
       .then(res => res.json())
       .then(result => { this.posts = result })
       .catch(() => console.log("oops ca ne marche pas!"))

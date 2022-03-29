@@ -3,6 +3,9 @@ const { QueryTypes } = require('@sequelize/core'); // BESOIN D'INSTALLER npm i @
 
 exports.searchSomething = async (req, res, next ) => {
   let allResult = []
+  if(req.body.term == ""){
+    return res.status(400).json({ error })
+  }
   await  sequelize.query(`SELECT id, username, avatar, firstname, lastname FROM User WHERE username LIKE :search_content OR lastname LIKE :search_content OR firstname LIKE :search_content `,
                           {
                             replacements: {search_content : `%${req.body.term}%`},

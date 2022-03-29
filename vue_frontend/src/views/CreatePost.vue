@@ -74,7 +74,7 @@ export default {
 #create-post{
   height: 100%;
   overflow: scroll;
-  background-image: url("../assets/icon.png");
+  background-image: url("../assets/icon.webp");
   background-position: center;
   background-repeat: no-repeat;
   .create-post{

@@ -66,7 +66,7 @@ export default{
   height: 100%;
   overflow: scroll;
   overflow-wrap: break-word;
-  background-image: url("../assets/icon.png");
+  background-image: url("../assets/icon.webp");
   background-position: center;
   background-repeat: no-repeat;
   h1{

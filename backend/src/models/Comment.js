@@ -11,6 +11,5 @@ module.exports = sequelize.define("Comment", {  // ici rien de plus car defini e
   imageUrl: Sequelize.STRING(255),
   user_id: Sequelize.INTEGER(11),
   post_id: Sequelize.INTEGER(11),
-  post_user_id : Sequelize.INTEGER(11)
 
 },{tableName: "comment"})

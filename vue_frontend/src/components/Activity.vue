@@ -152,7 +152,7 @@ export default {
     }
   
   .post, .comment{
-     border:1px solid rgb(210, 210, 210);
+    border:1px solid rgb(210, 210, 210);
     border-radius: 5px;
     background-color: white;
     margin-top:10px;
