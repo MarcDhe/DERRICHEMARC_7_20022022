@@ -5,6 +5,7 @@ const Post=require('../models/Post')
 const Sequelize = require('sequelize');
 const sequelize = require('../database/connection');
 const Op = Sequelize.Op;
+const { QueryTypes } = require('@sequelize/core');
 
 exports.newMessage = (req, res, next) => {
   if(req.body.content == ""){
@@ -62,23 +63,12 @@ exports.lastMessages = (req, res, next) => {
   LEFT JOIN (SELECT username, avatar, id AS user_id  FROM User )
   AS User  
   ON message.user_id = User.user_id
-  ORDER BY createdAt DESC`)
-    .then((messages) =>res.status(200).json(messages[0]))
+  ORDER BY createdAt DESC`,{
+    type: QueryTypes.SELECT  // si non précisé renvoi un double tableau identique 
+  })
+    .then((messages) =>res.status(200).json(messages))
     .catch((error) => res.status(400).json({ error }))
 }
-
-// exports.getAllMyMessage = (req, res, next ) => {
-//   sequelize.query(`
-// SELECT * FROM message M
-// LEFT OUTER JOIN User AS User  ON M.from_id = User.id 
-//  						 AND M.to_id = 4
-//  					 OR M.to_id = User.id
-// 					  	AND M.from_id = 4`)
-//   //ATTENTION ON RECOIT 2 TABLEAU
-//   .then((messages) => res.status(200).json(messages))
-//   .catch(error => res.status(400).json({ error }))
-// }
-
 
 exports.getAllMyMessage = (req, res, next ) => { //https://stackoverflow.com/questions/3057746/how-to-count-null-values-in-mysql
   console.log('user est ',req.auth.userId)
@@ -94,31 +84,11 @@ exports.getAllMyMessage = (req, res, next ) => { //https://stackoverflow.com/que
     AS message 
   LEFT JOIN (SELECT username, avatar, id AS user_id  FROM User )
   AS User  
-  ON message.user_id = User.user_id;`)
+  ON message.user_id = User.user_id`,{
+    type: QueryTypes.SELECT
+  }
+  )
   //ATTENTION ON RECOIT 2 TABLEAU
-  .then((messages) => res.status(200).json(messages[0]))
+  .then((messages) => res.status(200).json(messages))
   .catch(error => res.status(400).json({ error }))
 }
-// SELECT 
-// DISTINCT CASE WHEN to_id = ${req.auth.userId} THEN from_id ELSE to_id END AS user_id,
-// MAX(createdAt) as createdAt,sum(case when readedAt IS null AND to_id= ${req.auth.userId} then 1 else 0 end) as not_read 
-// FROM message group by user_id ORDER BY createdAt desc;
-
-// sequelize.query(`   // AVANT MODIF
-// SELECT
-//   DISTINCT CASE WHEN to_id = ${req.auth.userId} THEN from_id ELSE to_id END AS user_id,
-//   SUM(CASE WHEN readedAt IS null AND to_id = ${req.auth.userId} THEN 1 else 0 END) AS not_read,
-//   MAX(createdAt) AS createdAt  
-// FROM Message  WHERE from_id = ${req.auth.userId} 
-// GROUP BY to_id ORDER BY createdAt desc`)
-// exports.getAllMyMessage = (req, res, next ) => {
-//   Message.findAll({
-//     where: {
-//       [Op.or]: [ {to_id: req.auth.userId}, {from_id: req.auth.userId} ]  //SOURCE https://sequelize.org/master/manual/model-querying-basics.html
-//     }})
-//   .then((messages) => res.status(200).json(messages))
-//   .catch(error => res.status(400).json({ error }))
-// }
-
-
-// SELECT DISTINCT CASE WHEN to_id = 2 THEN from_id ELSE to_id END, COUNT(case when readedAt = null then 1 else 0 end) as not_read  from MESSAGE  where from_id = 2 group by to_id;

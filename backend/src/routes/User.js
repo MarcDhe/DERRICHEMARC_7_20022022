@@ -7,6 +7,7 @@ const password = require('../middleware/password')
 //ATTENTION IMPORTATION DUN AUTRE MULTER QUI ENVOI VERS LES /PICTURES/AVATARS
 const multerAvatar = require('../middleware/multer-avatar');
 
+
 router.post("/signup", password, userCtrl.signUp);
 router.post('/login', userCtrl.login);
 router.get('/user', auth, userCtrl.foundUser);  

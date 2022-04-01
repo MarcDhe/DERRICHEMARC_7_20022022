@@ -5,8 +5,8 @@
       <img class="logo mobile-off" src="../assets/white_logo.webp" alt="logo groupomania">
       <img class="logo mobile-on" src="../assets/mobile_logo.webp" alt="logo groupomania">
     </h1>
-      <form @submit.prevent='goToSearch' class="search" >
-        <input id="search__bar" type="search" placeholder="Search Groupomania" required/>
+      <form @submit.prevent='goToSearch' class="search">
+        <input id="search__bar" type="search" placeholder="Search Groupomania"  title="Recherche" required/>
         <i class="search-icone fa-solid fa-magnifying-glass"></i>
       </form>
    </div>

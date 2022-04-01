@@ -5,7 +5,6 @@ const Liked = require('../models/Liked');
 
 const fs = require('fs'); // package fs ( FileSysteme)  systeme de fichier
 
-
 exports.addPost = (req, res, next) => {
   console.log('limage est ', req.file)
   const postObject = req.file ?

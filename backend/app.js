@@ -1,7 +1,8 @@
 
-require('dotenv').config() // SECURITE 
-const helmet = require("helmet"); // SECURITE
-const rateLimit = require('express-rate-limit'); // SECURITE
+// SECURITE //
+const helmet = require("helmet"); 
+const rateLimit = require('express-rate-limit'); 
+const morgan = require("morgan");
 
 const express = require('express');
 const app = express();
@@ -36,8 +37,11 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json()); // va de paire avec le bodyParser d'en haut
 
-// SECURITE : Apply the rate limiting to All standard APi call 
-app.use('/api', limiter) 
+// SECURITE //
+app.use(morgan('common'));
+app.use(limiter);
+
+
 //ROUTE USER
 const userRoutes = require('./src/routes/User');
 app.use('/api/auth', userRoutes);

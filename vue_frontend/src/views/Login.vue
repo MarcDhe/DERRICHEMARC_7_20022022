@@ -34,11 +34,11 @@ export default {
       if(user.error){
         return this.error = user.error;
       }
-      // const expiry = new Date() + 1; // 1 pour 1 sec
-      // user.expiry = expiry // AJOUT NOUVEAU CHAMP A USER + SOURCE https://www.sohamkamani.com/blog/javascript-localstorage-with-ttl-expiry/
+      const now = new Date(); // RAPPEL getTime NB DE MS DEPUIS 1970
+      user.expiry = now.getTime() + (1000 * 60 * 60 * 24); // 1J // AJOUT NOUVEAU CHAMP A USER + SOURCE https://www.sohamkamani.com/blog/javascript-localstorage-with-ttl-expiry/
       localStorage.setItem('user', JSON.stringify(user));
       this.$router.push('/');
-    },
+    }, 
     //RECUPRATION DES INFOMATION DU USER
     async getUserDetails(){
       let username = document.getElementById('username').value;

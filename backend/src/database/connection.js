@@ -1,9 +1,10 @@
 const Sequelize = require('sequelize');
+require('dotenv').config() // SECURITE
 
-const sequelize = new Sequelize("groupomania", "landser", "",
+const sequelize = new Sequelize(`${process.env.DATA_BASE}`, `${process.env.DATA_BASE_USER}`, "",
 {
-  host : "127.0.0.1",
-  dialect: "mysql",
+  host : `${process.env.DATA_BASE_HOST}`,
+  dialect: `${process.env.DATA_BASE_DIALECT}`,
 });
 
 sequelize.authenticate()

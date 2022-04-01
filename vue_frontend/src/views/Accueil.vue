@@ -44,7 +44,7 @@
 <script>
 import date from '../service/Date.js';
 import PostOverview from '../components/PostOverview.vue';
-
+// import localStorage from '../service/LocalStorage';
 export default {
 components: { PostOverview }, 
   name:"Accueil",
@@ -61,7 +61,7 @@ components: { PostOverview },
   methods:{
     setDate: date.setDate, // METHODE D'APPEL DU FONCTION IMPORTER
     dateDiff: date.dateDiff, // SOURCE : https://forum.vuejs.org/t/how-to-use-helper-functions-for-imported-modules-in-vuejs-vue-template/6266
-
+    // checkLocalStorage: localStorage.checkStorage,
     printf(){
       console.log(" valeur recuperer :", this.posts)
     },
@@ -157,17 +157,17 @@ components: { PostOverview },
 
   async mounted(){ // pour executé la methods au chargement de la page
   
+    // this.user = this.checkLocalStorage();
+    // A REVOIR
     if(localStorage.user == undefined){
-      this.$router.push(`/login`);
+     return this.$router.push(`/login`);
     }
-   this.user = JSON.parse(localStorage.getItem('user'));
-    // const now = new Date();
-    // console.log(this.user.expiry)
-    // if(now > this.user.expiry){
-    //   localStorage.clear();
-    //   this.$router.push(`/login`);
-      
-    // }
+    this.user = JSON.parse(localStorage.getItem('user'));
+    const now = new Date();
+    if(now.getTime() > this.user.expiry){ // ALORS SESSION EXPIRE
+      localStorage.clear()
+      return this.$router.push('/login');
+    }
 
    await fetch('http://localhost:3000/api/post',{
           method: "GET",

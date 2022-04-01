@@ -71,25 +71,4 @@ exports.updateComment = (req, res, next) => { // RIP CETTE ROUTE EN ATTENTE
   
 
     
-  // Comment.findAll({
-  //   where: { post_id: req.params.id}, 
-  //   and: { user_id: req.auth.userId },
-  //   and: {[Op.like]: '%' + request.body.content + '%'} // marche pas pour la date 
-  // })
-  // const test = 'select * from comment'
-  // const requestSQL = `SELECT * FROM comment WHERE post_id=${req.params.id} AND user_id=${req.auth.userId} AND createdAt LIKE '%${req.body.createdAt}%' LIMIT 1`
-  // const base =  sequelize.query(requestSQL)
-  //   .then((comment) => {
-  //     if(!comment){
-  //       return res.status(404).json({ error: 'Commentaire non trouvé !'})
-  //     }
-  //     // if(comment.user_id !== req.auth.userId){
-  //     //   return res.status(403).json({ error : 'Requete non autorisé !'})
-  //     // }
-  //     console.log('tat',comment[0][0])
-  //     Comment.update( { where :{id: comment[Ø][0].id }},{content : req.body.content})
-  //     .then(() => res.status(200).json({ message: 'Commentaire modifié !'}))
-  //     .catch( error => res.status(500).json({ error }))
-  //   })
-    
 

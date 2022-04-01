@@ -42,10 +42,7 @@ exports.signUp = (req, res, next) => {
   .catch( error => res.status(500).json({ error }))
 }
 
-// exports.login = (req, res, next ) => {    // TEST FORMAT DU USER 
-//   User.findOne({ username: req.body.username })
-//     .then((userss) => res.status(200).json(userss))
-// }
+
 
 exports.login = (req, res, next) => {
   User.findOne({where: {username: req.body.username}}) // ATTENTION ICI UTILISATION DU WHERE !NOSQL
@@ -75,12 +72,12 @@ exports.login = (req, res, next) => {
     })
     .catch(error => res.status(500).json({ error }));
 }
-// POUR L INSTANT PLUS D'UTILITE renvoyer par le login
+
 exports.foundUser = ( req, res, next)=>{  
   console.log('ok')
-  User.findOne({where:{id : req.auth.userId}}) // attention ici modif pour test
+  User.findOne({where:{id : req.auth.userId}}) 
     .then((user) => {
-      const userInfo = {  // pour ne pas transmetter le mot de passe
+      const userInfo = {  
         id : user.id,
         username : user.username,
         avatar : user.avatar,

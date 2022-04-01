@@ -1,13 +1,12 @@
 <template>
 <section id='conversation'>
-  <!-- <p> {{conversation}}</p> -->
   <div class="interlocutor border-bottom">
     <figure>
       <img class='interlocutor__avatar' :src='conversationDetails.avatar' alt='avatar'>
     </figure>
     <h2 class='interlocutor__username'>{{conversationDetails.username}}</h2>
   </div>
-  <button @click='askMoreMessage()'> Afficher plus </button>
+  <button  v-if="limit <= conversation?.length"  @click='askMoreMessage()'>{{ conversationDetails.length}}Afficher plus </button>
   <div class='reverse-order'>
     <div v-for="message in conversation" :key='message.id'> <!-- https://stackoverflow.com/questions/37638083/how-do-i-reverse-the-order-of-an-array-using-v-for-and-orderby-filter-in-vue-js -->
       <div v-if='message.from_id == user.id' class='text-right'>
@@ -20,7 +19,7 @@
   </div>
   <form @submit.prevent='manageSendMessage()'>
     <div id="ancre"></div>
-    <textarea class="message__content" placeholder="Votre Message" maxlength="300" required='true' ></textarea>
+    <textarea class="message__content" placeholder="Votre Message" maxlength="300" required='true' title="votre Message"></textarea>
     <button><i class="white-color fa-solid fa-paper-plane" aria-label='send'></i></button>
   </form>
   <button class='previous' @click='backToAllMessages()'>retour</button>
@@ -51,10 +50,10 @@ export default {
   methods:{
     async manageSendMessage(){
       const to_id = this.conversationDetails.user_id;
-      const content = document.getElementsByClassName('message__content')[0].value
-      await this.sendMessageToApi(to_id, content)
-      this.conversation.unshift({content, from_id:this.user.id})
-      console.log()
+      const content = document.getElementsByClassName('message__content')[0].value;
+      await this.sendMessageToApi(to_id, content);
+      this.conversation.unshift({content, from_id:this.user.id});
+      document.getElementsByClassName('message__content')[0].value = "";
     },
     //ENVOI A L'API
     async sendMessageToApi(to_id, content){
@@ -99,12 +98,10 @@ export default {
     }
   },
 
-  mounted(){
-   this.user = JSON.parse(localStorage.getItem('user'));
-   console.log('Conversation:', this.conversationDetails);
+ async mounted(){
 
-
-   fetch(`http://localhost:3000/api/message/${this.conversationDetails.user_id}`,{
+  this.user = JSON.parse(localStorage.getItem('user'));
+  await fetch(`http://localhost:3000/api/message/${this.conversationDetails.user_id}`,{
         method: "POST",
         headers:{
           'Authorization' : `Bearer ${this.user.token}`,
@@ -120,9 +117,6 @@ export default {
         })
         .then((res) =>{ this.conversation = res })
         .catch(() => console.log('Oops un pépin est arrivé'))
-    
-  console.log(this.conversation);
- console.log('ici',this.conversationDetails.not_read)
 
   // FONCTION QUI NOTE LU
   if(this.conversationDetails.not_read !== 0){

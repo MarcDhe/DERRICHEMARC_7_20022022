@@ -3,7 +3,7 @@
     <h3 class='border-bottom'>Nouveau Message</h3>
     <div class='message'>
       <form @keyup='manageSearchUsername'>
-       <input  id="username" class="message__to" placeholder="À:" required='true' autocomplete="off">
+       <input  id="username" class="message__to" placeholder="À:" required='true' autocomplete="off" title='Destinataire'>
       </form>
       <div>
         <div v-if='searchUser.error' class="found">
@@ -16,7 +16,7 @@
         </div>
       </div>
       <form @submit.prevent="sendMessage()">
-        <textarea class="message__content" placeholder="Votre Message" maxlength="300" required></textarea>
+        <textarea class="message__content" placeholder="Votre Message" maxlength="300" title="Votre Message" required ></textarea>
         <div class='message__option'>
           <button>Envoyez</button>
           <button @click.stop='backToMessagingMenu()'>Annulez</button>
@@ -52,7 +52,6 @@ export default {
        return this.searchUser = result;
       }
       this.searchUser = result.userArray;
-      console.log(this.searchUser);
     },
     // ENVOI RECHERCHE API
   async searchUsername(username){
@@ -72,26 +71,21 @@ export default {
   },
   //SELECTION DU USER VOULU
   selectUser(user){
-    console.log('userSelect est:',user);
     this.toUser = user;
     document.getElementById('username').value = this.toUser.username;
     this.searchUser = [] ; // ne pas oublié pour enlever les v-if
-    console.log('searchUSer vaut:',this.searchUser);
     document.getElementsByClassName('message__content')[0].focus(); // met le focus sur l'element
 
   },
   //ENVOIE DU MESSAGE
   async sendMessage(){
     const to_id = this.toUser.id;
-    console.log('user id est',to_id);
     const content = document.getElementsByClassName('message__content')[0].value;
-    console.log('content: ', content);
     const resMessage = await this.sendMessageToApi(to_id, content);
     if(resMessage.error){
       return this.alertMessage = resMessage.error
     }
     this.resMessage = resMessage.message
-    console.log(resMessage)
   },
   //ENVOIE DU MESSAGE A L API
   async sendMessageToApi(to_id, content){

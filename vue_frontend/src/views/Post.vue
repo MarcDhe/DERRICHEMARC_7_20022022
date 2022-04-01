@@ -309,7 +309,13 @@ export default {
   mounted(){ 
     
     if(localStorage.user == undefined){
-      this.$router.push(`/login`);
+     return  this.$router.push(`/login`);
+    }
+    const user = JSON.parse(localStorage.getItem('user'));
+    const now = new Date();
+    if(now.getTime() > user.expiry){ // ALORS SESSION EXPIRE
+      localStorage.clear()
+      return  this.$router.push('/login');
     }
   //RECUPERATION DE L'ID DANS L'URL https://stackoverflow.com/questions/61946295/get-the-id-from-the-url-in-vuejs
   this.post_id = this.$route.params.id;

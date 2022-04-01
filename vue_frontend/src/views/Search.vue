@@ -29,6 +29,17 @@ methods:{
     console.log('tata',payload.user_id)
   }
 },
+mounted(){
+    if(localStorage.user == undefined){
+      return this.$router.push(`/login`);
+    }
+    this.user = JSON.parse(localStorage.getItem('user'));
+    const now = new Date();
+    if(now.getTime() > this.user.expiry){ // ALORS SESSION EXPIRE
+      localStorage.clear()
+      return this.$router.push('/login');
+    }
+}
 }
 </script>
 
