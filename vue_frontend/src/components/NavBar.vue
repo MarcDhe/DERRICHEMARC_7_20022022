@@ -5,7 +5,7 @@
       <img class="logo mobile-off" src="../assets/white_logo.webp" alt="logo groupomania">
       <img class="logo mobile-on" src="../assets/mobile_logo.webp" alt="logo groupomania">
     </h1>
-      <form @submit.prevent='goToSearch' class="search">
+      <form @submit.prevent='goToSearch' class="search" title="search section">
         <input id="search__bar" type="search" placeholder="Search Groupomania"  title="Recherche" required/>
         <i class="search-icone fa-solid fa-magnifying-glass"></i>
       </form>
@@ -81,13 +81,14 @@ header{
         padding-left: 10px;
         border-radius: 10px;
         border: 0px;
-        background-color: lighten(#3F4257, 10%);
+        background-color: lighten(#3F4257, 5%);
         &:focus{
           background-color: white;
         }
       }
       ::placeholder{
         color:white;
+        font-size: 18px; // pas en dessous sinon ne passe pas le test acces 
       }
       .search-icone{
         height: 25px;
