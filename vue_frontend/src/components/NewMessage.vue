@@ -65,7 +65,7 @@ export default {
       body: JSON.stringify({username})
     })
       .then((res) => {
-          return res.json()
+          return res.json();
       })
       .catch(() => console.log('Oops ca ne marche pas !'))
   },
@@ -83,7 +83,7 @@ export default {
     const content = document.getElementsByClassName('message__content')[0].value;
     const resMessage = await this.sendMessageToApi(to_id, content);
     if(resMessage.error){
-      return this.alertMessage = resMessage.error
+      return this.alertMessage = resMessage.error;
     }
     this.resMessage = resMessage.message
   },

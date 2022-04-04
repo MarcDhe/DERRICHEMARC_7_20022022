@@ -90,7 +90,7 @@ export default {
       })
         .then((res) => {
           if(res.ok){
-            return res.json()
+            return res.json();
           }
         })
         .then((res) =>{ this.conversation = res })
@@ -112,7 +112,7 @@ export default {
       })
         .then((res) => {
           if(res.ok){
-            return res.json()
+            return res.json();
           }
         })
         .then((res) =>{ this.conversation = res })
@@ -126,7 +126,7 @@ export default {
       })
         .then((res) => {
           if(res.ok){
-            return res.json()
+            return res.json();
           }
         })
         .catch(() => console.log('Oops un pépin est arrivé'))

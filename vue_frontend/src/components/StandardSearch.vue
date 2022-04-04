@@ -108,7 +108,6 @@ methods:{
     this.$emit('all-user-post', {
       user_id
     })
-    console.log('user_id est:', user_id)
   },
    //AFFICHE LE COMPOSANT ACTIVITY
     switchToPost(){
@@ -150,7 +149,6 @@ async mounted(){
 
     const termSearch = this.$route.params.value
     this.termSearch = termSearch
-    console.log("route value", termSearch) 
   
     await fetch('http://localhost:3000/api/search',{
       method: "POST",
@@ -168,13 +166,10 @@ async mounted(){
       this.userResult = result[0].User;
       this.postResult = result[1].Post;
       this.commentResult = result[2].Comment;
-      console.log('tata',(this.commentResult == []))
-      console.log(result)
       })
-      .catch(() => console.log('Oops ca ne marche pas !'))
-
-      console.log('result is :',this.searchResult) 
-          this.termSearch = termSearch
+      .catch(() => console.log('Oops ca ne marche pas !')) 
+      
+    this.termSearch = termSearch
   }
 }
 </script>

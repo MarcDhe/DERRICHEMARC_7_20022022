@@ -44,12 +44,9 @@ export default{
       updateConversationDetails(payload){
         this.conversationDetails = payload.details.message;
         this.status = payload.details.newStatus;
-        console.log('messaging',this.conversationDetails);
-        console.log('le status est', this.status)
       },
       //RETOUR AFFICHAGE DE TOUT LES MESSAGE  
       backToAllMessages(payload){
-        console.log(payload)
         this.status = payload.newStatus
       },
   },

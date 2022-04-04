@@ -45,11 +45,8 @@ methods:{
  async try(){
     this.allPosts = this.post
   }
-},
-async mounted(){
-  await this.try();
-  console.log('oweverwien', this.allPosts)
 }
+
 }
 </script>
 

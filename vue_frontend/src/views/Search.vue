@@ -26,7 +26,6 @@ methods:{
   //RECEPTION EVENEMENT DE L'ENFANT
   searchUserPost(payload){
     this.user_idSearch = payload.user_id
-    console.log('tata',payload.user_id)
   }
 },
 mounted(){

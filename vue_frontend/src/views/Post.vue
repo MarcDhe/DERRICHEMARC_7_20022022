@@ -172,7 +172,6 @@ export default {
       const like = 1;
       this.numberOfLike++;
       this.likeStatus = true;
-      console.log('valeur like', like)
       fetch(`http://localhost:3000/api/like/${this.post_id}`,{
         method: "POST",
         headers:{
@@ -188,7 +187,6 @@ export default {
       const like = 0;
       this.numberOfLike--;
       this.likeStatus = false;
-      console.log('valeur like', like)
       fetch(`http://localhost:3000/api/like/${this.post_id}`,{
         method: "POST",
         headers:{
@@ -249,7 +247,6 @@ export default {
      await fetch(`http://localhost:3000/api/post/${this.post_id}`)
         .then(res => res.json())
         .then((data) => { 
-          console.log('+++',data)
           this.onePost = data;
           this.countLike(data);
           this.checkUserLike(data);
@@ -292,7 +289,6 @@ export default {
     },
     // SUPRESSION COMMENT
     async deleteComment(comment, index){
-      console.log('index est :',index)
     const deleteStatus = await  fetch(`http://localhost:3000/api/comment/${comment.id}`,{
         method: "DELETE",
         headers: {'Authorization' : `Bearer ${this.user.token}`},

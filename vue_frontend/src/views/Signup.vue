@@ -34,9 +34,7 @@ export default {
       let lastname = document.getElementById('lastName').value;
       let firstname = document.getElementById('firstName').value;
       let passwd = document.getElementById('password').value;
-      console.log(username, passwd)
       const userSignup = await this.createUser(username, lastname, firstname, passwd);
-      console.log('userSignupp est:', userSignup)
       if(userSignup.error){
         return this.error = userSignup.error;
       }

@@ -34,10 +34,8 @@ export default {
     //ENVOIR VERS SEARCH AVEC PARAMS DANS L'URL
     async goToSearch(){
       const searchValue = document.getElementById('search__bar').value 
-      console.log('ici',searchValue)
       await this.$router.push({ name: 'Search', params: { value: searchValue } })
       this.$store.state.searchKey += 1;
-      console.log(this.$store.state.searchKey)
     }
   },
 

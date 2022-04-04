@@ -33,13 +33,11 @@ export default {
       const title = document.getElementById('create-post__title').value;
       const content = document.getElementById('create-post__content').value; 
       const post = JSON.stringify({title, content})
-      console.log("strigify est", post)
       //https://stackoverflow.com/questions/48284011/how-to-post-image-with-fetch
       const fileInput = document.getElementById('create-post__file');  //https://www.tech-wiki.online/fr/how-to-upload-files-fetch.html
       const formData = new FormData(); // utilisation de .append() https://serversideup.net/file-uploads-using-fetch-api-and-vuejs/
       formData.append('post',post); // A FAIRE ATTENTION ICI
       formData.append('image',fileInput.files[0]);// nommé image a cause de multer
-      console.log('le file est ',formData);
 
        fetch('http://localhost:3000/api/post',{
           method: "POST",

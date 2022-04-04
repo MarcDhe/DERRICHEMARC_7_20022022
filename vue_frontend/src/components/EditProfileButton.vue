@@ -83,7 +83,7 @@ export default {
         })
         .then((res) => { 
           if(res.ok){
-           return res.json()
+           return res.json();
           }
         })
         .catch(() => console.log('Oops !'))

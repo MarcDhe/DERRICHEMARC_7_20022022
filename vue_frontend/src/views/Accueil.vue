@@ -61,10 +61,7 @@ components: { PostOverview },
   methods:{
     setDate: date.setDate, // METHODE D'APPEL DU FONCTION IMPORTER
     dateDiff: date.dateDiff, // SOURCE : https://forum.vuejs.org/t/how-to-use-helper-functions-for-imported-modules-in-vuejs-vue-template/6266
-    // checkLocalStorage: localStorage.checkStorage,
-    printf(){
-      console.log(" valeur recuperer :", this.posts)
-    },
+
     //AFFICHE L'ESPACE COMMENTAIRE
     showComment(post){
       this.commentStatus = post.id
@@ -78,13 +75,10 @@ components: { PostOverview },
     //ENVOIE LE COMMENTAIRE
     async sendComment(post){
       const content = document.getElementById('comment__content').value; // ici vu qu'il y a un v-if comment-content ne peut apparaitre qu'une seul fois par page
-      console.log(content)
       if(content == ""){
-        console.log('contenu vide');
         return 0;
       }
       const message = await this.newComment(content, post.id);
-      console.log(message.message);
       if(message.error){
        return this.errMessage = message.error;
       }
@@ -116,7 +110,6 @@ components: { PostOverview },
     // AJOUT D'UN LIKE
     addLike(post){
       const like = 1;
-      console.log('valeur like', like)
       fetch(`http://localhost:3000/api/like/${post.id}`,{
         method: "POST",
         headers:{
@@ -134,7 +127,6 @@ components: { PostOverview },
     // RETIRE UN LIKE
     unlike(post){
       const like = 0;
-      console.log('valeur like', like)
       fetch(`http://localhost:3000/api/like/${post.id}`,{
         method: "POST",
         headers:{
@@ -176,7 +168,6 @@ components: { PostOverview },
       .then(res => res.json())
       .then(result => { this.posts = result })
       .catch(() => console.log("oops ca ne marche pas!"))
-    console.log("sur app l'utilisateur est: ", this.user.token)
   
 
     // CREATION TABLEAU USERLIKED QUI CONTIENT LE POST_ID DES POST LIKÉ
@@ -188,7 +179,6 @@ components: { PostOverview },
         }
       }
     }
-    console.log('ici',this.userLiked)
   }
     createUserLiked(this.posts)
     

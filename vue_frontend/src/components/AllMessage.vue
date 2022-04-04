@@ -44,11 +44,10 @@ export default {
     dateDiff: date.dateDiff,
     //RECUPERATION DE L'ID DE L'INTEROLOCUTEUR
     getConversationDetails(message){
-      let newStatus = 'showConversation'
+      let newStatus = 'showConversation';
       this.$emit('get-conversationDetails',{
         details: {message, newStatus}
       })
-      console.log('allMessage:', message)
     }
   },
   async mounted(){
@@ -60,7 +59,7 @@ export default {
     })
       .then((res) => {
         if(res.ok){
-          return res.json()
+          return res.json();
       }
       })
       .catch(() => console.log('Oops ca ne marche pas !'))

@@ -45,7 +45,6 @@ export default {
     //CHANGE LIMIT 
     changeLimit(){
     this.limit += 5;
-    console.log(this.limit)
     },
   },
   async mounted(){
@@ -59,7 +58,6 @@ export default {
       .then(res => res.json())
       .then(result => { this.lastMessages = result })
       .catch(() => console.log("oops ca ne marche pas!"))
-      console.log(this.lastMessages.length)
 
     }
 

@@ -19,7 +19,6 @@ data(){
   }
 },
 async mounted(){
- console.log('++++',this.user_idSearch)
     
   if(localStorage.user == undefined){
     this.$router.push(`/login`);
