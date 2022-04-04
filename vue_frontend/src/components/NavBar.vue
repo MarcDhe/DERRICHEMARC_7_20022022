@@ -81,7 +81,7 @@ header{
         padding-left: 10px;
         border-radius: 10px;
         border: 0px;
-        background-color: lighten(#3F4257, 5%);
+        background-color: lighten(#3F4257, 10%);
         &:focus{
           background-color: white;
         }

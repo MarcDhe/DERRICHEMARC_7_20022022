@@ -3,8 +3,8 @@
     <div class='login'>
       <h1>Connection au compte</h1>
       <form @submit.prevent='login()'>
-        <input id='username' placeholder= "Nom d'utilisateur" required>
-        <input id='password' type='password'  placeholder= "Mot de passe" required>
+        <input id='username' placeholder= "Nom d'utilisateur" title="Nom d'utilisateur" required>
+        <input id='password' type='password'  placeholder= "Mot de passe" title='mot de passe' required>
         <button>Se connecter</button>
       </form>
       <p v-if='error' class='red-text'>{{error}}</p>
@@ -90,14 +90,20 @@ export default {
      color: white;
      strong{
        color:#FD2D00;
+       &:hover{
+        color: darken($color: #FD2D00, $amount: 10%);
+      }
      }
     }
     button{
       border-radius: 5px;
       padding: 5px;
-      background-color: #FD2D00;
+      background-color: #ba2808;
       color: white;
       font-weight: 600;
+      &:hover{
+       background-color: darken($color: #FD2D00, $amount: 10%);
+      }
     }
  }
  form{

@@ -18,12 +18,8 @@ Post.belongsTo(User, { as: 'User', foreignKey: 'user_id'});
 Post.hasMany(Comment, {as : "Comment", foreignKey : 'post_id', onDelete: 'CASCADE'});
 Comment.belongsTo(Post, { as: 'Post', foreignKey: 'post_id'});
 
-// RELATION MANY TO MANY user <--> liked
-// User.belongsToMany(Liked , {as: "Liked", foreignKey: "liked_user_id"})
-// Liked.belongsToMany(User, {as: "Liked", foreignKey: "liked_user_id"})
-
 // RELATION One TO MANY post --> liked
-Post.hasMany(Liked , {as: "Liked", foreignKey:'post_id'})
+Post.hasMany(Liked , {as: "Liked", foreignKey:'post_id', onDelete:'CASCADE'})
 Liked.belongsTo(Post, {as: "Post", foreignKey: 'post_id'})
 
 // // RELATION  ON TO MANY USER --> LIKE
@@ -34,4 +30,4 @@ User.hasMany(Message, {as: "Message", foreignKey:'from_id'})
 Message.belongsTo(User, {as: "User", foreignKey: 'from_id'})
 
 User.hasMany(Message, {as: "Message2", foreignKey:'to_id'})
-Message.belongsTo(User, {as: "User1", foreignKey: 'to_id'})
+Message.belongsTo(User, {as: "User2", foreignKey: 'to_id'})

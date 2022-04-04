@@ -129,9 +129,12 @@ export default {
    button{
     border-radius: 5px;
     padding: 5px;
-    background-color: #FD2D00;
+    background-color: #ba2808;
     color: white;
     font-weight: 600;
+    &:hover{
+       background-color: darken($color: #FD2D00, $amount: 10%);
+      }
    }
  }
  .red-text{

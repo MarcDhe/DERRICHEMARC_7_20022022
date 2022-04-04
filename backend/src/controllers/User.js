@@ -12,7 +12,7 @@ const User = require('../models/User');
 exports.signUp = (req, res, next) => {
   let regName = new RegExp('^[a-zA-Z\-]+$') // DEBUT FINI PAR LETTRE AVEC POSSIBILITE -
   let regUsername = new RegExp('^[a-zA-Z0-9]+$') // CHIFFRE OU LETTRE 
-  if(regUsername.test(req.body.username) || req.body.username.length < 4 ){
+  if(!regUsername.test(req.body.username) || req.body.username.length < 4 ){
     return res.status(400).json({ error : 'Username : 4 Charactères requis !'})
   }
   if(!regName.test(req.body.lastname) || req.body.lastname == ''){
