@@ -1,4 +1,4 @@
-const { NULL } = require('node-sass');
+
 const Sequelize = require ('sequelize');
 
 module.exports = sequelize.define("Message", {  // ici rien de plus car defini en global precedement dans connection

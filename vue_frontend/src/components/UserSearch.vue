@@ -1,4 +1,7 @@
 <template>
+<div v-if='allPosts.length === 0'>
+  <p>Cette utilisateur n'a fait aucun post</p>
+</div>
 <div v-for='post in allPosts' :key='post.id'>
   <PostOverview :post='post'/>
 </div>
@@ -14,7 +17,7 @@ props: [ 'data' ],
 data(){
   return {
     user_idSearch : this.data,
-    allPosts: null,
+    allPosts: [],
     user: null,
   }
 },

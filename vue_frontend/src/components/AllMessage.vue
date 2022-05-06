@@ -52,7 +52,6 @@ export default {
   },
   async mounted(){
     this.user = JSON.parse(localStorage.getItem('user'));
-
     this.allMessage = await fetch('http://localhost:3000/api/message',{
       method: "GET",
       headers: {'Authorization' : `Bearer ${this.user.token}`}

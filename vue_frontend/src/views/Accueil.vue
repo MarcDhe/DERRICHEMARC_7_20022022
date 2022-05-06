@@ -12,7 +12,7 @@
       <p class="input-post">Écrivez votre post.</p>
     </router-link>
   </div>  
-  <div class="red-block"></div>
+  <!-- <div class="red-block"></div> -->
   <div class="post" v-for="post in posts " :key="post.id">
     <PostOverview :post='post'>
       <div class="post__action">
@@ -20,13 +20,13 @@
         <p v-if='!testLike(post.id)' @click='addLike(post)' class="like" ><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> Like:({{post.Liked.length}})</p>
         <p @click='showComment(post)' class="commentary" alt="rara" tilte="rere"><i class="red-color fa-solid fa-comment-dots"></i> Commenter </p>
       </div>
-      <div v-if="commentStatus == post.id && resMessage" class='green-background'>
+      <div v-if="commentStatus === post.id && resMessage" class='green-background'>
         <p>{{resMessage}}</p>
       </div>
-      <div v-if="commentStatus == post.id && errMessage" class='red-background'>
+      <div v-if="commentStatus === post.id && errMessage" class='red-background'>
         <p>{{errMessage}}</p>
       </div>
-      <div v-if="commentStatus == post.id && !resMessage && !errMessage" class="comment">
+      <div v-if="commentStatus === post.id && !resMessage && !errMessage" class="comment">
         <form @submit.prevent="sendComment(post)">
           <textarea id='comment__content' placeholder='Ecrivez votre commentaire' maxlength="300" required></textarea>
           <div class="comment__option">
@@ -360,6 +360,17 @@ components: { PostOverview },
   .red-background{
     padding: 5px;
     background-color: #F9D6D9;
+  }
+  button{
+    background-color: #ba2808;
+    color: white;
+    border-radius: 15px;
+    padding: 3px 10px 5px 10px;
+    cursor: pointer;
+    
+    &:hover{
+    background-color: darken($color: #FD2D00, $amount: 10%);
+    }
   }
 }
 </style>

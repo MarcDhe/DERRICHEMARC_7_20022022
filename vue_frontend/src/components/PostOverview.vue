@@ -9,11 +9,10 @@
           </figure>
         </div>
         <div class="owner__details">
-          <div class="owner__username"> {{post.User.username}} {{ post.id }}</div>
-          <div class="owner__relase" >posté il y a {{setDate(post.createdAt)}}</div>
+          <div class="owner__username"> {{post.User.username}}</div>
+          <div class="owner__release" >posté il y a {{setDate(post.createdAt)}}</div>
         </div>
       </div>
-
     </div>
     <div class="post__details">
       <h2>{{post.title}} :</h2>
@@ -106,7 +105,7 @@ methods:{
         padding-left: 10px;
         text-align: start;
       }
-      &__relase{
+      &__release{
         color:#7a7f82;
       }
       &__username{

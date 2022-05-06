@@ -33,7 +33,7 @@
         <p> Vous n'avez pas liké !</p>
       </div>
       <div class="post" v-for="liked in allLiked " :key="liked.post_id">
-        <router-link class="unlink" :to="{name:'Post', params: { id: liked.post.id }}">
+        <router-link class="unlink" :to="{name:'Post', params: { id: liked.Post.id }}">
           <div class="post__info">
             <div class="align-start">
               <h3 class="post__title">{{liked.Post.title}}:</h3>
@@ -115,7 +115,6 @@ export default {
       .then(res => res.json())
       .then(result => { this.allLiked = result })
       .catch(() => console.log("oops ca ne marche pas!"))
-
   }
 }
 </script>
@@ -156,6 +155,7 @@ export default {
     border-radius: 5px;
     background-color: white;
     margin-top:10px;
+    margin-bottom: 10px;
     padding: 5px;
     &__info{
       border-radius: 5px;

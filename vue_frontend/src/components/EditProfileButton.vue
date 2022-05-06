@@ -10,9 +10,9 @@
       <figure>
         <img :src="url" alt='new avatar'/>
       </figure>
-      <label for='new-avatar'>Selectionné un nouvelle avatar:</label>
+      <label for='new-avatar'>Selectionné un nouvel avatar:</label>
       <input id='new-avatar' type="file" @change="previewFile"> 
-      <button @click="changeAvatar()">Envoyé</button>
+      <button @click="changeAvatar()">Envoyer</button>
     </div>
     <div v-if='this.element == "password"' class='option__password'>
       <h2>Changement de mot de passe</h2>
@@ -23,7 +23,7 @@
           <input id='new-password' placeholder="nouveau mdp" type='password' required>
           <label for="new-password-check">Confirmez votre nouveau mot de passe :</label>
           <input id='new-password-check' placeholder="confirmer" type='password' required>
-          <button >Envoyé</button>
+          <button >Envoyer</button>
           <p class="red-color" v-if="alertMessage">{{ alertMessage }}</p>
         </form>
     </div>

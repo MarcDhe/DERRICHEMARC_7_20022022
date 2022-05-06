@@ -18,8 +18,8 @@
       <form @submit.prevent="sendMessage()">
         <textarea class="message__content" placeholder="Votre Message" maxlength="300" title="Votre Message" required ></textarea>
         <div class='message__option'>
-          <button>Envoyez</button>
-          <button @click.stop='backToMessagingMenu()'>Annulez</button>
+          <button>Envoyer</button>
+          <button @click.stop='backToMessagingMenu()'>Annuler</button>
         </div>
       </form>
       <p class="message__alert red-alert" v-if='alertMessage'>{{alertMessage}}</p>

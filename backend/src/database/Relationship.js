@@ -26,7 +26,7 @@ Liked.belongsTo(Post, {as: "Post", foreignKey: 'post_id'})
 User.hasMany(Liked, {as: "Liked", foreignKey:'user_id', onDelete:'CASCADE'});
 Liked.belongsTo(User, {as: "User", foreignKey: 'user_id'})
 
-User.hasMany(Message, {as: "Message", foreignKey:'from_id'})
+User.hasMany(Message, {as: "Message", foreignKey:'from_id'})   
 Message.belongsTo(User, {as: "User", foreignKey: 'from_id'})
 
 User.hasMany(Message, {as: "Message2", foreignKey:'to_id'})

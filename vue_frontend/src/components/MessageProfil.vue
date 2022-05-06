@@ -136,5 +136,15 @@ export default {
     padding-top:10px;
     padding-bottom: 20px;
   }
+  button{
+      background-color: #ba2808;
+      color: white;
+      border-radius: 15px;
+      padding: 3px 10px 5px 10px;
+      cursor: pointer;
+      &:hover{
+       background-color: darken($color: #FD2D00, $amount: 10%);
+      }
+    }
 }
 </style>

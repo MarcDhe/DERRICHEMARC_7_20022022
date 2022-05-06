@@ -3,7 +3,7 @@
     <div id="alert"  v-if="alertMessage">
       <div> </div>
       <p class="alert__text">{{ alertMessage }}</p>
-      <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+      <span class="closebtn" @click='alertMessage = null'>&times;</span>
     </div>
     <div class="post">
       <form @submit.prevent="sendUpdatePost()" v-if="this.method === 'update'">
@@ -37,17 +37,16 @@
         <div class="post__add">
           <p v-if="this.likeStatus == false" id="like-post" @click="addLike()"><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> ({{ numberOfLike }})</p>
           <p v-if="this.likeStatus == true" id="unlike-post" @click="unLike()"><i class="red-color fa-solid fa-hand-holding-heart" alt="liké"></i> ({{ numberOfLike }})</p>
-          <p v-if="this.postOwner == true" id="delete-post" @click='deletePost()' ><i class="red-color fa-solid fa-trash-can"></i> Delete </p>
-          <p v-if="this.postOwner == true" id="update-post" @click='updatePost(this.updateOne)'><i class="red-color fa-regular fa-pen-to-square"></i> Update</p>
+          <p v-if="this.postOwner == true" id="delete-post" @click='deletePost()' ><i class="red-color fa-solid fa-trash-can"></i> Supprimer </p>
+          <p v-if="this.postOwner == true" id="update-post" @click='updatePost(this.updateOne)'><i class="red-color fa-regular fa-pen-to-square"></i> Editer</p>
         </div>
         <form class="new-comment">
           <textarea id='new-comment__content'  placeholder='Ecrivez votre commentaire' maxlength="300" required></textarea>
           <div class="new-comment__option">
-            <button v-if='this.commentMethod == "read"' @click.prevent='sendComment()'>Envoyez</button>  
+            <button v-if='this.commentMethod == "read"' @click.prevent='sendComment()'>Envoyer</button>  
             <button v-if='this.commentMethod == "update"' @click.stop='cancelUpdate()'>Annuler</button>           
             <button v-if='this.commentMethod == "update"' @click.prevent='updateComment()'>Sauvegardez</button>           
           </div>
-         <p class="alert__text">{{ alertComment }}</p>
         </form>
       <div class="commentary" v-for="(comment, index) in onePost.Comment" :key="index">
         <figure > 
@@ -88,9 +87,9 @@ export default {
         idComment: null,
         likeStatus: false,
         numberOfLike: 0,
-        alertComment: null,
         alertPost: null,
         indexUpdate: null,
+        alertMessage: null,
     }
   },
   methods:{
@@ -128,7 +127,7 @@ export default {
       commentPush.User = User  // AJOUT NOUVELLE ELEMENT A UN OBJET  SOURCE: https://grafikart.fr/forum/15626
       this.onePost.Comment.unshift(commentPush)  // unshift "push" au début d'un tableau
       document.getElementById('new-comment__content').value = '';
-      this.alertComment = 'Commentaire publié !'
+      this.alertMessage = 'Commentaire publié !'
       
     },
     //NOUVEAU COMMENTAIRE
@@ -244,7 +243,10 @@ export default {
             }
           })
       // ON RAFRAICHI LE ONEPOST POUR AVOIR LE NOUVEAU CONTENU "OBILIGE"  CAR NOUS NAVONS PAS LADRESSE DE LA NOUVELLE IMAGE
-     await fetch(`http://localhost:3000/api/post/${this.post_id}`)
+     await fetch(`http://localhost:3000/api/post/${this.post_id}`,{
+        method: "GET",
+         headers: {'Authorization' : `Bearer ${this.user.token}`}
+        })
         .then(res => res.json())
         .then((data) => { 
           this.onePost = data;
@@ -282,9 +284,9 @@ export default {
         return res.json()
       })
       .catch(() => console.log('Oops !'))
-      this.alertMessage = updateStatus.message
-      this.onePost.Comment[this.indexUpdate].content = content
-      this.commentMethod="read"
+      this.alertMessage = updateStatus.message;
+      this.onePost.Comment[this.indexUpdate].content = content;
+      this.commentMethod="read";
       document.getElementById('new-comment__content').value = '';
     },
     // SUPRESSION COMMENT
@@ -524,6 +526,9 @@ export default {
     &:hover{
     background-color: darken($color: #FD2D00, $amount: 10%);
     }
+  }
+  .closebtn{
+    cursor: pointer;
   }
 
 }
