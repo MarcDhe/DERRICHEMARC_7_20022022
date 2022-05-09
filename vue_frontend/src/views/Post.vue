@@ -161,7 +161,7 @@ export default {
       })
       .then((res) => {
           if(res.ok){
-            this.$router.push('/accueil')//NOUS FAIT ALLER SUR L"ACCUEIL https://router.vuejs.org/guide/essentials/navigation.html#navigate-to-a-different-location
+            this.$router.push('/')//NOUS FAIT ALLER SUR L"ACCUEIL https://router.vuejs.org/guide/essentials/navigation.html#navigate-to-a-different-location
           }
       })
       .catch(() => console.log('oops ca ne marche pas!'));

@@ -1,6 +1,5 @@
 <template>
 <section id='standard-search'>
-  <h3 class='border-bottom'>Objet de la recherche : '{{termSearch}}'</h3>
   <div class="container">
     <div class='select'>
       <div @click='switchToPost()' class='select__post border-bottom'>
@@ -37,7 +36,7 @@
           <div class="post__details">
             <h2>{{post.title}} :</h2>
             <figure class='post__picture' v-if='post.imageUrl'>
-              <img :src='post.imageUrl' />
+              <img :src='post.imageUrl' alt='post picture' />
             </figure>
           </div>
         </router-link>

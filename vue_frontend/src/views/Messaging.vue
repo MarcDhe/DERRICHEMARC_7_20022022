@@ -6,7 +6,7 @@
       <button @click='showNewMessage()'>Ecrire un nouveau message <i class="fa-solid fa-feather-pointed"></i></button>
     </div>
     <div v-if='status == "writeMessage"'>
-      <NewMessage v-on:update-status='updateStatus' />
+      <NewMessage v-on:update-status='updateStatus' v-on:get-conversationDetails='updateConversationDetails' />
     </div>
     <div v-if="status == 'showMessage'">
       <AllMessage  v-on:get-conversationDetails='updateConversationDetails' />

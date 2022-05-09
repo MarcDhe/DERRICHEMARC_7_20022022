@@ -43,7 +43,12 @@ const routes = [
     path:'/search/:value',
     name: 'Search',
     component: () => import('../views/Search.vue')
-    }
+  },
+  {
+    path: '/:pathMatch(.*)*',  // SI PAS DE MATCH SUR LES ROUTEs => ERROR https://stackoverflow.com/questions/40193634/vue-router-redirect-on-page-not-found-404#:~:text=%40-,mani%27s,-response%20is%20now 
+    name : 'Error',
+    component: () => import('../views/Error.vue')
+  },
 
 ]
 

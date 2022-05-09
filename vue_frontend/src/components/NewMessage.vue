@@ -85,7 +85,7 @@ export default {
     if(resMessage.error){
       return this.alertMessage = resMessage.error;
     }
-    this.resMessage = resMessage.message
+    this.backToMessagingMenu();
   },
   //ENVOIE DU MESSAGE A L API
   async sendMessageToApi(to_id, content){
@@ -103,7 +103,7 @@ export default {
   },
   backToMessagingMenu(){
     this.$emit('update-status')
-  }
+  },
 
   },
   mounted(){

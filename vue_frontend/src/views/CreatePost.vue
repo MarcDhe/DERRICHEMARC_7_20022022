@@ -79,6 +79,13 @@ export default {
   background-image: url("../assets/icon.webp");
   background-position: center;
   background-repeat: no-repeat;
+  h1{
+    margin:0px;
+    margin-left:5px;
+    margin-right: 5px;
+    background-color: white;
+    border-bottom: 2px solid red;
+  }
   .create-post{
     border:1px solid rgb(210, 210, 210);
     border-radius: 5px;
@@ -123,5 +130,6 @@ export default {
        background-color: darken($color: #FD2D00, $amount: 10%);
       }
     }
+    
 }
 </style>
