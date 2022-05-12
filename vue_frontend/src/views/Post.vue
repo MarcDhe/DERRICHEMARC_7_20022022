@@ -12,8 +12,8 @@
         :title=this.onePost.title
         :content=this.onePost.content
         />
-        <button type='submit'>Envoyer</button>
         <button type="button" @click="cancelUpdate()">Annuler</button>
+        <button type='submit'>Envoyer</button>
       </form>
       <div v-if="this.method === 'read'">
         <div class="owner"> 
@@ -45,7 +45,7 @@
           <div class="new-comment__option">
             <button v-if='this.commentMethod == "read"' @click.prevent='sendComment()'>Envoyer</button>  
             <button v-if='this.commentMethod == "update"' @click.stop='cancelUpdate()'>Annuler</button>           
-            <button v-if='this.commentMethod == "update"' @click.prevent='updateComment()'>Sauvegardez</button>           
+            <button v-if='this.commentMethod == "update"' @click.prevent='updateComment()'>Sauvegarder</button>           
           </div>
         </form>
       <div class="commentary" v-for="(comment, index) in onePost.Comment" :key="index">
