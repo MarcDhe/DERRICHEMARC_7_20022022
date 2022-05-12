@@ -37,4 +37,4 @@ npm run build
 
 # INITIALISATION COMPTE ADMIN
 
-le compte admin peut être créé uniquement manuellement en créant,  soit un compte puis en modifiant dans la base de donnée sont "power" en "admin", soit en créant le compte directement depuis la base de donnée
+le compte admin peut être créé uniquement manuellement en créant,  soit un compte puis en modifiant dans la base de donnée sont "power" en "admin", soit en créant le compte directement depuis la base de donnée.
