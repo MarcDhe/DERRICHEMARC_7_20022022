@@ -56,8 +56,8 @@
           <p class="commentary__details__username"> {{ comment.User.username }}<strong class="date"> {{setDate(comment.updatedAt)}}</strong></p>
           <p class="commentary__details__content">{{ comment.content }}</p>
           <div class="commentary__update">
-            <p class='commentary__update__delete' v-if="comment.user_id == user.id || user.power == 'admin'" @click="deleteComment(comment, index)"><i class="red-color fa-solid fa-trash-can"></i> Delete </p>
-            <a href="#comment-zone"><p class='commentary__update__update' v-if="comment.user_id == user.id || user.power == 'admin'" @click="goToUpdateComment(comment, index)"><i class="red-color fa-regular fa-pen-to-square"></i>  Update</p></a>
+            <p class='commentary__update__delete' v-if="comment.user_id == user.id || user.power == 'admin'" @click="deleteComment(comment, index)"><i class="red-color fa-solid fa-trash-can"></i> Supprimer </p>
+            <a href="#comment-zone"><p class='commentary__update__update' v-if="comment.user_id == user.id || user.power == 'admin'" @click="goToUpdateComment(comment, index)"><i class="red-color fa-regular fa-pen-to-square"></i>  Modifier</p></a>
           </div>
         </div>
       </div>
